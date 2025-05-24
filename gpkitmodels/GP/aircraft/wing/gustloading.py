@@ -1,7 +1,6 @@
 " spar loading for gust case "
 import os
-from numpy import pi, hstack, array
-from ad.admath import cos
+from numpy import pi, hstack, array, cos
 import pandas as pd
 from gpkit import parse_variables
 from gpfit.fit_constraintset import FitCS
