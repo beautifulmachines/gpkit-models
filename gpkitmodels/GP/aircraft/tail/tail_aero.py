@@ -2,7 +2,7 @@
 import os
 import pandas as pd
 from gpkit import Model, parse_variables
-from gpfit.fit_constraintset import XfoilFit
+from gpkitmodels.tools.fit_constraintset import FitCS
 
 #pylint: disable=exec-used, attribute-defined-outside-init, undefined-variable
 #pylint: disable=no-member
@@ -47,7 +47,7 @@ class TailAero(Model):
             Re == V*rho*S/b/mu,
             # XfoilFit(fd, Cd, [Re, static["\\tau"]],
             #          err_margin="RMS", airfoil="naca 0008")
-            XfoilFit(fd, Cd, [Re, tau], err_margin="RMS")
+            FitCS(fd, Cd, [Re, tau], err_margin="RMS")
             ]
 
         return constraints
