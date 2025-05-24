@@ -5,7 +5,6 @@ from builtins import range
 import numpy as np
 from gpkit import ConstraintSet
 from gpkit import Variable, NomialArray
-from gpkit.small_scripts import unitstr
 from .xfoilWrapper import blind_call, single_cl
 
 class FitCS(ConstraintSet):
