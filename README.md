@@ -1,6 +1,6 @@
 # gplibrary
 
-[![Build Status](https://acdl.mit.edu/csi/buildStatus/icon?job=CE_gplibrary_Push_research_models)](https://acdl.mit.edu/csi/job/CE_gplibrary_Push_research_models/)
+[![CI Status](https://github.com/beautifulmachines/gpkit-models/actions/workflows/tests.yml/badge.svg)](https://github.com/beautifulmachines/gpkit-models/actions/workflows/tests.yml)
 
 This repository contains those GP-/SP-compatible models that we consider well documented and general enough to be useful to multiple projects.
 
