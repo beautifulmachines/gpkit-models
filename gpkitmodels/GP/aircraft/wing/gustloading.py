@@ -1,10 +1,10 @@
 " spar loading for gust case "
 import os
+from adce.admath import cos
 from numpy import pi, hstack, array
-from ad.admath import cos
 import pandas as pd
 from gpkit import parse_variables
-from gpfit.fit_constraintset import FitCS
+from gpkitmodels.tools.fit_constraintset import FitCS
 from .sparloading import SparLoading
 
 #pylint: disable=invalid-name, no-member, arguments-differ, exec-used

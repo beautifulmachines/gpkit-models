@@ -8,7 +8,7 @@ from gpkit import Model, parse_variables
 from .wing_core import WingCore
 from .wing_skin import WingSkin
 from .capspar import CapSpar
-from gpfit.fit_constraintset import XfoilFit
+from gpkitmodels.tools.fit_constraintset import XfoilFit
 
 #pylint: disable=no-member, invalid-name, unused-argument, exec-used
 #pylint: disable=undefined-variable, attribute-defined-outside-init

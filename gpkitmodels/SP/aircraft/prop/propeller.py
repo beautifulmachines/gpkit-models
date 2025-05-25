@@ -3,7 +3,7 @@ from builtins import range
 from numpy import pi
 from gpkit import Model, Variable,Vectorize,parse_variables, SignomialsEnabled, SignomialEquality
 from gpkit.constraints.tight import Tight as TCS
-from gpfit.fit_constraintset import XfoilFit
+from gpkitmodels.tools.fit_constraintset import FitCS
 import os
 import pandas as pd
 
@@ -66,7 +66,7 @@ class BladeElementPerf(Model):
                         Re == Wr*c*rho/mu,
                         eta_i == (V/(omega*r))*(Wt/Wa),
                         TCS([f+(r/R)*B/(2*lam_w) <= (B/2.)*(1./lam_w)]),
-                        XfoilFit(fd, cd, [cl,Re], name="polar"),
+                        FitCS(fd, cd, [cl,Re], name="polar"),
                         cl <= cl_max
                     ]
         with SignomialsEnabled():
