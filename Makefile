@@ -13,7 +13,7 @@ test:
 # Format code using isort and black
 format:
 	isort --profile black gpkitmodels
-	# black gpkitmodels
+	black gpkitmodels
 
 # Help
 help:
