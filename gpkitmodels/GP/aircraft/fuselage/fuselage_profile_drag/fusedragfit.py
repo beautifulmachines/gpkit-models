@@ -1,8 +1,11 @@
-" fuselage drag fits "
+"fuselage drag fits"
+
 from builtins import zip
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 
 def fit_setup(filename):
     "set up fitting variables"
@@ -26,15 +29,17 @@ def fit_setup(filename):
 
     return x, y
 
+
 def return_fit(u_1, u_2, u_3):
     "fit using SMA, K = 4, RMS = 0.0479"
     w = (
-        0.00243049 * (u_1)**0.033607 * (u_2)**1.21682 * (u_3)**0.306251
-        + 0.00255095 * (u_1)**-0.0316887 * (u_2)**-0.585489 * (u_3)**1.15394
-        + 0.0436011 * (u_1)**0.0545722 * (u_2)**0.258228 * (u_3)**-1.42664
-        + 0.00970479 * (u_1)**0.8661 * (u_2)**-0.209136 * (u_3)**-0.156166) \
-        ** (1/0.996232)
+        0.00243049 * (u_1) ** 0.033607 * (u_2) ** 1.21682 * (u_3) ** 0.306251
+        + 0.00255095 * (u_1) ** -0.0316887 * (u_2) ** -0.585489 * (u_3) ** 1.15394
+        + 0.0436011 * (u_1) ** 0.0545722 * (u_2) ** 0.258228 * (u_3) ** -1.42664
+        + 0.00970479 * (u_1) ** 0.8661 * (u_2) ** -0.209136 * (u_3) ** -0.156166
+    ) ** (1 / 0.996232)
     return w
+
 
 def plot_fits(filename):
     "plot fit against data"
@@ -71,6 +76,7 @@ def plot_fits(filename):
         figs.append(fig)
 
     return figs
+
 
 if __name__ == "__main__":
     X, Y = fit_setup("fusedrag.csv")

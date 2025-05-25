@@ -1,11 +1,14 @@
-"Electric motor model "
+"Electric motor model"
+
 from gpkit import Model, parse_variables
 from gpkit.constraints.tight import Tight as TCS
-from gpkitmodels.GP.aircraft.prop.propeller import Propeller, ActuatorProp
+
 from gpkitmodels import g
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
+
 
 class MotorPerf(Model):
-    """ Electric Motor Performance Model
+    """Electric Motor Performance Model
 
     Note: The last two constraints may not be tight if there is a motor energy
           constraint that does not size the motor. TCS removed to prevent
@@ -21,23 +24,27 @@ class MotorPerf(Model):
     i                       [amp]           current
     v                       [V]             woltage
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
         Kv = static.Kv
-        R  = static.R
+        R = static.R
         i0 = static.i0
         V_max = static.V_max
 
-        return [Pshaft == Q*omega,
-                Pelec == v*i,
-                etam == Pshaft/Pelec,
-                static.Qmax >= Q,
-                v <= V_max,
-                i >= Q*Kv+i0,
-                v >= omega/Kv + i*R]
+        return [
+            Pshaft == Q * omega,
+            Pelec == v * i,
+            etam == Pshaft / Pelec,
+            static.Qmax >= Q,
+            v <= V_max,
+            i >= Q * Kv + i0,
+            v >= omega / Kv + i * R,
+        ]
+
 
 class Motor(Model):
-    """ Electric Motor Model
+    """Electric Motor Model
 
     Variables
     ---------
@@ -56,11 +63,10 @@ class Motor(Model):
 
     @parse_variables(__doc__, globals())
     def setup(self):
-        constraints = [W >= Qstar*Qmax*g,
-                       Kv >= Kv_min,
-                       Kv <= Kv_max]
+        constraints = [W >= Qstar * Qmax * g, Kv >= Kv_min, Kv <= Kv_max]
 
         return constraints
+
 
 class PropulsorPerf(Model):
     "Propulsor Performance Model"
@@ -72,11 +78,10 @@ class PropulsorPerf(Model):
 
         self.components = [self.prop, self.motor]
 
-        constraints = [self.prop.Q == self.motor.Q,
-                       self.prop.omega == self.motor.omega
-                      ]
+        constraints = [self.prop.Q == self.motor.Q, self.prop.omega == self.motor.omega]
 
         return constraints, self.components
+
 
 class Propulsor(Model):
     """Propulsor model
@@ -86,6 +91,7 @@ class Propulsor(Model):
     W                       [lbf]              propulsor weight
 
     """
+
     flight_model = PropulsorPerf
     prop_flight_model = ActuatorProp
 

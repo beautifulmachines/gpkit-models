@@ -1,11 +1,21 @@
-" propeller model "
-from numpy import pi
-from gpkit import Model, Variable,Vectorize,parse_variables, SignomialsEnabled, SignomialEquality
+"propeller model"
+
 import os
+
 import pandas as pd
+from gpkit import (
+    Model,
+    SignomialEquality,
+    SignomialsEnabled,
+    Variable,
+    Vectorize,
+    parse_variables,
+)
+from numpy import pi
+
 
 class ActuatorProp(Model):
-    """ Propeller Model
+    """Propeller Model
 
     Variables
     ---------
@@ -29,7 +39,7 @@ class ActuatorProp(Model):
     """
 
     def helper(self, c):
-        return 2. - 1./c(self.etaadd)
+        return 2.0 - 1.0 / c(self.etaadd)
 
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
@@ -37,24 +47,25 @@ class ActuatorProp(Model):
         rho = state.rho
         R = static.R
 
-        constraints = [eta <= etav*etai,
-                       Tc >= T/(0.5*rho*V**2*pi*R**2),
-                       z2 >= Tc + 1,
-                       etai*(z1 + z2**0.5/etaadd) <= 2,
-                       lam >= V/(omega*R),
-                       CT >= Tc*lam**2,
-                       CP <= Q*omega/(.5*rho*(omega*R)**3*pi*R**2),
-                       eta >= CT*lam/CP,
-                       omega <= omega_max,
-                       P_shaft == Q*omega,
-                       (M_tip*a)**2 >= (omega*R)**2 + V**2,
-                       static.T_m >= T
-                      ]
+        constraints = [
+            eta <= etav * etai,
+            Tc >= T / (0.5 * rho * V**2 * pi * R**2),
+            z2 >= Tc + 1,
+            etai * (z1 + z2**0.5 / etaadd) <= 2,
+            lam >= V / (omega * R),
+            CT >= Tc * lam**2,
+            CP <= Q * omega / (0.5 * rho * (omega * R) ** 3 * pi * R**2),
+            eta >= CT * lam / CP,
+            omega <= omega_max,
+            P_shaft == Q * omega,
+            (M_tip * a) ** 2 >= (omega * R) ** 2 + V**2,
+            static.T_m >= T,
+        ]
         return constraints
 
 
 class Propeller(Model):
-    """ Propeller Model
+    """Propeller Model
 
     Variables
     ---------
@@ -73,4 +84,4 @@ class Propeller(Model):
     @parse_variables(__doc__, globals())
     def setup(self, N=5):
         self.N = N
-        return [W >= K*T_m*R**2]
+        return [W >= K * T_m * R**2]

@@ -1,21 +1,26 @@
-" wing.py "
+"wing.py"
+
 from builtins import range
 from os import sep
 from os.path import abspath, dirname
+
 import numpy as np
 import pandas as pd
 from gpkit import Model, parse_variables
-from .wing_core import WingCore
-from .wing_skin import WingSkin
-from .capspar import CapSpar
+
 from gpkitmodels.tools.fit_constraintset import XfoilFit
 
-#pylint: disable=no-member, invalid-name, unused-argument, exec-used
-#pylint: disable=undefined-variable, attribute-defined-outside-init
-#pylint: disable=too-many-instance-attributes
+from .capspar import CapSpar
+from .wing_core import WingCore
+from .wing_skin import WingSkin
+
+# pylint: disable=no-member, invalid-name, unused-argument, exec-used
+# pylint: disable=undefined-variable, attribute-defined-outside-init
+# pylint: disable=too-many-instance-attributes
+
 
 class Planform(Model):
-    """ Planform Area Definition
+    """Planform Area Definition
 
     Scalar Variables
     ---------
@@ -60,36 +65,40 @@ class Planform(Model):
     cbarmac     \\bar{c}_{\\mathrm{MAC}}
 
     """
+
     def return_c(self, c):
-        " return normalized chord distribution "
+        "return normalized chord distribution"
         lam = c(self.lam).to("dimensionless").magnitude
         eta = c(self.eta).to("dimensionless").magnitude
-        return np.array([2./(1+lam)*(1+(lam-1)*e) for e in eta])
+        return np.array([2.0 / (1 + lam) * (1 + (lam - 1) * e) for e in eta])
 
     def return_cmac(self, c):
-        " return normalized MAC "
+        "return normalized MAC"
         cbar = self.return_c(c)
-        lam = cbar[1:]/cbar[:-1]
-        maci = 2./3*cbar[:-1]*(1 + lam + lam**2)/(1 + lam)
+        lam = cbar[1:] / cbar[:-1]
+        maci = 2.0 / 3 * cbar[:-1] * (1 + lam + lam**2) / (1 + lam)
         deta = np.diff(c(self.eta))
-        num = sum([(cbar[i] + cbar[i+1])/2*maci[i]*deta[i] for i
-                   in range(len(deta))])
-        den = sum([(cbar[i] + cbar[i+1])/2*deta[i] for i in range(len(deta))])
-        return num/den/cbar[0]
+        num = sum(
+            [(cbar[i] + cbar[i + 1]) / 2 * maci[i] * deta[i] for i in range(len(deta))]
+        )
+        den = sum([(cbar[i] + cbar[i + 1]) / 2 * deta[i] for i in range(len(deta))])
+        return num / den / cbar[0]
 
-    return_avg = lambda self, c: (self.return_c(c)[:-1]
-                                  + self.return_c(c)[1:])/2.
+    return_avg = lambda self, c: (self.return_c(c)[:-1] + self.return_c(c)[1:]) / 2.0
     return_deta = lambda self, c: np.diff(c(self.eta))
 
     @parse_variables(__doc__, globals())
     def setup(self, N):
-        return [b**2 == S*AR,
-                cave == cbave*S/b,
-                croot == S/b*cbar[0],
-                cmac == croot*cbarmac]
+        return [
+            b**2 == S * AR,
+            cave == cbave * S / b,
+            croot == S / b * cbar[0],
+            cmac == croot * cbarmac,
+        ]
+
 
 class WingAero(Model):
-    """ Wing Aero Model
+    """Wing Aero Model
 
     Variables
     ---------
@@ -117,9 +126,14 @@ class WingAero(Model):
     cdp             c_{d_p}
 
     """
+
     @parse_variables(__doc__, globals())
-    def setup(self, static, state,
-              fitdata=dirname(abspath(__file__)) + sep + "jho_fitdata.csv"):
+    def setup(
+        self,
+        static,
+        state,
+        fitdata=dirname(abspath(__file__)) + sep + "jho_fitdata.csv",
+    ):
         self.state = state
         self.static = static
 
@@ -140,12 +154,14 @@ class WingAero(Model):
         elif fd["d"] == 3:
             independentvars = [CL, Re, static.planform.tau]
 
-        return [Cd >= cdp + CL**2/np.pi/AR/e,
-                Re == rho*V*cmac/mu,
-                # XfoilFit(fd, cdp, [CL, Re], airfoil="jho1.dat"),
-                XfoilFit(fd, cdp, independentvars, name="polar"),
-                CL <= CLstall
-               ]
+        return [
+            Cd >= cdp + CL**2 / np.pi / AR / e,
+            Re == rho * V * cmac / mu,
+            # XfoilFit(fd, cdp, [CL, Re], airfoil="jho1.dat"),
+            XfoilFit(fd, cdp, independentvars, name="polar"),
+            CL <= CLstall,
+        ]
+
 
 class Wing(Model):
     """
@@ -195,6 +211,6 @@ class Wing(Model):
             self.foam = self.fillModel(self.planform)
             self.components.extend([self.foam])
 
-        constraints = [W/mfac >= sum(c["W"] for c in self.components)]
+        constraints = [W / mfac >= sum(c["W"] for c in self.components)]
 
         return constraints, self.planform, self.components

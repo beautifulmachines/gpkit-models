@@ -1,7 +1,8 @@
 from gpkit import Model, parse_variables
 
+
 class CFRPFabric(Model):
-    """ Carbon Fiber Reinforced Plastic Fabric Material Properties
+    """Carbon Fiber Reinforced Plastic Fabric Material Properties
 
     Constants
     ---------
@@ -19,12 +20,14 @@ class CFRPFabric(Model):
     tau         \\tau_{\\mathrm{CFRP}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self):
         pass
 
+
 class CFRPUD(Model):
-    """ Carbon Fiber Reinforced Plastic Unidirectional Material Properties
+    """Carbon Fiber Reinforced Plastic Unidirectional Material Properties
 
     Constants
     ---------
@@ -40,12 +43,14 @@ class CFRPUD(Model):
     sigma       \\sigma_{\\mathrm{CFRP}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self):
         pass
 
+
 class Kevlar(Model):
-    """ Kevlar Material Properties
+    """Kevlar Material Properties
 
     Constants
     ---------
@@ -60,6 +65,7 @@ class Kevlar(Model):
     tau         \\tau_{\\mathrm{Kevlar}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self):
         pass

@@ -1,4 +1,4 @@
-from .composite import CFRPFabric, CFRPUD, Kevlar
+from .composite import CFRPUD, CFRPFabric, Kevlar
 from .foam import FoamHD, FoamLD
 
 cfrpfabric = CFRPFabric()

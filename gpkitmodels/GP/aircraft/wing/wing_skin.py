@@ -1,10 +1,13 @@
-" wing skin "
+"wing skin"
+
 from gpkit import Model, parse_variables
-from gpkitmodels.GP.materials import cfrpfabric
+
 from gpkitmodels import g
+from gpkitmodels.GP.materials import cfrpfabric
+
 
 class WingSkin(Model):
-    """ Wing Skin model
+    """Wing Skin model
 
     Variables
     ---------
@@ -33,6 +36,7 @@ class WingSkin(Model):
     Vne     V_{\\mathrm{NE}}
 
     """
+
     material = cfrpfabric
 
     @parse_variables(__doc__, globals())
@@ -45,12 +49,15 @@ class WingSkin(Model):
         tau = self.material.tau
         tmin = self.material.tmin
 
-        return [W >= rho*S*2*t*g,
-                t >= tmin,
-                tau >= 1/Jtbar/croot**2/t*Cmw*S*rhosl*Vne**2]
+        return [
+            W >= rho * S * 2 * t * g,
+            t >= tmin,
+            tau >= 1 / Jtbar / croot**2 / t * Cmw * S * rhosl * Vne**2,
+        ]
+
 
 class WingSecondStruct(Model):
-    """ Wing Skin model
+    """Wing Skin model
 
     Variables
     ---------
@@ -71,8 +78,9 @@ class WingSecondStruct(Model):
     rhoA    \\rho_{A}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, surface):
         S = self.S = surface.S
 
-        return [W >= rhoA*S*g]
+        return [W >= rhoA * S * g]
