@@ -2,14 +2,16 @@
 "tool for importing ipython notebooks as modules"
 from __future__ import print_function
 
-
+import io
+import os
+import sys
+import types
 from builtins import object
-import io, os, sys, types
 
 # Import Modules
 from IPython import get_ipython
-from nbformat import read
 from IPython.core.interactiveshell import InteractiveShell
+from nbformat import read
 
 
 def find_notebook(fullname, path=None):

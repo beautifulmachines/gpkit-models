@@ -1,9 +1,19 @@
 from builtins import range
+
 import numpy as np
-from gpkit import Model, Variable, SignomialsEnabled, SignomialEquality, \
-    VarKey, units, Vectorize, settings
-from gpkitmodels.SP.SimPleAC.SimPleAC_mission import Mission, SimPleAC
+from gpkit import (
+    Model,
+    SignomialEquality,
+    SignomialsEnabled,
+    Variable,
+    VarKey,
+    Vectorize,
+    settings,
+    units,
+)
+
 from gpkitmodels.SP.atmosphere.atmosphere import Atmosphere
+from gpkitmodels.SP.SimPleAC.SimPleAC_mission import Mission, SimPleAC
 
 # SimPleAC with multimission design (updated 5/31/2019, by Berk Ozturk)
 

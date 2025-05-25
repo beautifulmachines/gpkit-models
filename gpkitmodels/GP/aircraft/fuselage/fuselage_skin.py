@@ -2,6 +2,7 @@
 import numpy as np
 from gpkit import Model, Variable
 
+
 class FuselageSkin(Model):
     "fuselage skin model"
     def setup(self, S, R, l):

@@ -1,6 +1,8 @@
 from gpkit import Model
+
 from gpkitmodels.GP.aircraft.fuselage.elliptical_fuselage import Fuselage
 from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
+
 
 def test_ellp():
     "elliptical fuselage test"

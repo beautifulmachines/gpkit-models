@@ -1,10 +1,12 @@
 from __future__ import print_function
-import pandas as pd
-import numpy as np
-from numpy import logspace, log, log10
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from gpfit.fit import fit
+from numpy import log, log10, logspace
 from scipy import interpolate
+
 plt.rcParams.update({'font.size':19})
 
 np.random.seed(0)

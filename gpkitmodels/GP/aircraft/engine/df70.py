@@ -1,6 +1,8 @@
 " engine_model.py "
 from builtins import zip
+
 from gpkit import Model, Variable, units
+
 
 class DF70(Model):
     "engine model"

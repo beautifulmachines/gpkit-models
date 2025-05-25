@@ -1,7 +1,9 @@
 from __future__ import print_function
-from gpkit import Model, Variable, SignomialsEnabled, VarKey, units
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+from gpkit import Model, SignomialsEnabled, Variable, VarKey, units
+
 
 class SimPleAC(Model):
     def setup(self):

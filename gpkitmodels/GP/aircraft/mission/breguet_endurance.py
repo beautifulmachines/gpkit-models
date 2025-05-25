@@ -1,7 +1,8 @@
 " breguet_endurance.py "
 from gpkit import Model, Variable
-from gpkit.tools import te_exp_minus1
 from gpkit.constraints.tight import Tight as TCS
+from gpkit.tools import te_exp_minus1
+
 
 class BreguetEndurance(Model):
     "breguet endurance model"

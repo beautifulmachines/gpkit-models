@@ -1,7 +1,8 @@
 " wing interior "
 from gpkit import Model, parse_variables
-from gpkitmodels.GP.materials import foamhd
+
 from gpkitmodels import g
+from gpkitmodels.GP.materials import foamhd
 
 #pylint: disable=exec-used, no-member, undefined-variable
 

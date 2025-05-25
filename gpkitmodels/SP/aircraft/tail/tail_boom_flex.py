@@ -1,6 +1,7 @@
 " tail boom flexibility "
+from gpkit import Model, SignomialsEnabled, parse_variables
 from numpy import pi
-from gpkit import Model, parse_variables, SignomialsEnabled
+
 
 class TailBoomFlexibility(Model):
     """ Tail Boom Flexibility Model

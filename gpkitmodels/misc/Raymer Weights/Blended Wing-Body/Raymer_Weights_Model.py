@@ -1,12 +1,15 @@
 # Below is a Weights breakdown for the Blended wing body.  This method is GP Compatible!
 
 from builtins import range
-from gpkit import VectorVariable, Variable, Model, units
-import numpy as np
-from gpkit.tools import te_exp_minus1
+
 import gpkit
+import numpy as np
+from gpkit import Model, Variable, VectorVariable, units
+from gpkit.tools import te_exp_minus1
+
 gpkit.disable_units()
 import matplotlib.pyplot as plt
+
 
 def secant(x, nterm):
     """Taylor expansion of secant(x).

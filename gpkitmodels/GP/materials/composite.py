@@ -1,5 +1,6 @@
 from gpkit import Model, parse_variables
 
+
 class CFRPFabric(Model):
     """ Carbon Fiber Reinforced Plastic Fabric Material Properties
 

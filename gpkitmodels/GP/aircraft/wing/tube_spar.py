@@ -1,7 +1,8 @@
 " tube spar for wing "
-from numpy import pi
-from gpkit import Variable, Model, Vectorize
 from chord_spar_loading import ChordSparL
+from gpkit import Model, Variable, Vectorize
+from numpy import pi
+
 
 class TubeSpar(Model):
     " tube spar model "

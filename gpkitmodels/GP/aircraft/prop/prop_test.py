@@ -1,9 +1,10 @@
 " propeller tests "
-from gpkitmodels.GP.aircraft.prop.propeller import Propeller, ActuatorProp
+from gpkit import Model, units
+
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
+from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 from gpkitmodels.SP.aircraft.prop.propeller import BladeElementProp
 
-from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
-from gpkit import units, Model
 
 def simpleprop_test():
     " test simple propeller model "

@@ -1,9 +1,11 @@
 " box spar "
-from gpkit import Model, parse_variables, SignomialsEnabled
-from .sparloading import SparLoading
-from .gustloading import GustL
-from gpkitmodels.GP.materials import cfrpud, cfrpfabric, foamhd
+from gpkit import Model, SignomialsEnabled, parse_variables
+
 from gpkitmodels import g
+from gpkitmodels.GP.materials import cfrpfabric, cfrpud, foamhd
+
+from .gustloading import GustL
+from .sparloading import SparLoading
 
 #pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
 

@@ -1,5 +1,6 @@
 from gpkit import Model, parse_variables
 
+
 class FoamHD(Model):
     """ Foam high density material properties
 

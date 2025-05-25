@@ -1,5 +1,6 @@
 " box spar "
-from gpkit import parse_variables, SignomialsEnabled
+from gpkit import SignomialsEnabled, parse_variables
+
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar as BoxSparGP
 
 #pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name

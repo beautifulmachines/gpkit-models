@@ -1,9 +1,11 @@
 " tail boom model "
+from gpkit import Model, Variable, VectorVariable, parse_variables, units
 from numpy import pi
-from gpkit import Model, parse_variables, Variable, VectorVariable, units
-from .tube_spar import TubeSpar
-from gpkitmodels.GP.beam.beam import Beam
+
 from gpkitmodels import g
+from gpkitmodels.GP.beam.beam import Beam
+
+from .tube_spar import TubeSpar
 
 #pylint: disable=exec-used, undefined-variable, invalid-name
 #pylint: disable=attribute-defined-outside-init

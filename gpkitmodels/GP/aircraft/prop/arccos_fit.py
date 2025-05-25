@@ -1,9 +1,11 @@
 from __future__ import print_function
+
 import unittest
-from numpy import log, exp, log10, vstack
-from numpy import arccos,arange
+
 from gpfit.fit import fit
+from numpy import arange, arccos, exp, log, log10, vstack
 from numpy.random import random_sample
+
 i = arange(0.0001,3,.001)
 j = arccos(exp(-i))
 x = log(i)

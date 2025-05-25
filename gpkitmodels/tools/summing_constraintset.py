@@ -1,7 +1,9 @@
 " helpers.py "
 from builtins import zip
+
 import numpy as np
 from gpkit import ConstraintSet, Variable
+
 
 def summing_vars(models, varname):
     "returns a list of variables with shared varname in model list"

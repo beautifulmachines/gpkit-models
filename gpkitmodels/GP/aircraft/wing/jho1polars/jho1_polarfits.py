@@ -1,9 +1,10 @@
 "jho1_polarfits.py"
-from builtins import zip
-from builtins import range
+from builtins import range, zip
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+
 plt.rcParams.update({'font.size':15})
 
 def text_to_df(filename):

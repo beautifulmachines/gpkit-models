@@ -1,11 +1,12 @@
 " test tail models "
-from gpkitmodels.GP.aircraft.tail.horizontal_tail import HorizontalTail
-from gpkitmodels.GP.aircraft.tail.vertical_tail import VerticalTail
-from gpkitmodels.GP.aircraft.tail.empennage import Empennage
-from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
-from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
-from gpkitmodels.GP.aircraft.tail.tail_boom import TailBoom
 from gpkit import Model, Variable, units
+
+from gpkitmodels.GP.aircraft.tail.empennage import Empennage
+from gpkitmodels.GP.aircraft.tail.horizontal_tail import HorizontalTail
+from gpkitmodels.GP.aircraft.tail.tail_boom import TailBoom
+from gpkitmodels.GP.aircraft.tail.vertical_tail import VerticalTail
+from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
+from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 
 #pylint: disable=no-member
 

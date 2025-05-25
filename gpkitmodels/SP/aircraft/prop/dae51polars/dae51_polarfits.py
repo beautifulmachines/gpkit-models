@@ -1,16 +1,18 @@
 "dae51_polarfits.py"
 from __future__ import print_function
-from builtins import zip
-from builtins import range
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from gpfit.fit import fit
-import sys
-from gpkitmodels.GP.aircraft.wing.wing import Wing
-from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp
+
 import inspect
 import os
+import sys
+from builtins import range, zip
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gpfit.fit import fit
+
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp
+from gpkitmodels.GP.aircraft.wing.wing import Wing
 
 GENERATE = True
 plt.rcParams.update({'font.size':15})

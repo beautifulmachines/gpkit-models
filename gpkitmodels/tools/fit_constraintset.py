@@ -1,6 +1,5 @@
 " fit constraint set "
-from gpkit import ConstraintSet
-from gpkit import Variable, NomialArray, NamedVariables, VectorVariable
+from gpkit import ConstraintSet, NamedVariables, NomialArray, Variable, VectorVariable
 from numpy import amax, array, hstack, where
 
 # pylint: disable=too-many-instance-attributes, too-many-locals,

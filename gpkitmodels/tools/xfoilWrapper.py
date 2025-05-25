@@ -1,11 +1,14 @@
 from __future__ import print_function
-from builtins import range
+
+import math
 import subprocess
+import sys
+from builtins import range
+
 import numpy as np
 import scipy.optimize as spo
-import math
-import sys
 from gpkit.tests.helpers import NullFile
+
 
 def blind_call(topline, cl, Re, M, max_iter = 100,
                pathname = "/usr/local/bin/xfoil"):

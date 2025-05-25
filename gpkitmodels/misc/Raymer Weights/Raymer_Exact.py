@@ -1,8 +1,8 @@
 # Below is a faithful reproduction of the weight breakdown models from Raymer.
 # Note that this is NOT a GP compatible model and should not be viewed as such.
 
-from gpkit import VectorVariable, Variable, Model, units
 import numpy as np
+from gpkit import Model, Variable, VectorVariable, units
 from gpkit.tools import te_secant as secant
 from gpkit.tools import te_tangent as tangent
 

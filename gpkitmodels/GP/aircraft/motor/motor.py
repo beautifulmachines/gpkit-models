@@ -1,8 +1,10 @@
 "Electric motor model "
 from gpkit import Model, parse_variables
 from gpkit.constraints.tight import Tight as TCS
-from gpkitmodels.GP.aircraft.prop.propeller import Propeller, ActuatorProp
+
 from gpkitmodels import g
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
+
 
 class MotorPerf(Model):
     """ Electric Motor Performance Model

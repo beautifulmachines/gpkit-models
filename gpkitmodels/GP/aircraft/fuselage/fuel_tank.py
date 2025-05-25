@@ -1,6 +1,7 @@
 " fuel tank "
 from gpkit import Model, Variable
 
+
 class FuelTank(Model):
     """
     Returns the weight of the fuel tank.  Assumes a cylinder shape with some

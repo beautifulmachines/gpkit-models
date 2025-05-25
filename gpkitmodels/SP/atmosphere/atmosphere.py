@@ -1,9 +1,17 @@
 from __future__ import print_function
-from gpkit import Model, Variable, SignomialsEnabled, SignomialEquality, VarKey, units
-from gpkit.constraints.bounded import Bounded
-from gpkit import Vectorize
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+from gpkit import (
+    Model,
+    SignomialEquality,
+    SignomialsEnabled,
+    Variable,
+    VarKey,
+    Vectorize,
+    units,
+)
+from gpkit.constraints.bounded import Bounded
 
 
 class Atmosphere(Model):

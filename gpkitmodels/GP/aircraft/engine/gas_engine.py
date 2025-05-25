@@ -1,10 +1,12 @@
 " engine_model.py "
-from builtins import zip
-from gpkit import Model, Variable, units
 import os
+from builtins import zip
+
 import pandas as pd
+
 # from gpkitmodels.tools.fit_constraintset import FitCS
 from gpfit.fit_constraintset import FitCS
+from gpkit import Model, Variable, units
 
 
 class Engine(Model):

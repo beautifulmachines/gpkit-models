@@ -1,8 +1,10 @@
 " empennage.py "
 from gpkit import Model, parse_variables
+
 from .horizontal_tail import HorizontalTail
-from .vertical_tail import VerticalTail
 from .tail_boom import TailBoom, TailBoomState
+from .vertical_tail import VerticalTail
+
 
 #pylint: disable=attribute-defined-outside-init, no-member, exec-used
 #pylint: disable=too-many-instance-attributes, invalid-name, undefined-variable

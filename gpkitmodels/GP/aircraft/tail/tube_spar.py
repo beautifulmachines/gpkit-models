@@ -1,8 +1,10 @@
 " tube spar "
-from numpy import pi
-from gpkitmodels.GP.materials import cfrpfabric
-from gpkitmodels import g
 from gpkit import Model, parse_variables
+from numpy import pi
+
+from gpkitmodels import g
+from gpkitmodels.GP.materials import cfrpfabric
+
 
 class TubeSpar(Model):
     """ Tail Boom Model

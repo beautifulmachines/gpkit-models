@@ -1,7 +1,9 @@
 " tail aerodynamics "
 import os
+
 import pandas as pd
 from gpkit import Model, parse_variables
+
 from gpkitmodels.tools.fit_constraintset import FitCS
 
 #pylint: disable=exec-used, attribute-defined-outside-init, undefined-variable

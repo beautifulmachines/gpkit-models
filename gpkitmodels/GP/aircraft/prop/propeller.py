@@ -1,8 +1,17 @@
 " propeller model "
-from numpy import pi
-from gpkit import Model, Variable,Vectorize,parse_variables, SignomialsEnabled, SignomialEquality
 import os
+
 import pandas as pd
+from gpkit import (
+    Model,
+    SignomialEquality,
+    SignomialsEnabled,
+    Variable,
+    Vectorize,
+    parse_variables,
+)
+from numpy import pi
+
 
 class ActuatorProp(Model):
     """ Propeller Model

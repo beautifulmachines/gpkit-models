@@ -2,13 +2,16 @@
 from builtins import range
 from os import sep
 from os.path import abspath, dirname
+
 import numpy as np
 import pandas as pd
 from gpkit import Model, parse_variables
+
+from gpkitmodels.tools.fit_constraintset import XfoilFit
+
+from .capspar import CapSpar
 from .wing_core import WingCore
 from .wing_skin import WingSkin
-from .capspar import CapSpar
-from gpkitmodels.tools.fit_constraintset import XfoilFit
 
 #pylint: disable=no-member, invalid-name, unused-argument, exec-used
 #pylint: disable=undefined-variable, attribute-defined-outside-init

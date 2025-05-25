@@ -1,7 +1,9 @@
 " wing skin "
 from gpkit import Model, parse_variables
-from gpkitmodels.GP.materials import cfrpfabric
+
 from gpkitmodels import g
+from gpkitmodels.GP.materials import cfrpfabric
+
 
 class WingSkin(Model):
     """ Wing Skin model

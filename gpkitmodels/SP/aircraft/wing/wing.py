@@ -1,7 +1,8 @@
 " wing.py "
 import numpy as np
+from gpkit import SignomialsEnabled, parse_variables
+
 from gpkitmodels.GP.aircraft.wing.wing import Wing as WingGP
-from gpkit import parse_variables, SignomialsEnabled
 
 #pylint: disable=attribute-defined-outside-init, invalid-name
 

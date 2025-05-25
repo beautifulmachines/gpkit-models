@@ -1,9 +1,12 @@
 from __future__ import print_function
-from gpfit.fit import fit
+
 import os
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
-import sys
+from gpfit.fit import fit
+
 plt.rcParams.update({'font.size':15})
 GENERATE = True
 

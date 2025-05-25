@@ -1,8 +1,10 @@
 " elliptical fuselage.py "
 import numpy as np
-from gpkit import Variable, Model, parse_variables
-from gpkitmodels.GP.materials import cfrpfabric
+from gpkit import Model, Variable, parse_variables
+
 from gpkitmodels import g
+from gpkitmodels.GP.materials import cfrpfabric
+
 
 class FuselageAero(Model):
     """ Fuselage Aerodyanmic Model
