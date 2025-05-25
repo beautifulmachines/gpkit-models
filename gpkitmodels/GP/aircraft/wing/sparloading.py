@@ -1,12 +1,14 @@
-" spar loading "
+"spar loading"
+
 from gpkit import Model, parse_variables
 from numpy import pi
 
-#pylint: disable=no-member, unused-argument, exec-used, invalid-name
-#pylint: disable=undefined-variable, attribute-defined-outside-init
+# pylint: disable=no-member, unused-argument, exec-used, invalid-name
+# pylint: disable=undefined-variable, attribute-defined-outside-init
+
 
 class SparLoading(Model):
-    """ Spar Loading Model
+    """Spar Loading Model
 
     Variables
     ---------
@@ -43,8 +45,9 @@ class SparLoading(Model):
     Mr                  M_r
 
     """
+
     def new_qbarFun(self, c):
-        " define qbar model for chord loading "
+        "define qbar model for chord loading"
         barc = self.wing.planform.cbar
         return [f(c) for f in self.wing.substitutions[barc]]
 
@@ -65,17 +68,27 @@ class SparLoading(Model):
 
         constraints = []
         if not out:
-            constraints.extend([
-                S[:-1] >= S[1:] + 0.5*deta*(b/2.)*(q[:-1] + q[1:]),
-                M[:-1] >= M[1:] + 0.5*deta*(b/2)*(S[:-1] + S[1:])])
+            constraints.extend(
+                [
+                    S[:-1] >= S[1:] + 0.5 * deta * (b / 2.0) * (q[:-1] + q[1:]),
+                    M[:-1] >= M[1:] + 0.5 * deta * (b / 2) * (S[:-1] + S[1:]),
+                ]
+            )
 
-        constraints.extend([
-            N == Nsafety*Nmax, q >= N*W/b*cbar,
-            S[-1] >= Stip, M[-1] >= Mtip, th[0] >= throot,
-            th[1:] >= th[:-1] + 0.5*deta*(b/2)*(M[1:] + M[:-1])/E/I,
-            w[0] >= wroot, w[1:] >= w[:-1] + 0.5*deta*(b/2)*(th[1:] + th[:-1]),
-            sigma >= M[:-1]/Sy, w[-1]/(b/2) <= kappa,
-            ])
+        constraints.extend(
+            [
+                N == Nsafety * Nmax,
+                q >= N * W / b * cbar,
+                S[-1] >= Stip,
+                M[-1] >= Mtip,
+                th[0] >= throot,
+                th[1:] >= th[:-1] + 0.5 * deta * (b / 2) * (M[1:] + M[:-1]) / E / I,
+                w[0] >= wroot,
+                w[1:] >= w[:-1] + 0.5 * deta * (b / 2) * (th[1:] + th[:-1]),
+                sigma >= M[:-1] / Sy,
+                w[-1] / (b / 2) <= kappa,
+            ]
+        )
 
         self.wingSparJ = hasattr(self.wing.spar, "J")
 
@@ -84,10 +97,12 @@ class SparLoading(Model):
             J = self.J = self.wing.spar.J
             G = self.wing.spar.shearMaterial.G
             cm = self.wing.planform.CM
-            constraints.extend([
-                Mtw >= cm*cave**2*qne*deta*b/2*Nsafety,
-                theta[0] >= Mtw[0]/G/J[0]*deta[0]*b/2,
-                theta[1:] >= theta[:-1] + Mtw[1:]/G/J[1:]*deta[1:]*b/2,
-                twmax >= theta[-1]
-                ])
+            constraints.extend(
+                [
+                    Mtw >= cm * cave**2 * qne * deta * b / 2 * Nsafety,
+                    theta[0] >= Mtw[0] / G / J[0] * deta[0] * b / 2,
+                    theta[1:] >= theta[:-1] + Mtw[1:] / G / J[1:] * deta[1:] * b / 2,
+                    twmax >= theta[-1],
+                ]
+            )
         return constraints

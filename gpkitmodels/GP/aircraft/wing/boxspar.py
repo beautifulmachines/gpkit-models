@@ -1,4 +1,5 @@
-" box spar "
+"box spar"
+
 from gpkit import Model, SignomialsEnabled, parse_variables
 
 from gpkitmodels import g
@@ -7,10 +8,11 @@ from gpkitmodels.GP.materials import cfrpfabric, cfrpud, foamhd
 from .gustloading import GustL
 from .sparloading import SparLoading
 
-#pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+# pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+
 
 class BoxSpar(Model):
-    """ Box Spar Model
+    """Box Spar Model
 
     Scalar Variables
     ----------------
@@ -55,6 +57,7 @@ class BoxSpar(Model):
     tcoret                  (t_{\\mathrm{core}}/t)
 
     """
+
     loading = SparLoading
     gustloading = GustL
     material = cfrpud
@@ -75,19 +78,27 @@ class BoxSpar(Model):
         tshearmin = self.shearMaterial.tmin
         tmin = self.material.tmin
 
-        self.weight = W >= 2*dm.sum()*g
+        self.weight = W >= 2 * dm.sum() * g
 
-        constraints = [I/mfac <= w*t*hin**2,
-                       dm >= (rho*4*w*t + 4*tshear*rhoshear*(hin + w)
-                              + 2*rhocore*tcore*(w + hin))*b/2*deta,
-                       w <= wlim*cave,
-                       cave*tau >= hin + 4*t + 2*tcore,
-                       self.weight,
-                       t >= tmin,
-                       Sy*(hin/2 + 2*t + tcore) <= I,
-                       tshear >= tshearmin,
-                       tcore >= tcoret*cave*tau,
-                       d == w,
-                      ]
+        constraints = [
+            I / mfac <= w * t * hin**2,
+            dm
+            >= (
+                rho * 4 * w * t
+                + 4 * tshear * rhoshear * (hin + w)
+                + 2 * rhocore * tcore * (w + hin)
+            )
+            * b
+            / 2
+            * deta,
+            w <= wlim * cave,
+            cave * tau >= hin + 4 * t + 2 * tcore,
+            self.weight,
+            t >= tmin,
+            Sy * (hin / 2 + 2 * t + tcore) <= I,
+            tshear >= tshearmin,
+            tcore >= tcoret * cave * tau,
+            d == w,
+        ]
 
         return constraints

@@ -11,13 +11,14 @@ def test_ellp():
     faero = f.flight_model(f, fs)
     f.substitutions[f.Vol] = 1.33
 
-    m = Model(f.W*faero.Cd, [f, fs, faero])
+    m = Model(f.W * faero.Cd, [f, fs, faero])
     m.solve()
+
 
 def test():
     "tests"
     test_ellp()
 
+
 if __name__ == "__main__":
     test()
-

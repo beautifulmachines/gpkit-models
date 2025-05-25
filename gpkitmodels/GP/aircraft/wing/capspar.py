@@ -1,4 +1,5 @@
-" cap spar "
+"cap spar"
+
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
@@ -7,10 +8,11 @@ from gpkitmodels.GP.materials import cfrpfabric, cfrpud, foamhd
 from .gustloading import GustL
 from .sparloading import SparLoading
 
-#pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+# pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+
 
 class CapSpar(Model):
-    """ Cap Spar Model
+    """Cap Spar Model
 
     Scalar Variables
     ----------------
@@ -50,6 +52,7 @@ class CapSpar(Model):
     tshear                  t_{\\mathrm{shear}_i}
 
     """
+
     loading = SparLoading
     gustloading = GustL
     material = cfrpud
@@ -69,12 +72,20 @@ class CapSpar(Model):
         rhocore = self.coreMaterial.rho
         tshearmin = self.shearMaterial.tmin
 
-        return [I/mfac <= 2*w*t*(hin/2)**2,
-                dm >= (rho*(2*w*t) + 2*tshear*rhoshear*(hin + 2*t)
-                       + rhocore*w*hin)*b/2*deta,
-                W >= 2*dm.sum()*g,
-                w <= wlim*cave,
-                cave*tau >= hin + 2*t,
-                Sy*(hin/2 + t) <= I,
-                tshear >= tshearmin
-               ]
+        return [
+            I / mfac <= 2 * w * t * (hin / 2) ** 2,
+            dm
+            >= (
+                rho * (2 * w * t)
+                + 2 * tshear * rhoshear * (hin + 2 * t)
+                + rhocore * w * hin
+            )
+            * b
+            / 2
+            * deta,
+            W >= 2 * dm.sum() * g,
+            w <= wlim * cave,
+            cave * tau >= hin + 2 * t,
+            Sy * (hin / 2 + t) <= I,
+            tshear >= tshearmin,
+        ]

@@ -1,4 +1,5 @@
-" wing test "
+"wing test"
+
 from gpkit import Model, parse_variables
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
@@ -6,10 +7,11 @@ from gpkitmodels.GP.aircraft.wing.wing import Wing
 from gpkitmodels.GP.aircraft.wing.wing_core import WingCore
 from gpkitmodels.GP.aircraft.wing.wing_skin import WingSkin
 
-#pylint: disable=no-member, exec-used
+# pylint: disable=no-member, exec-used
+
 
 class FlightState(Model):
-    """ Flight State
+    """Flight State
 
     Variables
     ---------
@@ -19,12 +21,14 @@ class FlightState(Model):
     qne                 [kg/s^2/m]   never exceed dynamic pressure
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self):
-        return [qne == V**2*rho*1.2]
+        return [qne == V**2 * rho * 1.2]
+
 
 def wing_test():
-    " test wing models "
+    "test wing models"
 
     W = Wing()
     W.substitutions[W.W] = 50
@@ -37,21 +41,30 @@ def wing_test():
     loading[1].substitutions["W"] = 100
 
     from gpkit import settings
+
     if settings["default_solver"] == "cvxopt":
         for l in loading:
             for v in ["Mtip", "Stip", "wroot", "throot"]:
                 l.substitutions[v] = 1e-1
 
-    m = Model(perf.Cd, [
-        loading[1].v == fs.V,
-        loading[1].cl == perf.CL,
-        loading[1].Ww == W.W,
-        loading[1].Ww <= 0.5*fs.rho*fs.V**2*perf.CL*W.planform.S,
-        W, fs, perf, loading])
+    m = Model(
+        perf.Cd,
+        [
+            loading[1].v == fs.V,
+            loading[1].cl == perf.CL,
+            loading[1].Ww == W.W,
+            loading[1].Ww <= 0.5 * fs.rho * fs.V**2 * perf.CL * W.planform.S,
+            W,
+            fs,
+            perf,
+            loading,
+        ],
+    )
     m.solve(verbosity=0)
 
+
 def box_spar():
-    " test wing models "
+    "test wing models"
 
     Wing.sparModel = BoxSpar
     W = Wing()
@@ -65,23 +78,33 @@ def box_spar():
     loading[1].substitutions["W"] = 100
 
     from gpkit import settings
+
     if settings["default_solver"] == "cvxopt":
         for l in loading:
             for v in ["Mtip", "Stip", "wroot", "throot"]:
                 l.substitutions[v] = 1e-2
 
-    m = Model(perf.Cd, [
-        loading[1].v == fs.V,
-        loading[1].cl == perf.CL,
-        loading[1].Ww == W.W,
-        loading[1].Ww <= fs.qne*perf.CL*W.planform.S,
-        W, fs, perf, loading])
+    m = Model(
+        perf.Cd,
+        [
+            loading[1].v == fs.V,
+            loading[1].cl == perf.CL,
+            loading[1].Ww == W.W,
+            loading[1].Ww <= fs.qne * perf.CL * W.planform.S,
+            W,
+            fs,
+            perf,
+            loading,
+        ],
+    )
     m.solve(verbosity=0)
 
+
 def test():
-    " tests "
+    "tests"
     wing_test()
     box_spar()
+
 
 if __name__ == "__main__":
     test()

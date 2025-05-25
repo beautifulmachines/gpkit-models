@@ -1,4 +1,5 @@
-" helpers.py "
+"helpers.py"
+
 from builtins import zip
 
 import numpy as np
@@ -15,6 +16,7 @@ def summing_vars(models, varname):
                 vkeys.append(v)
     vrs = [m[v] for m, v in zip(models, vkeys)]
     return vrs
+
 
 class SummingConstraintSet(ConstraintSet):
     def __init__(self, lhs, varname, models=[], variables=[], **kwargs):
@@ -42,9 +44,10 @@ class SummingConstraintSet(ConstraintSet):
                 if hasattr(constraint, "summedvars"):
                     alreadysummed = alreadysummed.union(constraint.summedvars)
         summedvars = summedvars.difference(alreadysummed)
-        ConstraintSet.__init__(self, [lhs >= sum(Variable(**vk.descr)
-                                                 for vk in summedvars)],
-                               **kwargs)
+        ConstraintSet.__init__(
+            self, [lhs >= sum(Variable(**vk.descr) for vk in summedvars)], **kwargs
+        )
+
     @property
     def summedvars(self):
         return set(self[0].p_lt.varkeys)

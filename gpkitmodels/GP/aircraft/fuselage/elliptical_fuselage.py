@@ -1,4 +1,5 @@
-" elliptical fuselage.py "
+"elliptical fuselage.py"
+
 import numpy as np
 from gpkit import Model, Variable, parse_variables
 
@@ -7,7 +8,7 @@ from gpkitmodels.GP.materials import cfrpfabric
 
 
 class FuselageAero(Model):
-    """ Fuselage Aerodyanmic Model
+    """Fuselage Aerodyanmic Model
 
     Variables
     ---------
@@ -17,6 +18,7 @@ class FuselageAero(Model):
     mfac    1.0     [-]         fuselage drag margin
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
         V = state.V
@@ -26,15 +28,16 @@ class FuselageAero(Model):
         k = static.k
 
         constraints = [
-            Re == V*rho*l/mu,
-            Cf >= 0.455/Re**0.3,
-            Cd/mfac >= Cf*k
-            ]
+            Re == V * rho * l / mu,
+            Cf >= 0.455 / Re**0.3,
+            Cd / mfac >= Cf * k,
+        ]
 
         return constraints
 
+
 class Fuselage(Model):
-    """ Fuselage Model
+    """Fuselage Model
 
     Variables
     ---------
@@ -52,6 +55,7 @@ class Fuselage(Model):
     nply    2           [-]             number of plys
 
     """
+
     material = cfrpfabric
     flight_model = FuselageAero
 
@@ -61,12 +65,13 @@ class Fuselage(Model):
         tmin = self.material.tmin
 
         constraints = [
-            f == l/R/2,
-            k >= 1 + 60/f**3 + f/400,
-            3*(S/np.pi)**1.6075 >= 2*(l*R*2)**1.6075 + (2*R)**(2*1.6075),
-            Vol <= 4*np.pi/3*(l/2)*R**2,
-            W/mfac >= S*rhocfrp*t*g,
-            t >= nply*tmin,
-            ]
+            f == l / R / 2,
+            k >= 1 + 60 / f**3 + f / 400,
+            3 * (S / np.pi) ** 1.6075
+            >= 2 * (l * R * 2) ** 1.6075 + (2 * R) ** (2 * 1.6075),
+            Vol <= 4 * np.pi / 3 * (l / 2) * R**2,
+            W / mfac >= S * rhocfrp * t * g,
+            t >= nply * tmin,
+        ]
 
         return constraints

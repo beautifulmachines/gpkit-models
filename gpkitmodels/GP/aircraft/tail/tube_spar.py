@@ -1,4 +1,5 @@
-" tube spar "
+"tube spar"
+
 from gpkit import Model, parse_variables
 from numpy import pi
 
@@ -7,7 +8,7 @@ from gpkitmodels.GP.materials import cfrpfabric
 
 
 class TubeSpar(Model):
-    """ Tail Boom Model
+    """Tail Boom Model
 
     Variables
     ---------
@@ -39,7 +40,7 @@ class TubeSpar(Model):
 
     """
 
-    minusk2 = lambda self, c: 1-c(self.k)/2.
+    minusk2 = lambda self, c: 1 - c(self.k) / 2.0
     material = cfrpfabric
 
     @parse_variables(__doc__, globals())
@@ -49,10 +50,12 @@ class TubeSpar(Model):
         rho = self.material.rho
         l = surface.l
 
-        self.weight = W/mfac >= g*dm.sum()
+        self.weight = W / mfac >= g * dm.sum()
 
-        return [I <= pi*t*d**3/8.0,
-                Sy <= 2*I/d,
-                dm >= pi*rho*d*deta*t*kfac*l,
-                self.weight,
-                t >= tmin]
+        return [
+            I <= pi * t * d**3 / 8.0,
+            Sy <= 2 * I / d,
+            dm >= pi * rho * d * deta * t * kfac * l,
+            self.weight,
+            t >= tmin,
+        ]

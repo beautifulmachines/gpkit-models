@@ -1,13 +1,15 @@
-" wing interior "
+"wing interior"
+
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import foamhd
 
-#pylint: disable=exec-used, no-member, undefined-variable
+# pylint: disable=exec-used, no-member, undefined-variable
+
 
 class WingCore(Model):
-    """ Wing Core Model
+    """Wing Core Model
 
     Variables
     ---------
@@ -28,6 +30,7 @@ class WingCore(Model):
     Abar                    \\bar{A}
 
     """
+
     material = foamhd
 
     @parse_variables(__doc__, globals())
@@ -39,4 +42,4 @@ class WingCore(Model):
         deta = surface.deta
         rho = self.material.rho
 
-        return [W >= 2*(g*rho*Abar*cave**2*b/2*deta).sum()]
+        return [W >= 2 * (g * rho * Abar * cave**2 * b / 2 * deta).sum()]

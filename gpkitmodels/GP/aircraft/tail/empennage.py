@@ -1,4 +1,5 @@
-" empennage.py "
+"empennage.py"
+
 from gpkit import Model, parse_variables
 
 from .horizontal_tail import HorizontalTail
@@ -6,8 +7,8 @@ from .tail_boom import TailBoom, TailBoomState
 from .vertical_tail import VerticalTail
 
 
-#pylint: disable=attribute-defined-outside-init, no-member, exec-used
-#pylint: disable=too-many-instance-attributes, invalid-name, undefined-variable
+# pylint: disable=attribute-defined-outside-init, no-member, exec-used
+# pylint: disable=too-many-instance-attributes, invalid-name, undefined-variable
 class Empennage(Model):
     """empennage model, consisting of vertical, horizontal and tailboom
 
@@ -39,6 +40,7 @@ class Empennage(Model):
     mfac        m_{\\mathrm{fac}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, N=2):
         self.htail = HorizontalTail()
@@ -55,8 +57,9 @@ class Empennage(Model):
         l = self.l = self.tailboom.l
 
         constraints = [
-            W/mfac >= sum(c.W for c in self.components),
-            l >= lh, l >= lv,
-            ]
+            W / mfac >= sum(c.W for c in self.components),
+            l >= lh,
+            l >= lv,
+        ]
 
         return self.components, constraints

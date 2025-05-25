@@ -1,4 +1,5 @@
-" tail boom model "
+"tail boom model"
+
 from gpkit import Model, Variable, VectorVariable, parse_variables, units
 from numpy import pi
 
@@ -7,11 +8,12 @@ from gpkitmodels.GP.beam.beam import Beam
 
 from .tube_spar import TubeSpar
 
-#pylint: disable=exec-used, undefined-variable, invalid-name
-#pylint: disable=attribute-defined-outside-init
+# pylint: disable=exec-used, undefined-variable, invalid-name
+# pylint: disable=attribute-defined-outside-init
+
 
 class TailBoomAero(Model):
-    """ Tail Boom Aero Model
+    """Tail Boom Aero Model
 
     Variables
     ---------
@@ -31,6 +33,7 @@ class TailBoomAero(Model):
     Cf      C_f
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
         self.state = state
@@ -40,12 +43,14 @@ class TailBoomAero(Model):
         V = self.V = state.V
         mu = self.mu = state.mu
 
-        return [Re == V*rho*l/mu,
-                Cf >= 0.455/Re**0.3,
-               ]
+        return [
+            Re == V * rho * l / mu,
+            Cf >= 0.455 / Re**0.3,
+        ]
+
 
 class TailBoomState(Model):
-    """ Tail Boom Loading State
+    """Tail Boom Loading State
 
     Variables
     ---------
@@ -58,13 +63,14 @@ class TailBoomState(Model):
     Vne             V_{\\mathrm{NE}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self):
         pass
 
 
 class VerticalBoomTorsion(Model):
-    """ Tail Boom Torsion from Vertical Tail
+    """Tail Boom Torsion from Vertical Tail
 
     Variables
     ---------
@@ -84,6 +90,7 @@ class VerticalBoomTorsion(Model):
     taucfrp     \\tau_{\\mathrm{CFRP}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, tailboom, vtail, state):
         J = self.J = tailboom.J
@@ -94,12 +101,11 @@ class VerticalBoomTorsion(Model):
         Vne = self.Vne = state.Vne
         CLmax = vtail.planform.CLmax
 
-        return [T >= 0.5*rhosl*Vne**2*S*CLmax*b,
-                taucfrp >= T*d0/2/J
-               ]
+        return [T >= 0.5 * rhosl * Vne**2 * S * CLmax * b, taucfrp >= T * d0 / 2 / J]
+
 
 class TailBoomBending(Model):
-    """ Tail Boom Bending
+    """Tail Boom Bending
 
     Variables
     ---------
@@ -130,6 +136,7 @@ class TailBoomBending(Model):
     thmax   \\theta_{\\mathrm{max}}
 
     """
+
     @parse_variables(__doc__, globals())
     def setup(self, tailboom, htail, state):
         N = self.N = tailboom.N
@@ -137,8 +144,8 @@ class TailBoomBending(Model):
         self.htail = htail
         self.tailboom = tailboom
 
-        Beam.qbarFun = [1e-10]*N
-        Beam.SbarFun = [1.]*N
+        Beam.qbarFun = [1e-10] * N
+        Beam.SbarFun = [1.0] * N
         beam = self.beam = Beam(N)
 
         I = tailboom.I
@@ -152,22 +159,25 @@ class TailBoomBending(Model):
         deta = tailboom.deta
         sigma = tailboom.material.sigma
 
-        constraints = [beam.dx == deta,
-                       F >= qne*S,
-                       beam["\\bar{EI}"] <= E*I/F/l**2/2,
-                       Mr >= beam["\\bar{M}"][:-1]*F*l,
-                       sigma >= Mr/Sy,
-                       th == beam["\\theta"][-1],
-                       beam["\\bar{\\delta}"][-1]*CLmax*Nsafety <= kappa]
+        constraints = [
+            beam.dx == deta,
+            F >= qne * S,
+            beam["\\bar{EI}"] <= E * I / F / l**2 / 2,
+            Mr >= beam["\\bar{M}"][:-1] * F * l,
+            sigma >= Mr / Sy,
+            th == beam["\\theta"][-1],
+            beam["\\bar{\\delta}"][-1] * CLmax * Nsafety <= kappa,
+        ]
 
         self.tailboomJ = hasattr(tailboom, "J")
         if self.tailboomJ:
-            constraints.append(tailboom.J >= 1e-10*units("m^4"))
+            constraints.append(tailboom.J >= 1e-10 * units("m^4"))
 
         return constraints, beam
 
+
 class TailBoom(TubeSpar):
-    """ Tail Boom Model
+    """Tail Boom Model
 
     Variables
     ---------
@@ -194,8 +204,8 @@ class TailBoom(TubeSpar):
         self.spar = super(TailBoom, self).setup(N, self)
 
         if self.secondaryWeight:
-            self.weight.right += rhoA*g*S
+            self.weight.right += rhoA * g * S
 
         d0 = self.d0 = self.d[0]
 
-        return self.spar, [S == l*pi*d0, b == 2*l]
+        return self.spar, [S == l * pi * d0, b == 2 * l]

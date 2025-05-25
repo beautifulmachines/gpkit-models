@@ -7,8 +7,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from gpfit.fit import fit
 
-plt.rcParams.update({'font.size':15})
+plt.rcParams.update({"font.size": 15})
 GENERATE = True
+
 
 def arctanfit():
     u = np.linspace(1e-15, 0.7, 100)
@@ -30,9 +31,16 @@ def arctanfit():
     ax.grid()
     ax.set_xlabel("$V_{\\mathrm{gust}}/V$")
     ax.set_ylabel("$\\alpha_{\\mathrm{gust}}$")
-    ax.legend(["$\\arctan{(V_{\\mathrm{gust}}/V)}$",
-               "$0.905 (V_{\\mathrm{gust}}/V)^{0.961}$"], loc=2, fontsize=15)
+    ax.legend(
+        [
+            "$\\arctan{(V_{\\mathrm{gust}}/V)}$",
+            "$0.905 (V_{\\mathrm{gust}}/V)^{0.961}$",
+        ],
+        loc=2,
+        fontsize=15,
+    )
     return df, fig, ax
+
 
 if __name__ == "__main__":
     df, fig, ax = arctanfit()
