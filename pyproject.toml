@@ -3,10 +3,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
+dynamic = ["version", "readme"]
 name = "gpkit-models"
-version = "0.1.0"
 description = "Library of exponential cone compatible sizing models"
-readme = "README.md"
 authors = [
     { name = "Warren Hoburg", email = "whoburg@alum.mit.edu" }
 ]
@@ -44,3 +43,7 @@ package-data = { "gpkitmodels" = [
     "GP/aircraft/engine/DF70/*.csv",
     "GP/aircraft/tail/*.csv"
 ]}
+
+[tool.setuptools.dynamic]
+version = { attr = "gpkitmodels.__version__" }
+readme = { file = ["README.md"], content-type = "text/markdown" }
