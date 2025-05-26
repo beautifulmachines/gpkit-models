@@ -22,7 +22,7 @@ dependencies = [
 Homepage = "https://www.github.com/beautifulmachines/gpkit-models"
 
 [tool.setuptools]
-packages = ["gpkitmodels"]
+packages = { find = {} }
 package-data = { "gpkitmodels" = [
     "GP/aircraft/wing/*.csv",
     "GP/aircraft/fuselage/fuselage_profile_drag/*.csv",
