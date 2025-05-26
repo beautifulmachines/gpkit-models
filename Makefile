@@ -1,9 +1,14 @@
-.PHONY: test format install-dev check-clean
+.PHONY: test format install-dev install-lint install-test check-clean
 
 # Install development dependencies
 install-dev:
-	pip install -r requirements-dev.txt
-	pip install -e .
+	pip install .[dev]
+
+install-lint:
+	pip install .[lint]
+
+install-test:
+	pip install .[test]
 
 # Run all tests
 test:
@@ -26,7 +31,9 @@ check-clean:
 # Help
 help:
 	@echo "Available commands:"
-	@echo "  install-dev       Install development dependencies"
+	@echo "  install-dev       Editable install for local dev"
+	@echo "  install-lint      Install with linting tools for CI"
+	@echo "  install-test      Install with testing tools for CI"
 	@echo "  test              Run all tests"
 	@echo "  format            Format code with isort and black"
 	@echo "  check-clean       Check no uncommitted changes"
