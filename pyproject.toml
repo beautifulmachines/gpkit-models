@@ -18,6 +18,17 @@ dependencies = [
     "pandas",
 ]
 
+[project.optional-dependencies]
+dev = [
+    # Code Quality
+    "isort>=5.12.0",
+    "black>=24.1.0",
+    "pylint>=3.0.0",
+    "flake8>=7.0.0",
+    # Testing
+    "pytest>=7.0.0",
+]
+
 [project.urls]
 Homepage = "https://www.github.com/beautifulmachines/gpkit-models"
 

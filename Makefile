@@ -2,8 +2,7 @@
 
 # Install development dependencies
 install-dev:
-	pip install -r requirements-dev.txt
-	pip install -e .
+	pip install .[dev]
 
 # Run all tests
 test:
