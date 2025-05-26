@@ -1,6 +1,7 @@
 # gpkit-models
 
 [![CI Status](https://github.com/beautifulmachines/gpkit-models/actions/workflows/tests.yml/badge.svg)](https://github.com/beautifulmachines/gpkit-models/actions/workflows/tests.yml)
+[![CI Status](https://github.com/beautifulmachines/gpkit-models/actions/workflows/lint.yml/badge.svg)](https://github.com/beautifulmachines/gpkit-models/actions/workflows/lint.yml)
 
 This repository contains those GP-/SP-compatible models that we consider well documented and general enough to be useful to multiple projects.
 
