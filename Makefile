@@ -2,7 +2,7 @@
 
 # Install development dependencies
 install-dev:
-	pip install .[dev]
+	pip install -e .[dev]
 
 install-lint:
 	pip install .[lint]
