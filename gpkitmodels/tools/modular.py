@@ -41,15 +41,21 @@ class PerformanceModel(Model):
     under specific conditions (e.g., flight state, mission phase).  It uses the
     component's fixed properties along with the current state to compute
     performance metrics.
+
+    Subclasses should override setup() to define their specific performance analysis
+    using gpkit Variables and constraints. The setup method can take any keyword
+    arguments needed for the analysis.
     """
 
-    def setup(self, component, state):
+    def setup(self, **kwargs):
         """Return constraints on performance
 
         Args:
-            component: A PhysicalComponent
-            state: A Model instance representing the current
-        operational state (e.g., flight conditions, mission phase)
+            **kwargs: Model-specific parameters needed for performance analysis.
+                     Common parameters include:
+                     - component: A PhysicalComponent instance
+                     - state: A Model instance representing operational state
+                     - Other parameters specific to the performance model
 
         This method should be overridden by subclasses to define the
         performance analysis using gpkit Variables and constraints.
