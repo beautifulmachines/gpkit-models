@@ -99,7 +99,9 @@ class BoxSpar(Model):
             tshear >= tshearmin,
             tcore >= tcoret * cave * tau,
             d == w,
-            self.material, self.shearMaterial, self.coreMaterial,
+            self.material,
+            self.shearMaterial,
+            self.coreMaterial,
         ]
 
         return constraints

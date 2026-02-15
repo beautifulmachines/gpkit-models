@@ -1,7 +1,8 @@
 "fit constraint set"
 
 from gpkit import ConstraintSet, NamedVariables, NomialArray, Variable, VectorVariable
-from numpy import abs as nabs, amax, array, hstack, where
+from numpy import abs as nabs
+from numpy import amax, array, hstack, where
 
 # pylint: disable=too-many-instance-attributes, too-many-locals,
 # pylint: disable=too-many-branches, no-member, import-error
