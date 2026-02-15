@@ -112,11 +112,11 @@ class WingAero(Model):
     Upper Unbounded
     ---------------
     Cd, Re, static.planform.AR
-    state.V, state.mu (if not muValue), state.rho (if not rhoValue)
+    state.V, state.mu, state.rho, static.planform.cmac
 
     Lower Unbounded
     ---------------
-    state.V, state.mu (if not muValue), state.rho (if not rhoValue)
+    state.V, state.mu, state.rho, static.planform.cmac
 
     LaTex Strings
     -------------

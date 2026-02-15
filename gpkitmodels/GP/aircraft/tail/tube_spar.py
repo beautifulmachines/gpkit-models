@@ -58,4 +58,5 @@ class TubeSpar(Model):
             dm >= pi * rho * d * deta * t * kfac * l,
             self.weight,
             t >= tmin,
+            self.material,
         ]

@@ -88,4 +88,5 @@ class CapSpar(Model):
             cave * tau >= hin + 2 * t,
             Sy * (hin / 2 + t) <= I,
             tshear >= tshearmin,
+            self.material, self.shearMaterial, self.coreMaterial,
         ]

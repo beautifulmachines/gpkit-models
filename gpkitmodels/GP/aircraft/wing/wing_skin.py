@@ -53,6 +53,7 @@ class WingSkin(Model):
             W >= rho * S * 2 * t * g,
             t >= tmin,
             tau >= 1 / Jtbar / croot**2 / t * Cmw * S * rhosl * Vne**2,
+            self.material,
         ]
 
 
