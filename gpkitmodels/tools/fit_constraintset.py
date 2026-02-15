@@ -1,7 +1,7 @@
 "fit constraint set"
 
 from gpkit import ConstraintSet, NamedVariables, NomialArray, Variable, VectorVariable
-from numpy import amax, array, hstack, where
+from numpy import abs as nabs, amax, array, hstack, where
 
 # pylint: disable=too-many-instance-attributes, too-many-locals,
 # pylint: disable=too-many-branches, no-member, import-error
@@ -116,7 +116,7 @@ class FitCS(ConstraintSet):
 
         if self.mfac not in result.sens.variables:
             return
-        if amax([abs(result.sens.variables[self.mfac])]) < 1e-5:
+        if amax(nabs(result.sens.variables[self.mfac])) < 1e-5:
             return
 
         for dvar in self.dvars:
@@ -170,7 +170,7 @@ class XfoilFit(FitCS):
 
         if self.mfac not in result.sens.variables:
             return
-        if amax([abs(result.sens.variables[self.mfac])]) < 1e-5:
+        if amax(nabs(result.sens.variables[self.mfac])) < 1e-5:
             return
         if not self.airfoil:
             return
