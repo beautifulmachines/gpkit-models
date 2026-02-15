@@ -1,4 +1,4 @@
-# This workflow runs varous code formatting and linting checks
+# This workflow runs code formatting and linting checks
 
 name: Lint
 
@@ -11,34 +11,26 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v4
       with:
         python-version: "3.11"
-
     - name: Install
-      run: |
-        python -m pip install --upgrade pip
-        make install-lint
-
+      run: uv sync --group lint
     - name: Check code formatting
       run: |
         make format
-
     - name: Check for file changes
       run: |
         make check-clean
-      
+
 #    - name: Lint with pylint
 #      run: |
-#        pylint gpkitmodels
-#    #
+#        uv run pylint gpkitmodels
+#
 #    - name: Check with flake8
 #      run: |
-#        flake8 gpkitmodels 
+#        make lint

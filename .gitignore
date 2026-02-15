@@ -4,11 +4,6 @@
 # MOSEK CLI folder
 gpkit_tmp/
 
-# gpkit markdown generated files
-*.generated.tex
-*.md.py
-*.md.tex.md
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -17,77 +12,43 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-.Python
-env/
-bin/
 build/
-develop-eggs/
 dist/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
 *.egg-info/
-.installed.cfg
 *.egg
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
-.tox/
 .coverage
-.cache
-nosetests.xml
 coverage.xml
+.pytest_cache/
 
 # Translations
 *.mo
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
-
-# Django stuff:
-*.log
-*.pot
-
 # Sphinx documentation
 docs/_build/
 
-# MATLAB autosave
-*.asv
-
 # CI test xmloutput
 test_reports/
-test_reports_nounits/
 
 # MacOSX
-*.DS_Store
+.DS_Store
 
 # vim
 *.swp
 
-# OSX
-.DS_Store
+# Development environment
+.idea/
+.venv/
 
-# latex
-*.aux
-*.log
-*.synctex.gz
-
-# md files support files
-*.generated.tex
-*.tex.md
-*.md.py
+# uv
+uv.lock
 
 # xfoil polars
 *.pol
+
+# gpkit markdown generated files
+*.generated.tex
+*.md.py
+*.tex.md
