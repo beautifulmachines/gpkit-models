@@ -44,7 +44,7 @@ class GustL(SparLoading):
     new_SbarFun = None
 
     def return_cosm1(self, c):
-        eta = c(self.wing.planform.eta).to("dimensionless").magnitude
+        eta = array(c[self.wing.planform.eta])
         return hstack([1e-10, 1 - array(cos(eta[1:] * pi / 2))])
 
     @parse_variables(__doc__, globals())

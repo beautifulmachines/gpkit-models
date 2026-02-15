@@ -40,7 +40,7 @@ class TubeSpar(Model):
 
     """
 
-    minusk2 = lambda self, c: 1 - c(self.k) / 2.0
+    minusk2 = lambda self, c: 1 - c[self.k] / 2.0
     material = cfrpfabric
 
     @parse_variables(__doc__, globals())

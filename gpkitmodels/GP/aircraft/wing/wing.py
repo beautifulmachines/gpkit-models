@@ -68,8 +68,8 @@ class Planform(Model):
 
     def return_c(self, c):
         "return normalized chord distribution"
-        lam = c(self.lam).to("dimensionless").magnitude
-        eta = c(self.eta).to("dimensionless").magnitude
+        lam = float(c[self.lam])
+        eta = c[self.eta]
         return np.array([2.0 / (1 + lam) * (1 + (lam - 1) * e) for e in eta])
 
     def return_cmac(self, c):
@@ -77,7 +77,7 @@ class Planform(Model):
         cbar = self.return_c(c)
         lam = cbar[1:] / cbar[:-1]
         maci = 2.0 / 3 * cbar[:-1] * (1 + lam + lam**2) / (1 + lam)
-        deta = np.diff(c(self.eta))
+        deta = np.diff(c[self.eta])
         num = sum(
             [(cbar[i] + cbar[i + 1]) / 2 * maci[i] * deta[i] for i in range(len(deta))]
         )
@@ -85,7 +85,7 @@ class Planform(Model):
         return num / den / cbar[0]
 
     return_avg = lambda self, c: (self.return_c(c)[:-1] + self.return_c(c)[1:]) / 2.0
-    return_deta = lambda self, c: np.diff(c(self.eta))
+    return_deta = lambda self, c: np.diff(c[self.eta])
 
     @parse_variables(__doc__, globals())
     def setup(self, N):

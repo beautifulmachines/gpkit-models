@@ -114,16 +114,16 @@ class FitCS(ConstraintSet):
         """
         super(FitCS, self).process_result(result)
 
-        if self.mfac not in result["sensitivities"]["constants"]:
+        if self.mfac not in result.sens.variables:
             return
-        if amax([abs(result["sensitivities"]["constants"][self.mfac])]) < 1e-5:
+        if amax([abs(result.sens.variables[self.mfac])]) < 1e-5:
             return
 
         for dvar in self.dvars:
             if isinstance(dvar, NomialArray):
-                num = [result(x) for x in dvar]
+                num = [result[x] for x in dvar]
             else:
-                num = result(dvar)
+                num = result[dvar]
             direct = None
             if any(x < self.bounds[dvar][0] for x in hstack([num])):
                 direct, state = "lower", "below"
@@ -168,9 +168,9 @@ class XfoilFit(FitCS):
         """
         super(XfoilFit, self).process_result(result)
 
-        if self.mfac not in result["sensitivities"]["constants"]:
+        if self.mfac not in result.sens.variables:
             return
-        if amax([abs(result["sensitivities"]["constants"][self.mfac])]) < 1e-5:
+        if amax([abs(result.sens.variables[self.mfac])]) < 1e-5:
             return
         if not self.airfoil:
             return
@@ -180,10 +180,10 @@ class XfoilFit(FitCS):
         cl, re = 0.0, 0.0
         for dvar in self.dvars:
             if "Re" in str(dvar):
-                re = result(dvar)
+                re = result[dvar]
             if "C_L" in str(dvar):
-                cl = result(dvar)
-        cd = result(self.ivar)
+                cl = result[dvar]
+        cd = result[self.ivar]
         if not hasattr(cl, "__len__") and hasattr(re, "__len__"):
             cl = [cl] * len(re)
         err, cdx = xfoil_comparison(self.airfoil, cl, re, cd)

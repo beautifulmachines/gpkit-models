@@ -39,7 +39,7 @@ class ActuatorProp(Model):
     """
 
     def helper(self, c):
-        return 2.0 - 1.0 / c(self.etaadd)
+        return 2.0 - 1.0 / c[self.etaadd]
 
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
