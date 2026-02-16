@@ -1,14 +1,6 @@
-# iPython checkpoint folders
-.ipynb_checkpoints/
-
-# MOSEK CLI folder
-gpkit_tmp/
-
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized
 __pycache__/
 *.py[cod]
-
-# C extensions
 *.so
 
 # Distribution / packaging
@@ -23,23 +15,17 @@ htmlcov/
 coverage.xml
 .pytest_cache/
 
-# Translations
-*.mo
-
 # Sphinx documentation
 docs/_build/
-
-# CI test xmloutput
-test_reports/
 
 # MacOSX
 .DS_Store
 
-# vim
+# IDE / editor
+.idea/
 *.swp
 
 # Development environment
-.idea/
 .venv/
 
 # uv
