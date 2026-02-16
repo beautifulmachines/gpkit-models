@@ -14,7 +14,7 @@ license = { file = "LICENSE" }
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "adce>=1.3.3.2",
-    "gpkit-core>=0.1.8",
+    "gpkit-core>=0.1.9",
     "pandas>=2.0.0",
 ]
 
