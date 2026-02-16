@@ -1,23 +1,25 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-dynamic = ["version", "readme"]
+dynamic = ["version"]
 name = "gpkit-models"
+readme = "README.md"
 description = "Library of exponential cone compatible sizing models"
 authors = [
     { name = "Warren Hoburg", email = "whoburg@alum.mit.edu" }
 ]
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.11,<3.14"
 dependencies = [
     "adce>=1.3.3.2",
-    "gpkit-core>=0.1.2",
+    "gpkit-core>=0.1.9",
     "pandas>=2.0.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
+dev = [{include-group = "lint"}, {include-group = "test"}, "pre-commit>=4.0.0"]
 lint = [
     "isort>=5.12.0",
     "black>=24.1.0",
@@ -25,25 +27,41 @@ lint = [
     "flake8>=7.0.0",
 ]
 test = [
-    "pytest>=7.0.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
 ]
 
 [project.urls]
 Homepage = "https://www.github.com/beautifulmachines/gpkit-models"
 
-[tool.setuptools]
-packages = { find = {} }
-package-data = { "gpkitmodels" = [
-    "GP/aircraft/wing/*.csv",
-    "GP/aircraft/fuselage/fuselage_profile_drag/*.csv",
-    "GP/aircraft/engine/*.csv",
-    "GP/aircraft/motor/*.csv",
-    "GP/aircraft/prop/*.csv",
-    "SP/aircraft/prop/*.csv",
-    "GP/aircraft/engine/DF70/*.csv",
-    "GP/aircraft/tail/*.csv"
-]}
+[tool.hatch.version]
+path = "gpkitmodels/__init__.py"
 
-[tool.setuptools.dynamic]
-version = { attr = "gpkitmodels.__version__" }
-readme = { file = ["README.md"], content-type = "text/markdown" }
+[tool.hatch.build.targets.wheel]
+packages = ["gpkitmodels"]
+artifacts = [
+    "gpkitmodels/GP/aircraft/wing/*.csv",
+    "gpkitmodels/GP/aircraft/fuselage/fuselage_profile_drag/*.csv",
+    "gpkitmodels/GP/aircraft/engine/*.csv",
+    "gpkitmodels/GP/aircraft/motor/*.csv",
+    "gpkitmodels/GP/aircraft/prop/*.csv",
+    "gpkitmodels/SP/aircraft/prop/*.csv",
+    "gpkitmodels/GP/aircraft/engine/DF70/*.csv",
+    "gpkitmodels/GP/aircraft/tail/*.csv",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = ["gpkitmodels"]
+python_files = ["test_*.py", "*_test.py", "*_tests.py"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["gpkitmodels"]
+omit = ["gpkitmodels/**/test_*.py", "gpkitmodels/**/*_test.py", "gpkitmodels/**/*_tests.py"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true

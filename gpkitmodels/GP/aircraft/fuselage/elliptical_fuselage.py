@@ -72,6 +72,7 @@ class Fuselage(Model):
             Vol <= 4 * np.pi / 3 * (l / 2) * R**2,
             W / mfac >= S * rhocfrp * t * g,
             t >= nply * tmin,
+            self.material,
         ]
 
         return constraints

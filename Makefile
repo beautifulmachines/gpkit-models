@@ -1,24 +1,28 @@
-.PHONY: test format install-dev install-lint install-test check-clean
+.PHONY: clean check-clean test coverage lint format
 
-# Install development dependencies
-install-dev:
-	pip install -e .[dev]
+# Code quality
+lint:
+	uv run flake8 gpkitmodels
 
-install-lint:
-	pip install .[lint]
-
-install-test:
-	pip install .[test]
-
-# Run all tests
-test:
-	python -c "from gpkit.tests.from_paths import run; run()"
-	# ./researchmodeltests.sh
-
-# Format code using isort and black
+# Code formatting
 format:
-	isort --profile black gpkitmodels
-	black gpkitmodels
+	uv run isort gpkitmodels
+	uv run black gpkitmodels
+
+# Testing
+test:  # Run tests with pytest
+	uv run pytest gpkitmodels -v
+
+coverage:  # Run tests with coverage reporting
+	uv run pytest gpkitmodels --cov=gpkitmodels --cov-report=term-missing
+
+# Cleanup
+clean:
+	rm -rf build/
+	rm -rf dist/
+	rm -rf *.egg-info
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
 
 check-clean:
 	@if [ -n "$$(git status --porcelain)" ]; then \
@@ -28,13 +32,14 @@ check-clean:
 	else \
 		echo "Working directory is clean."; \
 	fi
+
 # Help
 help:
 	@echo "Available commands:"
-	@echo "  install-dev       Editable install for local dev"
-	@echo "  install-lint      Install with linting tools for CI"
-	@echo "  install-test      Install with testing tools for CI"
-	@echo "  test              Run all tests"
+	@echo "  lint              Run fast lint checks"
 	@echo "  format            Format code with isort and black"
+	@echo "  test              Run tests with pytest"
+	@echo "  coverage          Run tests with coverage reporting"
+	@echo "  clean             Clean build artifacts"
 	@echo "  check-clean       Check no uncommitted changes"
-	@echo "  help              Show this help message" 
+	@echo "  help              Show this help message"
