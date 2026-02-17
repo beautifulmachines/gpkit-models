@@ -2,7 +2,6 @@
 
 from builtins import zip
 
-import numpy as np
 from gpkit import ConstraintSet, Variable
 
 
@@ -11,7 +10,7 @@ def summing_vars(models, varname):
     modelnames = set(m.lineage for m in models)
     vkeys = []
     for m in models:
-        for v in m.varkeys[varname]:
+        for v in m.varkeys.keys(varname):
             if v.lineage in modelnames:
                 vkeys.append(v)
     vrs = [m[v] for m, v in zip(models, vkeys)]
@@ -45,7 +44,9 @@ class SummingConstraintSet(ConstraintSet):
                     alreadysummed = alreadysummed.union(constraint.summedvars)
         summedvars = summedvars.difference(alreadysummed)
         ConstraintSet.__init__(
-            self, [lhs >= sum(Variable(**vk.descr) for vk in summedvars)], **kwargs
+            self,
+            [lhs >= sum(Variable(**vk.descr) for vk in summedvars)],
+            **kwargs,
         )
 
     @property
