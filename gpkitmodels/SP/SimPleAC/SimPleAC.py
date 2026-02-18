@@ -13,18 +13,14 @@ class SimPleAC(Model):
         rho_f = Variable("\\rho_f", 817, "kg/m^3", "density of fuel")
 
         # Non-dimensional constants
-        C_Lmax = Variable(
-            "C_{L,max}", 1.6, "-", "max CL with flaps down", pr=5.0
-        )
+        C_Lmax = Variable("C_{L,max}", 1.6, "-", "max CL with flaps down", pr=5.0)
         e = Variable("e", 0.92, "-", "Oswald efficiency factor", pr=3.0)
         k = Variable("k", 1.17, "-", "form factor", pr=10.0)
         N_ult = Variable("N_{ult}", 3.3, "-", "ultimate load factor", pr=15.0)
         S_wetratio = Variable(
             "(\\frac{S}{S_{wet}})", 2.075, "-", "wetted area ratio", pr=3.0
         )
-        tau = Variable(
-            "\\tau", 0.12, "-", "airfoil thickness to chord ratio", pr=10.0
-        )
+        tau = Variable("\\tau", 0.12, "-", "airfoil thickness to chord ratio", pr=10.0)
         W_W_coeff1 = Variable(
             "W_{W_{coeff1}}", 2e-5, "1/m", "wing weight coefficent 1", pr=30.0
         )  # orig  12e-5
@@ -34,13 +30,9 @@ class SimPleAC(Model):
 
         # Dimensional constants
         Range = Variable("Range", 3000, "km", "aircraft range")
-        TSFC = Variable(
-            "TSFC", 0.6, "1/hr", "thrust specific fuel consumption"
-        )
+        TSFC = Variable("TSFC", 0.6, "1/hr", "thrust specific fuel consumption")
         V_min = Variable("V_{min}", 25, "m/s", "takeoff speed", pr=20.0)
-        W_0 = Variable(
-            "W_0", 6250, "N", "aircraft weight excluding wing", pr=20.0
-        )
+        W_0 = Variable("W_0", 6250, "N", "aircraft weight excluding wing", pr=20.0)
 
         # Free Variables
         LoD = Variable("L/D", "-", "lift-to-drag ratio")
@@ -48,9 +40,7 @@ class SimPleAC(Model):
         V = Variable("V", "m/s", "cruising speed")
         W = Variable("W", "N", "total aircraft weight")
         Re = Variable("Re", "-", "Reynold's number")
-        CDA0 = Variable(
-            "(CDA0)", "m^2", "fuselage drag area"
-        )  # 0.035 originally
+        CDA0 = Variable("(CDA0)", "m^2", "fuselage drag area")  # 0.035 originally
         C_D = Variable("C_D", "-", "drag coefficient")
         C_L = Variable("C_L", "-", "lift coefficient of wing")
         C_f = Variable("C_f", "-", "skin friction coefficient")
@@ -63,16 +53,10 @@ class SimPleAC(Model):
         A = Variable("A", "-", "aspect ratio", fix=True)
         S = Variable("S", "m^2", "total wing area", fix=True)
         W_w = Variable("W_w", "N", "wing weight")  # , fix = True)
-        W_w_strc = Variable(
-            "W_w_strc", "N", "wing structural weight", fix=True
-        )
+        W_w_strc = Variable("W_w_strc", "N", "wing structural weight", fix=True)
         W_w_surf = Variable("W_w_surf", "N", "wing skin weight", fix=True)
-        V_f_wing = Variable(
-            "V_f_wing", "m^3", "fuel volume in the wing", fix=True
-        )
-        V_f_fuse = Variable(
-            "V_f_fuse", "m^3", "fuel volume in the fuselage", fix=True
-        )
+        V_f_wing = Variable("V_f_wing", "m^3", "fuel volume in the wing", fix=True)
+        V_f_fuse = Variable("V_f_fuse", "m^3", "fuel volume in the fuselage", fix=True)
         constraints = []
 
         # Weight and lift model

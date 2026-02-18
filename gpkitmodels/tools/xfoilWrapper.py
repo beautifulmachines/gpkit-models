@@ -6,13 +6,9 @@ from builtins import range
 import numpy as np
 
 
-def blind_call(
-    topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"
-):
+def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):
 
-    proc = subprocess.Popen(
-        [pathname], stdout=subprocess.PIPE, stdin=subprocess.PIPE
-    )
+    proc = subprocess.Popen([pathname], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     proc.stdin.write(
         topline
         + "oper \n"

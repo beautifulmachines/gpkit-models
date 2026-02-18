@@ -15,9 +15,7 @@ class Propulsor_Test(Model):
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
         self.cost = (
-            1.0 / pp.motor.etam
-            + p.W / (1000 * units("lbf"))
-            + 1.0 / pp.prop.eta
+            1.0 / pp.motor.etam + p.W / (1000 * units("lbf")) + 1.0 / pp.prop.eta
         )
 
         return fs, p, pp
@@ -32,9 +30,7 @@ class Actuator_Propulsor_Test(Model):
         p = Propulsor()
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (
-            1000 * units("lbf")
-        )
+        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
 
         return fs, p, pp
 
@@ -48,9 +44,7 @@ class BladeElement_Propulsor_Test(Model):
         p = Propulsor()
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (
-            1000 * units("lbf")
-        )
+        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
 
         return fs, p, pp
 

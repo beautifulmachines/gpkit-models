@@ -191,16 +191,10 @@ def Weights_pie(sol):
 Bref = Variable("B_{ref}", 6.25, "ft", "Reference Wing Span for Wing Weight")
 Kieg = Variable("K_{ieg}", 0.575, "-", "Instrumentation Constant")
 Kmp = Variable("K_{mp}", 1.0, "-", "1.126 for kneeling gear; 1.0 Otherwise")
-Kng = Variable(
-    "K_{ng}", 1.107, "-", "1.107 for pylon mounted nacelle; 1.0 Otherwise"
-)
+Kng = Variable("K_{ng}", 1.107, "-", "1.107 for pylon mounted nacelle; 1.0 Otherwise")
 Knp = Variable("K_{np}", 1.0, "-", "1.15 for kneeling gear; 1.0 Otherwise")
-Kp = Variable(
-    "K_{p}", 1.0, "-", "1.4 for Engine With Propeller; 1.0 Otherwise"
-)
-Ktr = Variable(
-    "K_{tr}", 1.18, "-", "1.18 for Jet with Thrust Reverser; 1.0 Otherwise"
-)
+Kp = Variable("K_{p}", 1.0, "-", "1.4 for Engine With Propeller; 1.0 Otherwise")
+Ktr = Variable("K_{tr}", 1.18, "-", "1.18 for Jet with Thrust Reverser; 1.0 Otherwise")
 Kw = Variable("K_{w}", 1.7e-3, "-", "Proportionality Factor for Wing")
 
 
@@ -215,25 +209,15 @@ Nf = Variable(
     "-",
     "Number of Functions Performed by the Controls (Typically 4-7",
 )
-Ngen = Variable(
-    "N_{gen}", 2.0, "-", "Number of Generators (Typically = N_{en}"
-)
-Nl = Variable(
-    "N_{l}", 4.5, "-", "Ultimate Landing Loading Factor; = N_{gear}x1.5"
-)
+Ngen = Variable("N_{gen}", 2.0, "-", "Number of Generators (Typically = N_{en}")
+Nl = Variable("N_{l}", 4.5, "-", "Ultimate Landing Loading Factor; = N_{gear}x1.5")
 Nmss = Variable("N_{mss}", 2.0, "-", "Number of Main Gear Shock Struts")
 Nmw = Variable("N_{mw}", 8.0, "-", "Number of Main Wheels")
 Nnw = Variable("N_{nw}", 2.0, "-", "Number of Nose Wheels")
-Np = Variable(
-    "N_{p}", npax, "-", "Number of Personnel Onboard (Crew and Passengers"
-)
+Np = Variable("N_{p}", npax, "-", "Number of Personnel Onboard (Crew and Passengers")
 Nt = Variable("N_{t}", 2.0, "-", "Number of Fuel Tanks")
-Nz = Variable(
-    "N_{z}", 2.5, "-", "Ultimate Load Factor; = 1.5 x Limit Load Factor"
-)
-Rkva = Variable(
-    "R_{kva}", 50.0, "kV*A", "System Electrical Rating (Typically 40-60) "
-)
+Nz = Variable("N_{z}", 2.5, "-", "Ultimate Load Factor; = 1.5 x Limit Load Factor")
+Rkva = Variable("R_{kva}", 50.0, "kV*A", "System Electrical Rating (Typically 40-60) ")
 
 
 # Performance
@@ -249,9 +233,7 @@ CL = Variable("C_L", "-", "Lift Coefficient")
 D = Variable("D", "lbf", "Drag")
 CD = Variable("C_D", "-", "Drag Coefficient")
 CDp = Variable("C_{D_p}", "-", "Profile Drag Coefficient")
-CDp0 = Variable(
-    "C_{D_p0}", "-", "Profile Drag Coefficient, No Mach Correction"
-)
+CDp0 = Variable("C_{D_p0}", "-", "Profile Drag Coefficient, No Mach Correction")
 rho = Variable("\\rho", 7.38e-4, "slg/ft^3", "Air Density")
 e = Variable("e", 0.9, "-", "Oswald Efficiency")
 AR = Variable("AR", 10.0, "-", "Aspect Ratio")
@@ -268,9 +250,7 @@ pi = Variable("\\pi", np.pi, "-", "pi")
 # Geometry Dependent
 Av = Variable("A_{v}", "-", "Vertical Tail Aspect Ratio")
 Bw = Variable("B_{w}", "ft", "Wing Span")
-Kz = Variable(
-    "K_{z}", "ft", "Aircraft Yawing Radius of Gyration (\\approx L_{t})"
-)
+Kz = Variable("K_{z}", "ft", "Aircraft Yawing Radius of Gyration (\\approx L_{t})")
 La = Variable(
     "L_{a}",
     "ft",
@@ -284,9 +264,7 @@ Lec = Variable(
 Lf = Variable("L_{f}", "ft", "Aircraft Length Measured on Centerline")
 Lm = Variable("L_{m}", "in", "Extended Length of Main Landing Gear")
 Ln = Variable("L_{n}", "in", "Extended Nose Gear Length")
-Lt = Variable(
-    "L_{t}", "ft", "Tail Length; Wing Quarter-MAC to Tail Quarter-MAC"
-)
+Lt = Variable("L_{t}", "ft", "Tail Length; Wing Quarter-MAC to Tail Quarter-MAC")
 NLt = Variable("N_{Lt}", "ft", "Nacelle Length")
 Nw = Variable("N_{w}", "ft", "Nacelle Width")
 Saft = Variable("S_{aft}", "ft^2", "Total Area of Afterbody")
@@ -294,9 +272,7 @@ Scab = Variable("S_{cab}", "ft^2", "Total Area of Cabin")
 Sn = Variable("S_{n}", "ft^2", "Nacelle Wetted Area")
 Svt = Variable("S_{vt}", "ft^2", "Vertical Tail Area")
 Sw = Variable("S_{w}", "ft^2", "Trapezoidal Wing Area")
-tau_w = Variable(
-    "\\tau_w", "-", "Thickness to Chord Ratio of Main Wing at the Root"
-)
+tau_w = Variable("\\tau_w", "-", "Thickness to Chord Ratio of Main Wing at the Root")
 tau_v = Variable(
     "\\tau_v", "-", "Thickness to Chord Ratio of Vertical Tail at the Root"
 )
@@ -316,45 +292,27 @@ Wuav = Variable(
 )
 
 # Calculated Weights
-W_operating_empty = Variable(
-    "W_{operating-empty}", "lbf", "Operating Empty Weight"
-)
-W_maximum_gross = Variable(
-    "W_{maximum-gross}", "lbf", "Flight Design Gross Weight"
-)
+W_operating_empty = Variable("W_{operating-empty}", "lbf", "Operating Empty Weight")
+W_maximum_gross = Variable("W_{maximum-gross}", "lbf", "Flight Design Gross Weight")
 W_fuel = Variable("W_{fuel}", "lbf", "Fuel Weight")
 W_engine_contents = Variable(
     "W_{engine-contents}", "lbf", "Weight of Engine and Contents (per nacelle)"
 )
-W_landing_gross = Variable(
-    "W_{landing_gross}", "lbf", "Landing Design Gross Weight"
-)
+W_landing_gross = Variable("W_{landing_gross}", "lbf", "Landing Design Gross Weight")
 W_centerbody = Variable("W_{centerbody}", "lbf", "Weight of Centerbody")
 W_afterbody = Variable("W_{afterbody}", "lbf", "Weight of Afterbody")
 W_wing = Variable("W_{wing}", "lbf", "Weight of Main Wing")
-W_vertical_tail = Variable(
-    "W_{vertical-tail}", "lbf", "Weight of Vertical Tail"
-)
-W_main_landing_gear = Variable(
-    "W_{main-gear}", "lbf", "Weight of Main Landing Gear"
-)
-W_nose_landing_gear = Variable(
-    "W_{nose-gear}", "lbf", "Weight of Nose Landing Gear"
-)
+W_vertical_tail = Variable("W_{vertical-tail}", "lbf", "Weight of Vertical Tail")
+W_main_landing_gear = Variable("W_{main-gear}", "lbf", "Weight of Main Landing Gear")
+W_nose_landing_gear = Variable("W_{nose-gear}", "lbf", "Weight of Nose Landing Gear")
 W_nacelle_group = Variable("W_{nacelle}", "lbf", "Weight of Nacelle Group")
-W_engine_controls = Variable(
-    "W_{engine-controls}", "lbf", "Weight of Engine Controls"
-)
+W_engine_controls = Variable("W_{engine-controls}", "lbf", "Weight of Engine Controls")
 W_starter_penumatic = Variable(
     "W_{starter-penumatic}", "lbf", "Weight of Pneumatic Starter"
 )
 W_fuel_system = Variable("W_{fuel-system}", "lbf", "Weight of Fuel System")
-W_flight_controls = Variable(
-    "W_{flight-controls}", "lbf", "Weight of Flight Controls"
-)
-W_APU_installed = Variable(
-    "W_{APU_{installed}}", "lbf", "Weight of Installed APU"
-)
+W_flight_controls = Variable("W_{flight-controls}", "lbf", "Weight of Flight Controls")
+W_APU_installed = Variable("W_{APU_{installed}}", "lbf", "Weight of Installed APU")
 W_instruments = Variable("W_{instruments}", "lbf", "Weight of Instruments")
 W_hydraulics = Variable("W_{hydraulics}", "lbf", "Weight of Hydraulic System")
 W_electrical = Variable("W_{electrical}", "lbf", "Weight of Electrical System")
@@ -368,9 +326,7 @@ W_air_conditioning = Variable(
     "W_{air-conditioning}", "lbf", "Weight of Air Conditioning System"
 )
 W_anti_ice = Variable("W_{anti-ice}", "lbf", "Weight of Anti-Icing System")
-W_handling_gear = Variable(
-    "W_{handling-gear}", "lbf", "Weight of Cargo Handling Gear"
-)
+W_handling_gear = Variable("W_{handling-gear}", "lbf", "Weight of Cargo Handling Gear")
 W_military_cargo_handling_system = Variable(
     "W_{military-cargo-system}",
     "lbf",
@@ -379,14 +335,9 @@ W_military_cargo_handling_system = Variable(
 
 
 constraints = [  # Bradley
-    W_centerbody
-    >= 5.698865 * 0.316422 * (W_maximum_gross**0.166552) * Scab**1.061158,
+    W_centerbody >= 5.698865 * 0.316422 * (W_maximum_gross**0.166552) * Scab**1.061158,
     W_afterbody
-    >= (1.0 + 0.05 * Nen)
-    * 0.53
-    * Saft
-    * (W_maximum_gross**0.2)
-    * (lambda_aft + 0.5),
+    >= (1.0 + 0.05 * Nen) * 0.53 * Saft * (W_maximum_gross**0.2) * (lambda_aft + 0.5),
     # Raymer page 459
     W_wing
     >= W_maximum_gross
@@ -395,8 +346,7 @@ constraints = [  # Bradley
     * (1 + (Bref / Bw) ** (0.5))
     * Nz ** (0.55)
     * (Bw / (tau_w * chord)) ** (0.3)
-    * (W_maximum_gross / (Sw * 0.2))
-    ** (-0.3),  # Torenbeek for GP compatibility
+    * (W_maximum_gross / (Sw * 0.2)) ** (-0.3),  # Torenbeek for GP compatibility
     W_vertical_tail >= 12000,
     W_main_landing_gear
     >= 0.0106

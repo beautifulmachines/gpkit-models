@@ -22,16 +22,14 @@ class Engine(Model):
             "BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC"
         )
         Pref = Variable("P_{ref}", 10.0, "hp", "Reference shaft power")
-        Wengref = Variable(
-            "W_{eng-ref}", 10.0, "lbf", "Reference engine weight"
-        )
+        Wengref = Variable("W_{eng-ref}", 10.0, "lbf", "Reference engine weight")
         Weng = Variable("W_{eng}", "lbf", "engine weight")
         Pslmax = Variable("P_{sl-max}", "hp", "Max shaft power at sea level")
 
         path = os.path.dirname(__file__)
-        df = pd.read_csv(path + os.sep + "power_lawfit.csv").to_dict(
-            orient="records"
-        )[0]
+        df = pd.read_csv(path + os.sep + "power_lawfit.csv").to_dict(orient="records")[
+            0
+        ]
 
         constraints = [
             FitCS(df, Weng / Wengref, [Pslmax / Pref]),
@@ -62,20 +60,16 @@ class EnginePerf(Model):
             h_vals = [h_vals]
         lfac = [-0.035 * (v / hr.value) + 1.0 for v, hr in zip(h_vals, href)]
         Leng = Variable("L_{eng}", lfac, "-", "shaft power loss factor")
-        Pshaftmax = Variable(
-            "P_{shaft-max}", "hp", "Max shaft power at altitude"
-        )
+        Pshaftmax = Variable("P_{shaft-max}", "hp", "Max shaft power at altitude")
         mfac = Variable("m_{fac}", 1.0, "-", "BSFC margin factor")
 
         path = os.path.dirname(__file__)
-        df = pd.read_csv(path + os.sep + "powerBSFCfit.csv").to_dict(
-            orient="records"
-        )[0]
+        df = pd.read_csv(path + os.sep + "powerBSFCfit.csv").to_dict(orient="records")[
+            0
+        ]
 
         constraints = [
-            FitCS(
-                df, bsfc / mfac / static["BSFC_{min}"], [Ptotal / Pshaftmax]
-            ),
+            FitCS(df, bsfc / mfac / static["BSFC_{min}"], [Ptotal / Pshaftmax]),
             Pshaftmax / static["P_{sl-max}"] == Leng,
             Pshaftmax >= Ptotal,
             Ptotal >= Pshaft + Pavn / eta_alternator,

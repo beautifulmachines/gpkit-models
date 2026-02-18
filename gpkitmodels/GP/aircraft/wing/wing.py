@@ -79,14 +79,9 @@ class Planform(Model):
         maci = 2.0 / 3 * cbar[:-1] * (1 + lam + lam**2) / (1 + lam)
         deta = np.diff(c[self.eta])
         num = sum(
-            [
-                (cbar[i] + cbar[i + 1]) / 2 * maci[i] * deta[i]
-                for i in range(len(deta))
-            ]
+            [(cbar[i] + cbar[i + 1]) / 2 * maci[i] * deta[i] for i in range(len(deta))]
         )
-        den = sum(
-            [(cbar[i] + cbar[i + 1]) / 2 * deta[i] for i in range(len(deta))]
-        )
+        den = sum([(cbar[i] + cbar[i + 1]) / 2 * deta[i] for i in range(len(deta))])
         return num / den / cbar[0]
 
     def return_avg(self, c):

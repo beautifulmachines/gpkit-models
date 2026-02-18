@@ -18,15 +18,9 @@ class Fuselage(Model):
         W = Variable("W", "lbf", "Fuselage weight")
         mfac = Variable("m_{fac}", 2.1, "-", "Fuselage weight margin factor")
         lbody = Variable("l_{body}", "ft", "center body length")
-        kbody = Variable(
-            "k_{body}", "-", "fuselage body length to radius ratio"
-        )
-        knose = Variable(
-            "k_{nose}", "-", "fuselage nose length to radius ratio"
-        )
-        kbulk = Variable(
-            "k_{bulk}", "-", "fuselage bulk length to radius ratio"
-        )
+        kbody = Variable("k_{body}", "-", "fuselage body length to radius ratio")
+        knose = Variable("k_{nose}", "-", "fuselage nose length to radius ratio")
+        kbulk = Variable("k_{bulk}", "-", "fuselage bulk length to radius ratio")
         Swet = Variable("S_{wet}", "ft**2", "fuselage wetted area")
         Sbody = Variable("S_{body}", "ft**2", "wetted surface area of body")
         Snose = Variable("S_{nose}", "ft**2", "wetted surface area of nose")
@@ -46,8 +40,7 @@ class Fuselage(Model):
                 (2 * np.pi * R**2) ** (8.0 / 5.0)
                 * (1.0 / 3.0 + 2.0 / 3.0 * (knose) ** (8.0 / 5.0))
             ),
-            Sbulk
-            >= R**2 * (0.012322 * kbulk**2 + 1.524925 * kbulk + 0.502498),
+            Sbulk >= R**2 * (0.012322 * kbulk**2 + 1.524925 * kbulk + 0.502498),
             Volbody <= np.pi * R**2 * lbody,
             l <= 3 * R * (kbody * knose * kbulk) ** (1.0 / 3),
             S >= np.pi * R**2,
@@ -83,9 +76,7 @@ class FuselageAero(Model):
         Cf = Variable("C_f", "-", "fuselage skin friction coefficient")
         Re = Variable("Re", "-", "fuselage reynolds number")
         Reref = Variable("Re_{ref}", 1e6, "-", "reference Reynolds number")
-        Cfref = Variable(
-            "C_{r_{ref}}", "-", "reference skin friction coefficient"
-        )
+        Cfref = Variable("C_{r_{ref}}", "-", "reference skin friction coefficient")
         Cd = Variable("C_d", "-", "fuselage drag coefficient")
 
         constraints = [

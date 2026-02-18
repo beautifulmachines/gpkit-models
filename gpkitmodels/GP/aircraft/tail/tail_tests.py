@@ -30,9 +30,7 @@ def test_htail():
     )
     perf = ht.flight_model(ht, fs)
 
-    m = Model(
-        perf.Cd, [ht.Vh <= ht.planform.S * ht.lh / Sw / cmac, ht, fs, perf]
-    )
+    m = Model(perf.Cd, [ht.Vh <= ht.planform.S * ht.lh / Sw / cmac, ht, fs, perf])
     m.solve(verbosity=0)
 
 
@@ -53,9 +51,7 @@ def test_vtail():
     )
     perf = vt.flight_model(vt, fs)
 
-    m = Model(
-        perf.Cd, [vt.Vv <= vt.planform.S * vt.lv / Sw / bw, vt, fs, perf]
-    )
+    m = Model(perf.Cd, [vt.Vv <= vt.planform.S * vt.lv / Sw / bw, vt, fs, perf])
     m.solve(verbosity=0)
 
 

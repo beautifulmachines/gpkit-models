@@ -31,9 +31,7 @@ class FitCS(ConstraintSet):
 
     """
 
-    def __init__(
-        self, fitdata, ivar=None, dvars=None, name="", err_margin=None
-    ):
+    def __init__(self, fitdata, ivar=None, dvars=None, name="", err_margin=None):
 
         self.fitdata = fitdata
 
@@ -70,20 +68,14 @@ class FitCS(ConstraintSet):
                 "RMS error of fit",
             )
         elif err_margin is None:
-            self.mfac = Variable(
-                "m_{fac-" + name + "-fit}", 1.0, "-", "fit factor"
-            )
+            self.mfac = Variable("m_{fac-" + name + "-fit}", 1.0, "-", "fit factor")
         else:
-            raise ValueError(
-                "Invalid name for err_margin: valid inputs Max, " "RMS"
-            )
+            raise ValueError("Invalid name for err_margin: valid inputs Max, " "RMS")
 
         if fitdata["ftype"] == "ISMA":
             # constraint of the form 1 >= c1*u1^exp1*u2^exp2*w^(-alpha) + ....
             alpha = array([fitdata["a%d" % k] for k in range(fitdata["K"])])
-            lhs, rhs = 1, NomialArray(monos / (ivar / self.mfac) ** alpha).sum(
-                0
-            )
+            lhs, rhs = 1, NomialArray(monos / (ivar / self.mfac) ** alpha).sum(0)
         elif fitdata["ftype"] == "SMA":
             # constraint of the form w^alpha >= c1*u1^exp1 + c2*u2^exp2 +....
             alpha = fitdata["a1"]

@@ -45,9 +45,9 @@ class TailAero(Model):
         V = self.V = state.V
         mu = self.mu = state.mu
         path = os.path.dirname(__file__)
-        fd = pd.read_csv(path + os.sep + "tail_dragfit.csv").to_dict(
-            orient="records"
-        )[0]
+        fd = pd.read_csv(path + os.sep + "tail_dragfit.csv").to_dict(orient="records")[
+            0
+        ]
 
         constraints = [
             Re == V * rho * S / b / mu,

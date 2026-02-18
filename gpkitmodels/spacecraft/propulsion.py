@@ -30,8 +30,6 @@ class Burn(PerformanceModel):
         m_prop = Variable("m_prop", "kg", "propellant mass")
         m_co = Variable("m_co", "kg", "mass at cutoff")
 
-        constraints = [
-            m_prop / m_co >= te_exp_minus1(deltav / g / stage["ISP"], 3)
-        ]
+        constraints = [m_prop / m_co >= te_exp_minus1(deltav / g / stage["ISP"], 3)]
 
         return constraints
