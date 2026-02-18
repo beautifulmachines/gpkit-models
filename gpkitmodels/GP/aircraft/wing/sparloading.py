@@ -1,7 +1,7 @@
 "spar loading"
 
 from gpkit import Model, parse_variables
-from numpy import pi
+from numpy import pi  # noqa: F401  used by parse_variables docstring eval
 
 # pylint: disable=no-member, unused-argument, exec-used, invalid-name
 # pylint: disable=undefined-variable, attribute-defined-outside-init
@@ -70,7 +70,8 @@ class SparLoading(Model):
         if not out:
             constraints.extend(
                 [
-                    S[:-1] >= S[1:] + 0.5 * deta * (b / 2.0) * (q[:-1] + q[1:]),
+                    S[:-1]
+                    >= S[1:] + 0.5 * deta * (b / 2.0) * (q[:-1] + q[1:]),
                     M[:-1] >= M[1:] + 0.5 * deta * (b / 2) * (S[:-1] + S[1:]),
                 ]
             )
@@ -82,7 +83,8 @@ class SparLoading(Model):
                 S[-1] >= Stip,
                 M[-1] >= Mtip,
                 th[0] >= throot,
-                th[1:] >= th[:-1] + 0.5 * deta * (b / 2) * (M[1:] + M[:-1]) / E / I,
+                th[1:]
+                >= th[:-1] + 0.5 * deta * (b / 2) * (M[1:] + M[:-1]) / E / I,
                 w[0] >= wroot,
                 w[1:] >= w[:-1] + 0.5 * deta * (b / 2) * (th[1:] + th[:-1]),
                 sigma >= M[:-1] / Sy,
@@ -101,7 +103,8 @@ class SparLoading(Model):
                 [
                     Mtw >= cm * cave**2 * qne * deta * b / 2 * Nsafety,
                     theta[0] >= Mtw[0] / G / J[0] * deta[0] * b / 2,
-                    theta[1:] >= theta[:-1] + Mtw[1:] / G / J[1:] * deta[1:] * b / 2,
+                    theta[1:]
+                    >= theta[:-1] + Mtw[1:] / G / J[1:] * deta[1:] * b / 2,
                     twmax >= theta[-1],
                 ]
             )

@@ -8,7 +8,6 @@ from gpkit import (
     Model,
     SignomialEquality,
     SignomialsEnabled,
-    Variable,
     Vectorize,
     parse_variables,
 )
@@ -58,9 +57,9 @@ class BladeElementPerf(Model):
         R = static.R
         mu = state.mu
         path = os.path.dirname(__file__)
-        fd = pd.read_csv(path + os.sep + "dae51_fitdata.csv").to_dict(orient="records")[
-            0
-        ]
+        fd = pd.read_csv(path + os.sep + "dae51_fitdata.csv").to_dict(
+            orient="records"
+        )[0]
         c = static.c
         constraints = [
             TCS([Wa >= V + va]),
@@ -68,7 +67,8 @@ class BladeElementPerf(Model):
             TCS([G == (1.0 / 2.0) * Wr * c * cl]),
             F
             == (2.0 / pi)
-            * (1.01116 * f**0.0379556) ** (10),  # This is the GP fit of arccos(exp(-f))
+            * (1.01116 * f**0.0379556)
+            ** (10),  # This is the GP fit of arccos(exp(-f))
             M == Wr / a,
             lam_w == (r / R) * (Wa / Wt),
             va == vt * (Wt / Wa),
@@ -88,7 +88,9 @@ class BladeElementPerf(Model):
                 TCS([dT <= rho * B * G * (Wt - eps * Wa) * dr]),
                 TCS(
                     [
-                        vt**2 * F**2 * (1.0 + (4.0 * lam_w * R / (pi * B * r)) ** 2)
+                        vt**2
+                        * F**2
+                        * (1.0 + (4.0 * lam_w * R / (pi * B * r)) ** 2)
                         >= (B * G / (4.0 * pi * r)) ** 2
                     ]
                 ),

@@ -58,7 +58,9 @@ class GustL(SparLoading):
         b = self.b
 
         path = os.path.dirname(os.path.abspath(__file__))
-        df = pd.read_csv(path + os.sep + "arctan_fit.csv").to_dict(orient="records")[0]
+        df = pd.read_csv(path + os.sep + "arctan_fit.csv").to_dict(
+            orient="records"
+        )[0]
 
         constraints = [
             # fit for arctan from 0 to 1, RMS = 0.044

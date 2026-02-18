@@ -12,7 +12,9 @@ class FuselageSkin(Model):
         W = Variable("W", "lbf", "fuselage skin weight")
         m = Variable("m", "kg", "fuselage skin mass")
         g = Variable("g", 9.81, "m/s^2", "Gravitational acceleration")
-        rhokevlar = Variable("\\rho_{kevlar}", 1.3629, "g/cm**3", "kevlar density")
+        rhokevlar = Variable(
+            "\\rho_{kevlar}", 1.3629, "g/cm**3", "kevlar density"
+        )
         t = Variable("t", "in", "skin thickness")
         tmin = Variable("t_{min}", 0.03, "in", "minimum skin thickness")
         I = Variable("I", "m**4", "wing skin moment of inertia")
@@ -56,7 +58,11 @@ class FuselageSkinL(Model):
             sigmakevlar >= Mh * static["R"] / static["I"],
             q >= Wcent * Nmax / static["l_{body}"],
             kappa * static["l_{body}"] / 2
-            >= (q * (static["l_{body}"] / 2) ** 4 / (8 * static["E"] * static["I"])),
+            >= (
+                q
+                * (static["l_{body}"] / 2) ** 4
+                / (8 * static["E"] * static["I"])
+            ),
         ]
 
         return constraints
@@ -71,7 +77,9 @@ class FuselageLanding(Model):
         Nmax = Variable("N_{max}", 5, "-", "maximum landing load factor")
         a = Variable("a", "m/s**2", "landing vertical acceleration")
         omegadot = Variable(
-            "\\dot{\\omega}", "1/s**2", "angular acceleration about rear fuselage"
+            "\\dot{\\omega}",
+            "1/s**2",
+            "angular acceleration about rear fuselage",
         )
         Mg = Variable("M_G", "N*m", "landing moment about center of mass")
         sigmakevlar = Variable(

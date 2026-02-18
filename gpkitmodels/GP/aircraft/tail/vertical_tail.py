@@ -4,7 +4,6 @@ from gpkit import parse_variables
 
 from gpkitmodels.GP.aircraft.wing.wing import Wing
 from gpkitmodels.GP.aircraft.wing.wing_core import WingCore
-from gpkitmodels.GP.aircraft.wing.wing_skin import WingSkin
 
 from .tail_aero import TailAero
 

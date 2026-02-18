@@ -1,18 +1,5 @@
-from builtins import range
+from gpkit import Model, Variable, Vectorize, settings, units
 
-import numpy as np
-from gpkit import (
-    Model,
-    SignomialEquality,
-    SignomialsEnabled,
-    Variable,
-    VarKey,
-    Vectorize,
-    settings,
-    units,
-)
-
-from gpkitmodels.SP.atmosphere.atmosphere import Atmosphere
 from gpkitmodels.SP.SimPleAC.SimPleAC_mission import Mission, SimPleAC
 
 # SimPleAC with multimission design (updated 5/31/2019, by Berk Ozturk)
@@ -30,15 +17,21 @@ class Multimission(Model):
 
         with Vectorize(Nmissions):
             # Mission variables
-            hcruise = Variable("h_{cruise_{mm}}", "m", "minimum cruise altitude")
+            hcruise = Variable(
+                "h_{cruise_{mm}}", "m", "minimum cruise altitude"
+            )
             Range = Variable("Range_{mm}", "km", "aircraft range")
             W_p = Variable("W_{p_{mm}}", "N", "payload weight", pr=20.0)
             rho_p = Variable(
                 "\\rho_{p_{mm}}", 1500, "kg/m^3", "payload density", pr=10.0
             )
-            V_min = Variable("V_{min_{mm}}", 25, "m/s", "takeoff speed", pr=20.0)
+            V_min = Variable(
+                "V_{min_{mm}}", 25, "m/s", "takeoff speed", pr=20.0
+            )
             cost_index = Variable("C_{mm}", "1/hr", "hourly cost index")
-            TOfac = Variable("T/O factor_{mm}", 2.0, "-", "takeoff thrust factor")
+            TOfac = Variable(
+                "T/O factor_{mm}", 2.0, "-", "takeoff thrust factor"
+            )
 
         constraints = []
 
@@ -58,7 +51,8 @@ class Multimission(Model):
 
         # Multimission constraints
         constraints += [
-            W_f_mm >= sum(self.missions[i]["W_{f_m}"] for i in range(0, Nmissions))
+            W_f_mm
+            >= sum(self.missions[i]["W_{f_m}"] for i in range(0, Nmissions))
         ]
 
         return constraints, self.aircraft, self.missions
@@ -86,7 +80,7 @@ def test():
     if settings["default_solver"] == "cvxopt":
         return
     else:
-        sol = m.localsolve(verbosity=0)
+        _ = m.localsolve(verbosity=0)
 
 
 if __name__ == "__main__":

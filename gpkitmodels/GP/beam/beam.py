@@ -38,7 +38,9 @@ class Beam(Model):
             self.dbar_tip = dbar[-1]
 
         throot = Variable("\\theta_{root}", 1e-10, "-", "Base angle")
-        dbarroot = Variable("\\bar{\\delta}_{root}", 1e-10, "-", "Base deflection")
+        dbarroot = Variable(
+            "\\bar{\\delta}_{root}", 1e-10, "-", "Base deflection"
+        )
 
         constraints = []
         if self.SbarFun is None:

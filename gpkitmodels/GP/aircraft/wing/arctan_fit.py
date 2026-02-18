@@ -1,8 +1,3 @@
-from __future__ import print_function
-
-import os
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 from gpfit.fit import fit

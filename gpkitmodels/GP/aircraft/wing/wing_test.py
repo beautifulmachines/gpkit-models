@@ -4,8 +4,6 @@ from gpkit import Model, parse_variables
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing import Wing
-from gpkitmodels.GP.aircraft.wing.wing_core import WingCore
-from gpkitmodels.GP.aircraft.wing.wing_skin import WingSkin
 
 # pylint: disable=no-member, exec-used
 

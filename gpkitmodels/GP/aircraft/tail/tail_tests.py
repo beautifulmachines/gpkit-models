@@ -1,6 +1,6 @@
 "test tail models"
 
-from gpkit import Model, Variable, units
+from gpkit import Model, Variable
 
 from gpkitmodels.GP.aircraft.tail.empennage import Empennage
 from gpkitmodels.GP.aircraft.tail.horizontal_tail import HorizontalTail
@@ -30,7 +30,9 @@ def test_htail():
     )
     perf = ht.flight_model(ht, fs)
 
-    m = Model(perf.Cd, [ht.Vh <= ht.planform.S * ht.lh / Sw / cmac, ht, fs, perf])
+    m = Model(
+        perf.Cd, [ht.Vh <= ht.planform.S * ht.lh / Sw / cmac, ht, fs, perf]
+    )
     m.solve(verbosity=0)
 
 
@@ -41,11 +43,19 @@ def test_vtail():
     vt = VerticalTail()
     fs = FlightState()
     vt.substitutions.update(
-        {vt.W: 5, vt.planform.AR: 3, vt.Vv: 0.04, vt.lv: 10, vt.planform.tau: 0.08}
+        {
+            vt.W: 5,
+            vt.planform.AR: 3,
+            vt.Vv: 0.04,
+            vt.lv: 10,
+            vt.planform.tau: 0.08,
+        }
     )
     perf = vt.flight_model(vt, fs)
 
-    m = Model(perf.Cd, [vt.Vv <= vt.planform.S * vt.lv / Sw / bw, vt, fs, perf])
+    m = Model(
+        perf.Cd, [vt.Vv <= vt.planform.S * vt.lv / Sw / bw, vt, fs, perf]
+    )
     m.solve(verbosity=0)
 
 
@@ -97,7 +107,11 @@ def test_emp():
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:
-            for v in ["\\bar{M}_{tip}", "\\bar{\\delta}_{root}", "\\theta_{root}"]:
+            for v in [
+                "\\bar{M}_{tip}",
+                "\\bar{\\delta}_{root}",
+                "\\theta_{root}",
+            ]:
                 m.substitutions[l[v]] = 1e-3
 
     m.solve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
@@ -155,7 +169,11 @@ def test_tailboom_mod():
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:
-            for v in ["\\bar{M}_{tip}", "\\bar{\\delta}_{root}", "\\theta_{root}"]:
+            for v in [
+                "\\bar{M}_{tip}",
+                "\\bar{\\delta}_{root}",
+                "\\theta_{root}",
+            ]:
                 m.substitutions[l[v]] = 1e-3
 
     m.solve(verbosity=0)

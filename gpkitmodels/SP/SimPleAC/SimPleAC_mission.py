@@ -4,7 +4,6 @@ from gpkit import (
     SignomialEquality,
     SignomialsEnabled,
     Variable,
-    VarKey,
     Vectorize,
     units,
 )
@@ -12,7 +11,8 @@ from gpkit import (
 # Importing atmospheric model
 from gpkitmodels.SP.atmosphere.atmosphere import Atmosphere
 
-# SimPleAC with mission design and flight segments, and lapse rate and BSFC model (3.4.2)
+# SimPleAC with mission design, flight segments,
+# lapse rate and BSFC model (3.4.2)
 
 
 class SimPleAC(Model):
@@ -39,7 +39,8 @@ class SimPleAC(Model):
             constraints += [
                 V_f == W_f / g / rho_f,
                 V_f_avail
-                <= self.wing["V_{f_{wing}}"] + self.fuse["V_{f_{fuse}}"],  # [SP]
+                <= self.wing["V_{f_{wing}}"]
+                + self.fuse["V_{f_{fuse}}"],  # [SP]
                 V_f_avail >= V_f,
             ]
 
@@ -67,7 +68,8 @@ class SimPleACP(Model):
 
         constraints += [
             self.engineP["T"] * V
-            <= self.aircraft.engine["\\eta_{prop}"] * self.engineP["P_{shaft}"],
+            <= self.aircraft.engine["\\eta_{prop}"]
+            * self.engineP["P_{shaft}"],
             C_D
             >= self.fuseP["C_{D_{fuse}}"]
             + self.wingP["C_{D_{wpar}}"]
@@ -78,7 +80,10 @@ class SimPleACP(Model):
             * V
             * (self.aircraft["S"] / self.aircraft["A"]) ** 0.5,
             self.fuseP["Re_{fuse}"]
-            == state["\\rho"] * V * self.aircraft.fuse["l_{fuse}"] / state["\\mu"],
+            == state["\\rho"]
+            * V
+            * self.aircraft.fuse["l_{fuse}"]
+            / state["\\mu"],
             LoD == self.wingP["C_L"] / C_D,
         ]
 
@@ -94,8 +99,12 @@ class Fuselage(Model):
         f = Variable("f_{fuse}", "-", "fuselage fineness ratio", fix=True)
         k = Variable("k_{fuse}", "-", "fuselage form factor")
         # Free variables (fixed for performance eval.)
-        V = Variable("V_{fuse}", "m^3", "total volume in the fuselage", fix=True)
-        V_f_fuse = Variable("V_{f_{fuse}}", "m^3", "fuel volume in the fuselage")
+        V = Variable(
+            "V_{fuse}", "m^3", "total volume in the fuselage", fix=True
+        )
+        V_f_fuse = Variable(
+            "V_{f_{fuse}}", "m^3", "fuel volume in the fuselage"
+        )
         W_fuse = Variable("W_{fuse}", "N", "fuselage weight")
         p = 1.6075
 
@@ -126,7 +135,9 @@ class FuselageP(Model):
         )
         # Free Variables
         Re = Variable("Re_{fuse}", "-", "fuselage Reynolds number")
-        Cf = Variable("C_{f_{fuse}}", "-", "fuselage skin friction coefficient")
+        Cf = Variable(
+            "C_{f_{fuse}}", "-", "fuselage skin friction coefficient"
+        )
         Cd = Variable("C_{D_{fuse}}", "-", "fuselage drag coefficient")
 
         constraints = [
@@ -139,12 +150,19 @@ class FuselageP(Model):
 class Wing(Model):
     def setup(self):
         # Non-dimensional constants
-        C_Lmax = Variable("C_{L,max}", 1.6, "-", "lift coefficient at stall", pr=5.0)
+        C_Lmax = Variable(
+            "C_{L,max}", 1.6, "-", "lift coefficient at stall", pr=5.0
+        )
         e = Variable("e", 0.92, "-", "Oswald efficiency factor", pr=3.0)
         N_ult = Variable("N_{ult}", 3, "-", "ultimate load factor", pr=15.0)
-        tau = Variable("\\tau", "-", "airfoil thickness to chord ratio", fix=True)
+        tau = Variable(
+            "\\tau", "-", "airfoil thickness to chord ratio", fix=True
+        )
         tau_ref = Variable(
-            "\\tau_{ref}", 0.12, "-", "reference airfoil thickness to chord ratio"
+            "\\tau_{ref}",
+            0.12,
+            "-",
+            "reference airfoil thickness to chord ratio",
         )
 
         # Dimensional constants
@@ -159,9 +177,13 @@ class Wing(Model):
         A = Variable("A", "-", "aspect ratio", fix=True)
         S = Variable("S", "m^2", "total wing area", fix=True)
         W_w = Variable("W_w", "N", "wing weight")
-        W_w_strc = Variable("W_{w_{strc}}", "N", "wing structural weight", fix=True)
+        W_w_strc = Variable(
+            "W_{w_{strc}}", "N", "wing structural weight", fix=True
+        )
         W_w_surf = Variable("W_{w_{surf}}", "N", "wing skin weight", fix=True)
-        V_f_wing = Variable("V_{f_{wing}}", "m^3", "fuel volume in the wing", fix=True)
+        V_f_wing = Variable(
+            "V_{f_{wing}}", "m^3", "fuel volume in the wing", fix=True
+        )
 
         constraints = []
 
@@ -192,10 +214,14 @@ class WingP(Model):
         self.wing = wing
         # Free Variables
         C_D_ind = Variable("C_{D_{ind}}", "-", "wing induced drag coefficient")
-        C_D_wpar = Variable("C_{D_{wpar}}", "-", "wing profile drag coefficient")
+        C_D_wpar = Variable(
+            "C_{D_{wpar}}", "-", "wing profile drag coefficient"
+        )
         C_L = Variable("C_L", "-", "wing lift coefficient")
         Re = Variable("Re", "-", "Reynolds number")
-        Re_ref = Variable("Re_{ref}", 1500000, "-", "reference Reynolds number")
+        Re_ref = Variable(
+            "Re_{ref}", 1500000, "-", "reference Reynolds number"
+        )
 
         constraints = []
 
@@ -214,7 +240,10 @@ class WingP(Model):
             * (u_1) ** -0.00206058
             * (u_2) ** -0.00117649
             * (u_3) ** -0.000597604
-            + 0.000211504 * (u_1) ** 1.35483 * (u_2) ** -0.252459 * (u_3) ** 3.91243
+            + 0.000211504
+            * (u_1) ** 1.35483
+            * (u_2) ** -0.252459
+            * (u_3) ** 3.91243
         )
         nc.name = "drag"
         constraints += [
@@ -239,14 +268,19 @@ class Engine(Model):
             "P_{shaft,ref}", 10, "hp", "reference MSL maximum shaft power"
         )
         W_e_ref = Variable("W_{e,ref}", 10, "lbf", "reference engine weight")
-        h_ref = Variable("h_{ref}", 15000, "ft", "engine lapse reference altitude")
+        h_ref = Variable(
+            "h_{ref}", 15000, "ft", "engine lapse reference altitude"
+        )
 
         # Free variables
-        P_shaft_max = Variable("P_{shaft,max}", "kW", "MSL maximum shaft power")
+        P_shaft_max = Variable(
+            "P_{shaft,max}", "kW", "MSL maximum shaft power"
+        )
         W_e = Variable("W_e", "N", "engine weight", fix=True)
 
         constraints = [
-            (W_e / W_e_ref) == 1.27847 * (P_shaft_max / P_shaft_ref) ** 0.772392
+            (W_e / W_e_ref)
+            == 1.27847 * (P_shaft_max / P_shaft_ref) ** 0.772392
         ]
         return constraints
 
@@ -260,9 +294,13 @@ class EngineP(Model):
         # Dimensional constants
 
         # Free variables
-        BSFC = Variable("BSFC", "lbf/(hp*hr)", "brake specific fuel consumption")
+        BSFC = Variable(
+            "BSFC", "lbf/(hp*hr)", "brake specific fuel consumption"
+        )
         P_shaft = Variable("P_{shaft}", "kW", "shaft power")
-        P_shaft_alt = Variable("P_{shaft,alt}", "kW", "maximum shaft power at altitude")
+        P_shaft_alt = Variable(
+            "P_{shaft,alt}", "kW", "maximum shaft power at altitude"
+        )
         Thrust = Variable("T", "N", "propeller thrust")
 
         L = Variable("L", "-", "power lapse percentage")
@@ -272,8 +310,12 @@ class EngineP(Model):
         with SignomialsEnabled():
             constraints += [
                 P_shaft <= P_shaft_alt,
-                L == (0.937 * (state["h"] / self.engine["h_{ref}"]) ** 0.0922) ** 10,
-                SignomialEquality(1, L + P_shaft_alt / self.engine["P_{shaft,max}"]),
+                L
+                == (0.937 * (state["h"] / self.engine["h_{ref}"]) ** 0.0922)
+                ** 10,
+                SignomialEquality(
+                    1, L + P_shaft_alt / self.engine["P_{shaft,max}"]
+                ),
                 (BSFC / self.engine["BSFC_{ref}"]) ** (0.1)
                 >= 0.984 * (P_shaft / P_shaft_alt) ** -0.0346,
                 BSFC / self.engine["BSFC_{ref}"] >= 1.0,
@@ -292,7 +334,9 @@ class Mission(Model):
             Wstart = Variable(
                 "W_{start}", "N", "weight at the beginning of flight segment"
             )
-            Wend = Variable("W_{end}", "N", "weight at the end of flight segment")
+            Wend = Variable(
+                "W_{end}", "N", "weight at the end of flight segment"
+            )
             h = Variable("h", "m", "final segment flight altitude")
             havg = Variable("h_{avg}", "m", "average segment flight altitude")
             dhdt = Variable("\\frac{dh}{dt}", "m/hr", "climb rate")
@@ -317,7 +361,8 @@ class Mission(Model):
         with SignomialsEnabled():
             constraints += [
                 havg == state["h"],  # Linking states
-                h[1 : Nsegments - 1] >= hcruise,  # Adding minimum cruise altitude
+                h[1 : Nsegments - 1]
+                >= hcruise,  # Adding minimum cruise altitude
                 # Weights at beginning and end of mission
                 Wstart[0]
                 >= W_p
@@ -344,7 +389,8 @@ class Mission(Model):
                 h[0] == t_s[0] * dhdt[0],  # Starting altitude
                 dhdt >= 1.0 * units("m/hr"),
                 havg[0] == 0.5 * h[0],
-                havg[1:Nsegments] == (h[1:Nsegments] * h[0 : Nsegments - 1]) ** (0.5),
+                havg[1:Nsegments]
+                == (h[1:Nsegments] * h[0 : Nsegments - 1]) ** (0.5),
                 SignomialEquality(
                     h[1:Nsegments],
                     h[: Nsegments - 1] + t_s[1:Nsegments] * dhdt[1:Nsegments],
@@ -414,9 +460,11 @@ class Mission(Model):
         # Fuselage volume and weight
         constraints += [
             self.aircraft.fuse["V_{fuse}"]
-            >= self.aircraft.fuse["V_{f_{fuse}}"] + W_p / (rho_p * self.aircraft["g"]),
+            >= self.aircraft.fuse["V_{f_{fuse}}"]
+            + W_p / (rho_p * self.aircraft["g"]),
             self.aircraft.fuse["W_{fuse}"]
-            == self.aircraft.fuse["S_{fuse}"] * self.aircraft.wing["W_{w_{coeff2}}"],
+            == self.aircraft.fuse["S_{fuse}"]
+            * self.aircraft.wing["W_{w_{coeff2}}"],
         ]
 
         # Upper bounding variables
@@ -443,7 +491,7 @@ def test():
         }
     )
     m.cost = m["W_{f_m}"] * units("1/N") + m["C_m"] * m["t_m"]
-    sol = m.localsolve(verbosity=0)
+    _ = m.localsolve(verbosity=0)
 
 
 if __name__ == "__main__":

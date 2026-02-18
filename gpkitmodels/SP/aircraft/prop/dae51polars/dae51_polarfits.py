@@ -13,7 +13,6 @@ import pandas as pd
 from gpfit.fit import fit
 
 from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp
-from gpkitmodels.GP.aircraft.wing.wing import Wing
 
 GENERATE = True
 plt.rcParams.update({"font.size": 15})
@@ -34,8 +33,8 @@ def text_to_df(filename):
     for t in titles:
         data[t] = []
 
-    for l in lines[start + 1 :]:
-        for i, v in enumerate(l.split(" ")[1:]):
+    for line in lines[start + 1 :]:
+        for i, v in enumerate(line.split(" ")[1:]):
             data[titles[i]].append(v)
 
     df = pd.DataFrame(data)
@@ -64,7 +63,8 @@ def fit_setup(Re_range):
             CL.append(dataf["CL"].values.astype(np.float))
             CD.append(dataf["CD"].values.astype(np.float))
         ax.plot(
-            dataf["CL"].values.astype(np.float), dataf["CD"].values.astype(np.float)
+            dataf["CL"].values.astype(np.float),
+            dataf["CD"].values.astype(np.float),
         )
         ax.legend(["%d" % re for re in Re_range])
         RE.append([r * 1000.0] * len(CL[-1]))
@@ -75,7 +75,6 @@ def fit_setup(Re_range):
     u2 = np.hstack(RE)
     w = np.hstack(CD)
     u = [u1, u2]
-    xx = np.log(u2)
     x = np.log(u)
     y = np.log(w)
     return x, y

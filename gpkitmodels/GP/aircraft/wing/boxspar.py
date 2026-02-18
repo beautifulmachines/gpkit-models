@@ -1,6 +1,6 @@
 "box spar"
 
-from gpkit import Model, SignomialsEnabled, parse_variables
+from gpkit import Model, parse_variables
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import cfrpfabric, cfrpud, foamhd

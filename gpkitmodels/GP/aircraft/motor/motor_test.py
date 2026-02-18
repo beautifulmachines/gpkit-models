@@ -1,7 +1,7 @@
-from gpkit import Model, SignomialEquality, SignomialsEnabled, parse_variables, units
+from gpkit import Model, units
 
 from gpkitmodels.GP.aircraft.motor.motor import Motor, MotorPerf, Propulsor
-from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp
 from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 from gpkitmodels.SP.aircraft.prop.propeller import BladeElementProp
 
@@ -15,7 +15,9 @@ class Propulsor_Test(Model):
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
         self.cost = (
-            1.0 / pp.motor.etam + p.W / (1000 * units("lbf")) + 1.0 / pp.prop.eta
+            1.0 / pp.motor.etam
+            + p.W / (1000 * units("lbf"))
+            + 1.0 / pp.prop.eta
         )
 
         return fs, p, pp
@@ -30,7 +32,9 @@ class Actuator_Propulsor_Test(Model):
         p = Propulsor()
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
+        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (
+            1000 * units("lbf")
+        )
 
         return fs, p, pp
 
@@ -44,7 +48,9 @@ class BladeElement_Propulsor_Test(Model):
         p = Propulsor()
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
+        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (
+            1000 * units("lbf")
+        )
 
         return fs, p, pp
 
@@ -56,12 +62,12 @@ def actuator_propulsor_test():
 
 def ME_propulsor_test():
     test = BladeElement_Propulsor_Test()
-    sol = test.localsolve(use_leqs=False)  # cvxopt gets singular with leqs
+    _ = test.localsolve(use_leqs=False)  # cvxopt gets singular with leqs
 
 
 def propulsor_test():
     test = Propulsor_Test()
-    sol = test.solve()
+    _ = test.solve()
 
 
 class Motor_P_Test(Model):

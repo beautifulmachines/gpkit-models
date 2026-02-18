@@ -1,0 +1,7 @@
+[flake8]
+extend-ignore = E203,E741,F821
+per-file-ignores =
+    gpkitmodels/SP/atmosphere/atmosphere.py: E501
+    gpkitmodels/SP/SimPleAC/SimPleAC_mission.py: F841
+    gpkitmodels/GP/aircraft/fuselage/fuselage_profile_drag/fusedragfit.py: F841
+    gpkitmodels/GP/aircraft/tail/empennage.py: E501
