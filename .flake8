@@ -1,4 +1,5 @@
 [flake8]
+max-line-length = 88
 extend-ignore = E203,E741,F821
 per-file-ignores =
     gpkitmodels/SP/atmosphere/atmosphere.py: E501
