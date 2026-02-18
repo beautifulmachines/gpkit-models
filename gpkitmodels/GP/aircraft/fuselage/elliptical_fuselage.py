@@ -1,7 +1,7 @@
 "elliptical fuselage.py"
 
 import numpy as np
-from gpkit import Model, Variable, parse_variables
+from gpkit import Model, parse_variables
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import cfrpfabric

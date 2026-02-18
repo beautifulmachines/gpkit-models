@@ -1,8 +1,7 @@
 from __future__ import print_function
 
-import matplotlib.pyplot as plt
 import numpy as np
-from gpkit import Model, SignomialsEnabled, Variable, VarKey, units
+from gpkit import Model, SignomialsEnabled, Variable, units
 
 
 class SimPleAC(Model):
@@ -28,7 +27,6 @@ class SimPleAC(Model):
         W_W_coeff2 = Variable(
             "W_{W_{coeff2}}", 60.0, "Pa", "wing weight coefficent 2", pr=10.0
         )
-        p_labor = Variable("p_{labor}", 1.0, "1/min", "cost of labor", pr=20.0)
 
         # Dimensional constants
         Range = Variable("Range", 3000, "km", "aircraft range")
@@ -112,7 +110,7 @@ class SimPleAC(Model):
 def test():
     m = SimPleAC()
     m.cost = m["W_f"]
-    sol = m.localsolve(verbosity=2)
+    _ = m.localsolve(verbosity=2)
 
 
 if __name__ == "__main__":

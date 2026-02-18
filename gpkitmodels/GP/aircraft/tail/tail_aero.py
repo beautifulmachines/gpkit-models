@@ -37,7 +37,7 @@ class TailAero(Model):
     def setup(self, static, state):
         self.state = state
 
-        cmac = self.cmac = static.planform.cmac
+        self.cmac = static.planform.cmac
         b = self.b = static.planform.b
         S = self.S = static.planform.S
         tau = self.tau = static.planform.tau

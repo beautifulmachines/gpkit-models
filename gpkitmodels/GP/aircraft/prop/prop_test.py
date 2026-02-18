@@ -31,7 +31,7 @@ def ME_eta_test():
     pp.cost = (
         1.0 / pp.eta + pp.Q / (1000.0 * units("N*m")) + p.T_m / (1000 * units("N"))
     )
-    sol = pp.localsolve(iteration_limit=400)
+    _ = pp.localsolve(iteration_limit=400)
 
 
 def test():

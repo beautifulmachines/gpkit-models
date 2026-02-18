@@ -1,23 +1,12 @@
 from __future__ import print_function
 
-import math
 import subprocess
-import sys
 from builtins import range
 
 import numpy as np
-import scipy.optimize as spo
-from gpkit.tests.helpers import NullFile
 
 
 def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):
-
-    if ".dat" in topline:
-        tl = topline.split()
-        afile = tl[1]
-    if ".txt" in topline:
-        tl = topline.split()
-        afile = tl[1]
 
     proc = subprocess.Popen([pathname], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     proc.stdin.write(
@@ -74,17 +63,15 @@ def single_cl(
     sample_min = sampling_min
     sample_max = sampling_max
 
-    ls_res = subprocess.check_output(["ls -a"], shell=True)
-    ls = ls_res.split()
+    _ = subprocess.check_output(["ls -a"], shell=True)
 
-    remove_kulfan = False
     if list(airfoil):
         if (".dat" in airfoil) or (".txt" in airfoil):
             topline = "load " + airfoil + " \n afl \n"
         elif ("naca" == airfoil.lower()[0:4]) and (len(airfoil) == 8):
             topline = airfoil + " \n"
     else:
-        print("Error: Invalid airfoil passed into XFOIL.  Defaulting to a NACA0012.")
+        print("Error: Invalid airfoil. Defaulting to a NACA0012.")
         topline = "naca0012 \n"
 
     initial_list = np.linspace(sample_min, sample_max, num_samples).tolist()
@@ -96,7 +83,7 @@ def single_cl(
         # x = blind_call(topline, alpha, Re, M)
         try:
             x = blind_call(topline, alpha, Re, M)
-        except:
+        except Exception:
             x = [1, 1]
         if len(x) == 5:
             cd_calcl.append(x[0])

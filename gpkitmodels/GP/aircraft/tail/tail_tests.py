@@ -1,6 +1,6 @@
 "test tail models"
 
-from gpkit import Model, Variable, units
+from gpkit import Model, Variable
 
 from gpkitmodels.GP.aircraft.tail.empennage import Empennage
 from gpkitmodels.GP.aircraft.tail.horizontal_tail import HorizontalTail
@@ -41,7 +41,13 @@ def test_vtail():
     vt = VerticalTail()
     fs = FlightState()
     vt.substitutions.update(
-        {vt.W: 5, vt.planform.AR: 3, vt.Vv: 0.04, vt.lv: 10, vt.planform.tau: 0.08}
+        {
+            vt.W: 5,
+            vt.planform.AR: 3,
+            vt.Vv: 0.04,
+            vt.lv: 10,
+            vt.planform.tau: 0.08,
+        }
     )
     perf = vt.flight_model(vt, fs)
 
@@ -97,7 +103,11 @@ def test_emp():
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:
-            for v in ["\\bar{M}_{tip}", "\\bar{\\delta}_{root}", "\\theta_{root}"]:
+            for v in [
+                "\\bar{M}_{tip}",
+                "\\bar{\\delta}_{root}",
+                "\\theta_{root}",
+            ]:
                 m.substitutions[l[v]] = 1e-3
 
     m.solve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
@@ -155,7 +165,11 @@ def test_tailboom_mod():
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:
-            for v in ["\\bar{M}_{tip}", "\\bar{\\delta}_{root}", "\\theta_{root}"]:
+            for v in [
+                "\\bar{M}_{tip}",
+                "\\bar{\\delta}_{root}",
+                "\\theta_{root}",
+            ]:
                 m.substitutions[l[v]] = 1e-3
 
     m.solve(verbosity=0)

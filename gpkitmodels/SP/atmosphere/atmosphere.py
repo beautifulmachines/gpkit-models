@@ -1,17 +1,12 @@
 from __future__ import print_function
 
-import matplotlib.pyplot as plt
-import numpy as np
 from gpkit import (
     Model,
     SignomialEquality,
     SignomialsEnabled,
     Variable,
-    VarKey,
-    Vectorize,
     units,
 )
-from gpkit.constraints.bounded import Bounded
 
 
 class Atmosphere(Model):
@@ -28,7 +23,11 @@ class Atmosphere(Model):
         alt_top = Variable("h_{top}", 10000, "m", "highest altitude valid")
         # a_MSL   = Variable('a_{MSL}',340.20,'m/s','Speed of sound at MSL')
         mu_MSL = Variable(
-            "\\mu_{MSL}", 1.778e-5, "kg/m/s", "dynamic viscosity at MSL", pr=4.0
+            "\\mu_{MSL}",
+            1.778e-5,
+            "kg/m/s",
+            "dynamic viscosity at MSL",
+            pr=4.0,
         )
         # nu_MSL  = Variable('\\nu_{MSL}', 1.4524e-5, 'm^2/s', 'kinematic viscosity at MSL')
         # T_MSL   = Variable('T_{MSL}', 288.19, 'K', 'temperature at MSL')

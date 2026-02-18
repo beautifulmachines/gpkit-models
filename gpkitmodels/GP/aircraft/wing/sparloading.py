@@ -1,7 +1,7 @@
 "spar loading"
 
 from gpkit import Model, parse_variables
-from numpy import pi
+from numpy import pi  # noqa: F401  used by parse_variables docstring eval
 
 # pylint: disable=no-member, unused-argument, exec-used, invalid-name
 # pylint: disable=undefined-variable, attribute-defined-outside-init

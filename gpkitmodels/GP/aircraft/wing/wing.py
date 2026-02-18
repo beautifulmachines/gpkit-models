@@ -84,8 +84,12 @@ class Planform(Model):
         den = sum([(cbar[i] + cbar[i + 1]) / 2 * deta[i] for i in range(len(deta))])
         return num / den / cbar[0]
 
-    return_avg = lambda self, c: (self.return_c(c)[:-1] + self.return_c(c)[1:]) / 2.0
-    return_deta = lambda self, c: np.diff(c[self.eta])
+    def return_avg(self, c):
+        vals = self.return_c(c)
+        return (vals[:-1] + vals[1:]) / 2.0
+
+    def return_deta(self, c):
+        return np.diff(c[self.eta])
 
     @parse_variables(__doc__, globals())
     def setup(self, N):

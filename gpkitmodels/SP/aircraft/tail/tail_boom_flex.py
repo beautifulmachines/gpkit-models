@@ -17,7 +17,7 @@ class TailBoomFlexibility(Model):
 
     LaTex Strings
     -------------
-    Fne         F_{\mathrm{NE}}
+    Fne         F_{\\mathrm{NE}}
     deda        d\\epsilon/d\\alpha
     SMcorr      SM_{\\mathrm{corr}}
 

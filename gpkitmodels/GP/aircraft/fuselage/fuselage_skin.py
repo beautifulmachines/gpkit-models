@@ -71,7 +71,9 @@ class FuselageLanding(Model):
         Nmax = Variable("N_{max}", 5, "-", "maximum landing load factor")
         a = Variable("a", "m/s**2", "landing vertical acceleration")
         omegadot = Variable(
-            "\\dot{\\omega}", "1/s**2", "angular acceleration about rear fuselage"
+            "\\dot{\\omega}",
+            "1/s**2",
+            "angular acceleration about rear fuselage",
         )
         Mg = Variable("M_G", "N*m", "landing moment about center of mass")
         sigmakevlar = Variable(

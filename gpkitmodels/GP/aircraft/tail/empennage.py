@@ -3,12 +3,13 @@
 from gpkit import Model, parse_variables
 
 from .horizontal_tail import HorizontalTail
-from .tail_boom import TailBoom, TailBoomState
+from .tail_boom import TailBoom
 from .vertical_tail import VerticalTail
 
 
-# pylint: disable=attribute-defined-outside-init, no-member, exec-used
-# pylint: disable=too-many-instance-attributes, invalid-name, undefined-variable
+# pylint: disable=attribute-defined-outside-init, no-member
+# pylint: disable=exec-used, too-many-instance-attributes
+# pylint: disable=invalid-name, undefined-variable
 class Empennage(Model):
     """empennage model, consisting of vertical, horizontal and tailboom
 

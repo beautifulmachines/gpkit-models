@@ -1,8 +1,6 @@
 "engine_model.py"
 
-from builtins import zip
-
-from gpkit import Model, Variable, units
+from gpkit import Model, Variable
 
 
 class DF70(Model):
@@ -12,12 +10,16 @@ class DF70(Model):
 
         W = Variable("W", "lbf", "Installed/Total engine weight")
         mfac = Variable("m_{fac}", 1.0, "-", "Engine weight margin factor")
-        bsfc_min = Variable("BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC")
+        bsfc_min = Variable(  # noqa: F841
+            "BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC"
+        )
         Wdf70 = Variable("W_{DF70}", 7.76, "lbf", "Installed/Total DF70 engine weight")
-        Pslmax = Variable("P_{sl-max}", 5.17, "hp", "Max shaft power at sea level")
-        h = Variable("h", 12, "in", "engine height")
+        Pslmax = Variable(  # noqa: F841
+            "P_{sl-max}", 5.17, "hp", "Max shaft power at sea level"
+        )
+        h = Variable("h", 12, "in", "engine height")  # noqa: F841
 
-        constraints = [W / mfac >= Wdf70, Pslmax == Pslmax]
+        constraints = [W / mfac >= Wdf70]
 
         return constraints
 
@@ -37,11 +39,17 @@ class DF70Perf(Model):
         eta_alternator = Variable(
             "\\eta_{alternator}", 0.8, "-", "alternator efficiency"
         )
-        href = Variable("h_{ref}", 1000, "ft", "reference altitude")
-        h_vals = state.substitutions("h")
-        if len(href) == 1:
+        href_val = 1000  # shared with Variable below to stay in sync
+        href = Variable("h_{ref}", href_val, "ft", "reference altitude")  # noqa: F841
+        h_vals = state.substitutions["h"]
+        if not hasattr(h_vals, "__len__"):
             h_vals = [h_vals]
-        lfac = [-0.035 * (v / hr.value) + 1.0 for v, hr in zip(h_vals, href)]
+        # L_eng = 1 - 0.035*h/h_ref (signomial, must pre-compute as constant)
+        h_units = state["h"].key.units  # pint Quantity, e.g. "1 foot"
+        lfac = [
+            (-0.035 * v * h_units / (href_val * h_units)).to("").magnitude + 1.0
+            for v in h_vals
+        ]
         Leng = Variable("L_{eng}", lfac, "-", "shaft power loss factor")
         Pshaftmax = Variable("P_{shaft-max}", "hp", "Max shaft power at altitude")
         mfac = Variable("m_{fac}", 1.0, "-", "BSFC margin factor")

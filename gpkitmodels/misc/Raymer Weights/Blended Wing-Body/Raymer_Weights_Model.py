@@ -1,14 +1,12 @@
-# Below is a Weights breakdown for the Blended wing body.  This method is GP Compatible!
-
-from builtins import range
+# Weights breakdown for the Blended wing body (GP Compatible)
 
 import gpkit
-import numpy as np
-from gpkit import Model, Variable, VectorVariable, units
+import numpy as np  # noqa: E402
+from gpkit import Model, Variable
 from gpkit.tools import te_exp_minus1
 
 gpkit.disable_units()
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # noqa: E402
 
 
 def secant(x, nterm):
@@ -162,7 +160,14 @@ def Weights_pie(sol):
         + Wts["W_{military-cargo-system}"]
     )
     plt.pie(
-        [W_body, Wts["W_{wing}"], Wts["W_{vertical-tail}"], W_gear, W_prop, W_aux],
+        [
+            W_body,
+            Wts["W_{wing}"],
+            Wts["W_{vertical-tail}"],
+            W_gear,
+            W_prop,
+            W_aux,
+        ],
         labels=[
             "Body",
             "Wing",
@@ -199,7 +204,10 @@ Wpax = 210
 Nc = Variable("N_{c}", 15.0, "-", "Number of Crew")
 Nen = Variable("N_{en}", 2.0, "-", "Number of Engines")
 Nf = Variable(
-    "N_{f}", 7.0, "-", "Number of Functions Performed by the Controls (Typically 4-7"
+    "N_{f}",
+    7.0,
+    "-",
+    "Number of Functions Performed by the Controls (Typically 4-7",
 )
 Ngen = Variable("N_{gen}", 2.0, "-", "Number of Generators (Typically = N_{en}")
 Nl = Variable("N_{l}", 4.5, "-", "Ultimate Landing Loading Factor; = N_{gear}x1.5")
@@ -244,10 +252,14 @@ Av = Variable("A_{v}", "-", "Vertical Tail Aspect Ratio")
 Bw = Variable("B_{w}", "ft", "Wing Span")
 Kz = Variable("K_{z}", "ft", "Aircraft Yawing Radius of Gyration (\\approx L_{t})")
 La = Variable(
-    "L_{a}", "ft", "Electrical Routing Distance, Generators to Avionics to Cockpit"
+    "L_{a}",
+    "ft",
+    "Electrical Routing Distance, Generators to Avionics to Cockpit",
 )
 Lec = Variable(
-    "L_{ec}", "ft", "Length From Engine Front to Cockpit--Total if Multi-Engine"
+    "L_{ec}",
+    "ft",
+    "Length From Engine Front to Cockpit--Total if Multi-Engine",
 )
 Lf = Variable("L_{f}", "ft", "Aircraft Length Measured on Centerline")
 Lm = Variable("L_{m}", "in", "Extended Length of Main Landing Gear")
@@ -306,7 +318,9 @@ W_hydraulics = Variable("W_{hydraulics}", "lbf", "Weight of Hydraulic System")
 W_electrical = Variable("W_{electrical}", "lbf", "Weight of Electrical System")
 W_avionics = Variable("W_{avionics}", "lbf", "Weight of Avionics")
 W_furnishings = Variable(
-    "W_{furnishings}", "lbf", "Weight of Furnishings (No seats or handling gear"
+    "W_{furnishings}",
+    "lbf",
+    "Weight of Furnishings (No seats or handling gear",
 )
 W_air_conditioning = Variable(
     "W_{air-conditioning}", "lbf", "Weight of Air Conditioning System"
@@ -314,7 +328,9 @@ W_air_conditioning = Variable(
 W_anti_ice = Variable("W_{anti-ice}", "lbf", "Weight of Anti-Icing System")
 W_handling_gear = Variable("W_{handling-gear}", "lbf", "Weight of Cargo Handling Gear")
 W_military_cargo_handling_system = Variable(
-    "W_{military-cargo-system}", "lbf", "Weight of Military Cargo Handling System"
+    "W_{military-cargo-system}",
+    "lbf",
+    "Weight of Military Cargo Handling System",
 )
 
 

@@ -1,16 +1,6 @@
 "propeller model"
 
-import os
-
-import pandas as pd
-from gpkit import (
-    Model,
-    SignomialEquality,
-    SignomialsEnabled,
-    Variable,
-    Vectorize,
-    parse_variables,
-)
+from gpkit import Model, parse_variables
 from numpy import pi
 
 

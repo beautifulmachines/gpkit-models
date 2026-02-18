@@ -4,10 +4,9 @@ import os
 from builtins import zip
 
 import pandas as pd
-
-# from gpkitmodels.tools.fit_constraintset import FitCS
-from gpfit.fit_constraintset import FitCS
 from gpkit import Model, Variable, units
+
+from gpkitmodels.tools.fit_constraintset import FitCS
 
 
 class Engine(Model):
@@ -19,7 +18,9 @@ class Engine(Model):
 
         W = Variable("W", "lbf", "Installed/Total engine weight")
         mfac = Variable("m_{fac}", 1.0, "-", "Engine weight margin factor")
-        bsfc_min = Variable("BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC")
+        bsfc_min = Variable(  # noqa: F841
+            "BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC"
+        )
         Pref = Variable("P_{ref}", 10.0, "hp", "Reference shaft power")
         Wengref = Variable("W_{eng-ref}", 10.0, "lbf", "Reference engine weight")
         Weng = Variable("W_{eng}", "lbf", "engine weight")

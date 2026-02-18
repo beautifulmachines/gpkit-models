@@ -1,7 +1,6 @@
 "Electric motor model"
 
 from gpkit import Model, parse_variables
-from gpkit.constraints.tight import Tight as TCS
 
 from gpkitmodels import g
 from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
@@ -78,7 +77,10 @@ class PropulsorPerf(Model):
 
         self.components = [self.prop, self.motor]
 
-        constraints = [self.prop.Q == self.motor.Q, self.prop.omega == self.motor.omega]
+        constraints = [
+            self.prop.Q == self.motor.Q,
+            self.prop.omega == self.motor.omega,
+        ]
 
         return constraints, self.components
 

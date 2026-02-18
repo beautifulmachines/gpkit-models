@@ -1,8 +1,7 @@
 # Below is a faithful reproduction of the weight breakdown models from Raymer.
 # Note that this is NOT a GP compatible model and should not be viewed as such.
 
-import numpy as np
-from gpkit import Model, Variable, VectorVariable, units
+from gpkit import Model, Variable
 from gpkit.tools import te_secant as secant
 from gpkit.tools import te_tangent as tangent
 
@@ -34,14 +33,18 @@ Kr = Variable("K_{r}", "-", "1.133 if Reciprocating Engine; 1.0 Otherwise")
 Ktpg = Variable("K_{tpg}", "-", "0.826 for Tripod (A-7) Gear; 1.0 Otherwise")
 Ktr = Variable("K_{tr}", "-", "1.18 for Jet with Thrust Reverser; 1.0 Otherwise")
 Kuht = Variable(
-    "K_{uht}", "-", "1.143 for Unit (All-Moving) Horizontal Tail; 1.0 Otherwise"
+    "K_{uht}",
+    "-",
+    "1.143 for Unit (All-Moving) Horizontal Tail; 1.0 Otherwise",
 )
 Kws = Variable("K_{ws}", "-", "0.75[(1+2lambda)/(1+lambda)](Bw tanLambda / L")
 Ky = Variable("K_{y}", "ft", "Aircraft Pitching Radius of Gyration (\\approx 0.3 L_{t")
 Kz = Variable("K_{z}", "ft", "Aircraft Yawing Radius of Gyration (\\approx L_{t")
 L = Variable("L", "ft", "Fuselage Structural Length (excludes radome cowling, tail cap")
 La = Variable(
-    "L_{a}", "ft", "Electrical Routing Distance, Generators to Avionics to Cockpit"
+    "L_{a}",
+    "ft",
+    "Electrical Routing Distance, Generators to Avionics to Cockpit",
 )
 Lf = Variable("L_{f}", "ft", "Total Fuselage Length")
 Lm = Variable("L_{m}", "in", "Extended Length of Main Landing Gear")
@@ -50,7 +53,9 @@ Lt = Variable("L_{t}", "ft", "Tail Length; Wing Quarter-MAC to Tail Quarter-MAC"
 Nc = Variable("N_{c}", "-", "Number of Crew")
 Nen = Variable("N_{en}", "-", "Number of Engines")
 Nf = Variable(
-    "N_{f}", "-", "Number of Functions Performed by the Controls (Typically 4-7"
+    "N_{f}",
+    "-",
+    "Number of Functions Performed by the Controls (Typically 4-7",
 )
 Ngen = Variable("N_{gen}", "-", "Number of Generators (Typically = N_{en")
 NLt = Variable("N_{Lt}", "ft", "Nacelle Length")
@@ -73,7 +78,9 @@ Sn = Variable("S_{n}", "ft^2", "Nacelle Wetted Area")
 Svt = Variable("S_{vt}", "ft^2", "Vertical Tail Area")
 Sw = Variable("S_{w}", "ft^2", "Trapezoidal Wing Area")
 t_c_root_w = Variable(
-    "\\frac{t}{c}_{root_w}", "-", "Thickness to Chord Ratio of Main Wing at the Root"
+    "\\frac{t}{c}_{root_w}",
+    "-",
+    "Thickness to Chord Ratio of Main Wing at the Root",
 )
 t_c_root_v = Variable(
     "\\frac{t}{c}_{root_v}",
@@ -91,7 +98,7 @@ Wdg = Variable("W_{dg}", "lb", "Flight Design Gross Weight")
 Wec = Variable(
     "W_{ec}",
     "lb",
-    "Weight of Engine and Contents (per nacelle); \\approx 2.331 W_en^0.901 K_p K_tr",
+    "Weight of Engine and Contents (per nacelle)",
 )
 Wl = Variable("W_{l}", "lb", "Landing Design Gross Weight")
 Wuav = Variable("W_{uav}", "-", "Uninstalled Avionics Weight (Typically 800-1400")
@@ -119,7 +126,9 @@ W_hydraulics = Variable("W_{hydraulics}", "lbf", "Weight of Hydraulic System")
 W_electrical = Variable("W_{electrical}", "lbf", "Weight of Electrical System")
 W_avionics = Variable("W_{avionics}", "lbf", "Weight of Avionics")
 W_furnishings = Variable(
-    "W_{furnishings}", "lbf", "Weight of Furnishings (No seats or handling gear"
+    "W_{furnishings}",
+    "lbf",
+    "Weight of Furnishings (No seats or handling gear",
 )
 W_air_conditioning = Variable(
     "W_{air-conditioning}", "lbf", "Weight of Air Conditioning System"
@@ -127,7 +136,9 @@ W_air_conditioning = Variable(
 W_anti_ice = Variable("W_{anti-ice}", "lbf", "Weight of Anti-Icing System")
 W_handling_gear = Variable("W_{handling-gear}", "lbf", "Weight of Cargo Handling Gear")
 W_military_cargo_handling_system = Variable(
-    "W_{military-cargo-system}", "lbf", "Weight of Military Cargo Handling System"
+    "W_{military-cargo-system}",
+    "lbf",
+    "Weight of Military Cargo Handling System",
 )
 
 

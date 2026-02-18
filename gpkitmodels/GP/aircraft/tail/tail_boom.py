@@ -1,6 +1,6 @@
 "tail boom model"
 
-from gpkit import Model, Variable, VectorVariable, parse_variables, units
+from gpkit import Model, parse_variables, units
 from numpy import pi
 
 from gpkitmodels import g
@@ -101,7 +101,10 @@ class VerticalBoomTorsion(Model):
         Vne = self.Vne = state.Vne
         CLmax = vtail.planform.CLmax
 
-        return [T >= 0.5 * rhosl * Vne**2 * S * CLmax * b, taucfrp >= T * d0 / 2 / J]
+        return [
+            T >= 0.5 * rhosl * Vne**2 * S * CLmax * b,
+            taucfrp >= T * d0 / 2 / J,
+        ]
 
 
 class TailBoomBending(Model):

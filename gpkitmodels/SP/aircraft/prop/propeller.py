@@ -8,7 +8,6 @@ from gpkit import (
     Model,
     SignomialEquality,
     SignomialsEnabled,
-    Variable,
     Vectorize,
     parse_variables,
 )

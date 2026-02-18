@@ -1,6 +1,12 @@
 "fit constraint set"
 
-from gpkit import ConstraintSet, NamedVariables, NomialArray, Variable, VectorVariable
+from gpkit import (
+    ConstraintSet,
+    NamedVariables,
+    NomialArray,
+    Variable,
+    VectorVariable,
+)
 from numpy import abs as nabs
 from numpy import amax, array, hstack, where
 
@@ -39,22 +45,27 @@ class FitCS(ConstraintSet):
         self.rms_err = fitdata["rms_err"]
         self.max_err = fitdata["max_err"]
 
-        monos = [
-            fitdata["c%d" % k]
-            * NomialArray(
-                array(dvars).T
-                ** array([fitdata["e%d%d" % (k, i)] for i in range(fitdata["d"])])
-            ).prod(NomialArray(dvars).ndim - 1)
-            for k in range(fitdata["K"])
-        ]
+        d = fitdata["d"]
+        monos = []
+        for k in range(fitdata["K"]):
+            mono = fitdata["c%d" % k]
+            for i in range(d):
+                mono = mono * dvars[i] ** fitdata["e%d%d" % (k, i)]
+            monos.append(mono)
 
         if err_margin == "Max":
             self.mfac = Variable(
-                "m_{fac-" + name + "-fit}", 1 + self.max_err, "-", "max error of fit"
+                "m_{fac-" + name + "-fit}",
+                1 + self.max_err,
+                "-",
+                "max error of fit",
             )
         elif err_margin == "RMS":
             self.mfac = Variable(
-                "m_{fac-" + name + "-fit}", 1 + self.rms_err, "-", "RMS error of fit"
+                "m_{fac-" + name + "-fit}",
+                1 + self.rms_err,
+                "-",
+                "RMS error of fit",
             )
         elif err_margin is None:
             self.mfac = Variable("m_{fac-" + name + "-fit}", 1.0, "-", "fit factor")
@@ -154,7 +165,13 @@ class XfoilFit(FitCS):
     """
 
     def __init__(
-        self, fitdata, ivar=None, dvars=None, name="", err_margin=None, airfoil=False
+        self,
+        fitdata,
+        ivar=None,
+        dvars=None,
+        name="",
+        err_margin=None,
+        airfoil=False,
     ):
 
         super(XfoilFit, self).__init__(

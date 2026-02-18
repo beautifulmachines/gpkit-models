@@ -4,7 +4,6 @@ from gpkit import (
     SignomialEquality,
     SignomialsEnabled,
     Variable,
-    VarKey,
     Vectorize,
     units,
 )
@@ -12,7 +11,8 @@ from gpkit import (
 # Importing atmospheric model
 from gpkitmodels.SP.atmosphere.atmosphere import Atmosphere
 
-# SimPleAC with mission design and flight segments, and lapse rate and BSFC model (3.4.2)
+# SimPleAC with mission design, flight segments,
+# lapse rate and BSFC model (3.4.2)
 
 
 class SimPleAC(Model):
@@ -144,7 +144,10 @@ class Wing(Model):
         N_ult = Variable("N_{ult}", 3, "-", "ultimate load factor", pr=15.0)
         tau = Variable("\\tau", "-", "airfoil thickness to chord ratio", fix=True)
         tau_ref = Variable(
-            "\\tau_{ref}", 0.12, "-", "reference airfoil thickness to chord ratio"
+            "\\tau_{ref}",
+            0.12,
+            "-",
+            "reference airfoil thickness to chord ratio",
         )
 
         # Dimensional constants
@@ -443,7 +446,7 @@ def test():
         }
     )
     m.cost = m["W_{f_m}"] * units("1/N") + m["C_m"] * m["t_m"]
-    sol = m.localsolve(verbosity=0)
+    _ = m.localsolve(verbosity=0)
 
 
 if __name__ == "__main__":

@@ -1,10 +1,8 @@
-from __future__ import print_function
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from gpfit.fit import fit
-from numpy import log, log10, logspace
+from numpy import log
 from scipy import interpolate
 
 plt.rcParams.update({"font.size": 19})
