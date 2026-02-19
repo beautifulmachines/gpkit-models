@@ -3,7 +3,7 @@
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
-from gpkitmodels.GP.materials import cfrpfabric
+from gpkitmodels.GP.materials import CFRPFabric
 
 
 class WingSkin(Model):
@@ -37,11 +37,10 @@ class WingSkin(Model):
 
     """
 
-    material = cfrpfabric
-
     @parse_variables(__doc__, globals())
     def setup(self, surface):
         self.surface = surface
+        self.material = CFRPFabric()
 
         croot = surface.croot
         S = surface.S

@@ -4,7 +4,7 @@ from gpkit import Model, parse_variables
 from numpy import pi
 
 from gpkitmodels import g
-from gpkitmodels.GP.materials import cfrpfabric
+from gpkitmodels.GP.materials import CFRPFabric
 
 
 class TubeSpar(Model):
@@ -43,10 +43,9 @@ class TubeSpar(Model):
     def minusk2(self, c):
         return 1 - c[self.k] / 2.0
 
-    material = cfrpfabric
-
     @parse_variables(__doc__, globals())
     def setup(self, N, surface):
+        self.material = CFRPFabric()
         deta = surface.deta
         tmin = self.material.tmin
         rho = self.material.rho

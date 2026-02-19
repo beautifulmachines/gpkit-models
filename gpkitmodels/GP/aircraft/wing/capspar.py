@@ -3,7 +3,7 @@
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
-from gpkitmodels.GP.materials import cfrpfabric, cfrpud, foamhd
+from gpkitmodels.GP.materials import CFRPUD, CFRPFabric, FoamHD
 
 from .gustloading import GustL
 from .sparloading import SparLoading
@@ -55,13 +55,13 @@ class CapSpar(Model):
 
     loading = SparLoading
     gustloading = GustL
-    material = cfrpud
-    shearMaterial = cfrpfabric
-    coreMaterial = foamhd
 
     @parse_variables(__doc__, globals())
     def setup(self, N, surface):
         self.surface = surface
+        self.material = CFRPUD()
+        self.shearMaterial = CFRPFabric()
+        self.coreMaterial = FoamHD()
 
         cave = self.cave = surface.cave
         b = self.b = surface.b

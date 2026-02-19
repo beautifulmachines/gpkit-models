@@ -1,7 +1,6 @@
 "engine_model.py"
 
 import os
-from builtins import zip
 
 import pandas as pd
 from gpkit import Model, Variable, units
@@ -54,11 +53,16 @@ class EnginePerf(Model):
         eta_alternator = Variable(
             "\\eta_{alternator}", 0.8, "-", "alternator efficiency"
         )
-        href = Variable("h_{ref}", 1000, "ft", "reference altitude")
-        h_vals = state.substitutions("h")
-        if len(href) == 1:
+        href_val = 1000  # shared with Variable below to stay in sync
+        href = Variable("h_{ref}", href_val, "ft", "reference altitude")  # noqa: F841
+        h_vals = state.substitutions["h"]
+        if not hasattr(h_vals, "__len__"):
             h_vals = [h_vals]
-        lfac = [-0.035 * (v / hr.value) + 1.0 for v, hr in zip(h_vals, href)]
+        h_units = state["h"].key.units
+        lfac = [
+            (-0.035 * v * h_units / (href_val * h_units)).to("").magnitude + 1.0
+            for v in h_vals
+        ]
         Leng = Variable("L_{eng}", lfac, "-", "shaft power loss factor")
         Pshaftmax = Variable("P_{shaft-max}", "hp", "Max shaft power at altitude")
         mfac = Variable("m_{fac}", 1.0, "-", "BSFC margin factor")
