@@ -30,6 +30,7 @@ docs/_build/
 
 # uv
 uv.lock
+uv.toml
 
 # xfoil polars
 *.pol
