@@ -1,7 +1,7 @@
 "propeller model"
 
 from gpkit import Model, parse_variables
-from numpy import pi
+from numpy import asarray, pi
 
 
 class ActuatorProp(Model):
@@ -29,7 +29,7 @@ class ActuatorProp(Model):
     """
 
     def helper(self, c):
-        return 2.0 - 1.0 / c[self.etaadd]
+        return 2.0 - 1.0 / asarray(c[self.etaadd])
 
     @parse_variables(__doc__, globals())
     def setup(self, static, state):
