@@ -90,7 +90,6 @@ def test_emp():
             emp.vtail.Vv <= emp.vtail.planform.S * emp.vtail.lv / Sw / bw,
             fs,
             emp,
-            fs,
             htperf,
             vtperf,
             tbperf,
