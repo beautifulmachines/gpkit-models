@@ -92,7 +92,7 @@ class BladeElementPerf(Model):
                     ]
                 ),
             ]
-        return constraints, state
+        return constraints
 
 
 class BladeElementProp(Model):

@@ -176,7 +176,7 @@ class TailBoomBending(Model):
         if self.tailboomJ:
             constraints.append(tailboom.J >= 1e-10 * units("m^4"))
 
-        return constraints, beam, tailboom.material
+        return constraints, beam
 
 
 class TailBoom(TubeSpar):

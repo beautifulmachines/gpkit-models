@@ -3,7 +3,7 @@
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
-from gpkitmodels.GP.materials import foamhd
+from gpkitmodels.GP.materials import FoamHD
 
 # pylint: disable=exec-used, no-member, undefined-variable
 
@@ -31,11 +31,10 @@ class WingCore(Model):
 
     """
 
-    material = foamhd
-
     @parse_variables(__doc__, globals())
     def setup(self, surface):
         self.surface = surface
+        self.material = FoamHD()
 
         cave = self.cave = surface.cave
         b = self.b = surface.b

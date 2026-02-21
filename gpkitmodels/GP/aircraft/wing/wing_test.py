@@ -1,6 +1,6 @@
 "wing test"
 
-from gpkit import Model, parse_variables
+from gpkit import Model, Vectorize, parse_variables
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing import Wing
@@ -98,10 +98,22 @@ def box_spar():
     m.solve(verbosity=0)
 
 
+def wing_aero_vectorized():
+    "WingAero must be constructable inside Vectorize (rhoValue/muValue bool bug)"
+    W = Wing()
+    W.substitutions[W.planform.tau] = 0.115
+    with Vectorize(5):
+        fs = FlightState()
+        perf = W.flight_model(W, fs)  # previously raised ValueError on bool(array)
+    assert hasattr(perf, "rhoValue")
+    assert perf.rhoValue is True
+
+
 def test():
     "tests"
     wing_test()
     box_spar()
+    wing_aero_vectorized()
 
 
 if __name__ == "__main__":

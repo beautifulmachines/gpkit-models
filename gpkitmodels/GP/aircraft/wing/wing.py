@@ -150,8 +150,8 @@ class WingAero(Model):
         V = state.V
         mu = state.mu
         # needed for Climb model in solar
-        self.rhoValue = bool(rho.key.value)
-        self.muValue = bool(mu.key.value)
+        self.rhoValue = rho.key.value is not None
+        self.muValue = mu.key.value is not None
 
         if fd["d"] == 2:
             independentvars = [CL, Re]
