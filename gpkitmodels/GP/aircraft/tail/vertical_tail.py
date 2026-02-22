@@ -20,12 +20,12 @@ class VerticalTail(Wing):
 
     Upper Unbounded
     ---------------
-    lv, Vv, W, planform.tau (if not sparModel)
+    lv, Vv, W, planform.tau (if not spar_model)
 
     Lower Unbounded
     ---------------
-    lv, Vv, planform.b, planform.tau (if not sparModel)
-    spar.Sy (if sparModel), spar.J (if sparJ)
+    lv, Vv, planform.b, planform.tau (if not spar_model)
+    spar.Sy (if spar_model), spar.J (if sparJ)
 
     LaTex Strings
     -------------
@@ -35,8 +35,8 @@ class VerticalTail(Wing):
     """
 
     flight_model = TailAero
-    fillModel = WingCore
-    sparModel = None
+    fill_model = WingCore
+    spar_model = None
 
     @parse_variables(__doc__, globals())
     def setup(self, N=3):
@@ -44,7 +44,7 @@ class VerticalTail(Wing):
         self.planform.substitutions.update(
             {self.planform.lam: 0.8, self.planform.AR: 4}
         )
-        if self.fillModel:
+        if self.fill_model:
             self.foam.substitutions.update(
                 {self.foam.Abar: 0.0548, self.foam.material.rho: 0.024}
             )

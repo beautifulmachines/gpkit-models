@@ -64,8 +64,10 @@ def wing_test():
 def box_spar():
     "test wing models"
 
-    Wing.sparModel = BoxSpar
-    W = Wing()
+    class _BoxSparWing(Wing):
+        spar_model = BoxSpar
+
+    W = _BoxSparWing()
     W.substitutions[W.W] = 50
     W.substitutions[W.planform.tau] = 0.115
     fs = FlightState()

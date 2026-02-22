@@ -23,17 +23,17 @@ class Empennage(Model):
     Upper Unbounded
     ---------------
     W, vtail.Vv, htail.Vh, tailboom.cave (if not tbSecWeight)
-    htail.planform.tau (if not hSparModel)
-    vtail.planform.tau (if not vSparModel)
+    htail.planform.tau (if not h_spar_model)
+    vtail.planform.tau (if not v_spar_model)
 
     Lower Unbounded
     ---------------
     htail.lh, htail.Vh, htail.planform.b, htail.mh
     vtail.lv, vtail.Vv, vtail.planform.b
-    htail.planform.tau (if not hSparModel)
-    vtail.planform.tau (if not vSparModel)
-    htail.spar.Sy (if hSparModel), htail.spar.J (if hSparModel)
-    vtail.spar.Sy (if vSparModel), vtail.spar.J (if vSparModel)
+    htail.planform.tau (if not h_spar_model)
+    vtail.planform.tau (if not v_spar_model)
+    htail.spar.Sy (if h_spar_model), htail.spar.J (if h_spar_model)
+    vtail.spar.Sy (if v_spar_model), vtail.spar.J (if v_spar_model)
     tailboom.Sy, tailboom.cave (if not tbSecWeight), tailboom.J (if tbSecWeight)
 
     LaTex Strings
@@ -51,11 +51,11 @@ class Empennage(Model):
         tailboom_cls=TailBoom,
     ):
         self.htail = htail_cls()
-        self.hSparModel = self.htail.sparModel
+        self.h_spar_model = self.htail.spar_model
         self.htail.substitutions.update({self.htail.mfac: 1.1})
         lh = self.lh = self.htail.lh
         self.vtail = vtail_cls()
-        self.vSparModel = self.vtail.sparModel
+        self.v_spar_model = self.vtail.spar_model
         self.vtail.substitutions.update({self.vtail.mfac: 1.1})
         lv = self.lv = self.vtail.lv
         self.tailboom = tailboom_cls(N=N)

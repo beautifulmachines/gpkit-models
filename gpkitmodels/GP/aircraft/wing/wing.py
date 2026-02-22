@@ -184,7 +184,7 @@ class Wing(Model):
 
     Lower Unbounded
     ---------------
-    planform.b, spar.Sy (if sparModel), spar.J (if sparJ)
+    planform.b, spar.Sy (if spar_model), spar.J (if sparJ)
 
     LaTex Strings
     -------------
@@ -192,10 +192,10 @@ class Wing(Model):
 
     """
 
-    sparModel = CapSpar
-    fillModel = WingCore
+    spar_model = CapSpar
+    fill_model = WingCore
     flight_model = WingAero
-    skinModel = WingSkin
+    skin_model = WingSkin
     sparJ = False
 
     @parse_variables(__doc__, globals())
@@ -204,15 +204,15 @@ class Wing(Model):
         self.planform = Planform(N)
         self.components = []
 
-        if self.skinModel:
-            self.skin = self.skinModel(self.planform)
+        if self.skin_model:
+            self.skin = self.skin_model(self.planform)
             self.components.extend([self.skin])
-        if self.sparModel:
-            self.spar = self.sparModel(N, self.planform)
+        if self.spar_model:
+            self.spar = self.spar_model(N, self.planform)
             self.components.extend([self.spar])
             self.sparJ = hasattr(self.spar, "J")
-        if self.fillModel:
-            self.foam = self.fillModel(self.planform)
+        if self.fill_model:
+            self.foam = self.fill_model(self.planform)
             self.components.extend([self.foam])
 
         constraints = [W / mfac >= sum(c["W"] for c in self.components)]
