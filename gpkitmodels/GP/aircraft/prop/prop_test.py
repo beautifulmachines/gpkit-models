@@ -1,5 +1,6 @@
 "propeller tests"
 
+import pytest
 from gpkit import Model, units
 
 from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
@@ -18,7 +19,8 @@ def simpleprop_test():
         [fs, p, pp],
     )
     m.substitutions.update({"rho": 1.225, "V": 50, "T": 100, "omega": 1000})
-    m.solve()
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(3.7509, rel=1e-3)
 
 
 def ME_eta_test():
@@ -31,7 +33,8 @@ def ME_eta_test():
     pp.cost = (
         1.0 / pp.eta + pp.Q / (1000.0 * units("N*m")) + p.T_m / (1000 * units("N"))
     )
-    _ = pp.localsolve(iteration_limit=400)
+    sol = pp.localsolve(verbosity=0, iteration_limit=400)
+    assert sol.cost == pytest.approx(1.6613, rel=1e-3)
 
 
 def test():
