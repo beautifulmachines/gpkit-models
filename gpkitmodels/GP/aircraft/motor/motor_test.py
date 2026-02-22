@@ -26,8 +26,7 @@ class Actuator_Propulsor_Test(Model):
 
     def setup(self):
         fs = FlightState()
-        Propulsor.prop_flight_model = ActuatorProp
-        p = Propulsor()
+        p = Propulsor(prop_flight_model=ActuatorProp)
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
         self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
@@ -40,8 +39,7 @@ class BladeElement_Propulsor_Test(Model):
 
     def setup(self):
         fs = FlightState()
-        Propulsor.prop_flight_model = BladeElementProp
-        p = Propulsor()
+        p = Propulsor(prop_flight_model=BladeElementProp)
         pp = p.flight_model(p, fs)
         pp.substitutions[pp.prop.T] = 100
         self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))

@@ -98,9 +98,9 @@ class Propulsor(Model):
     prop_flight_model = ActuatorProp
 
     @parse_variables(__doc__, globals())
-    def setup(self):
-        Propeller.flight_model = self.prop_flight_model
+    def setup(self, prop_flight_model=None):
         self.prop = Propeller()
+        self.prop.flight_model = prop_flight_model or type(self).prop_flight_model
         self.motor = Motor()
 
         components = [self.prop, self.motor]

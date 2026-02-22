@@ -43,16 +43,22 @@ class Empennage(Model):
     """
 
     @parse_variables(__doc__, globals())
-    def setup(self, N=2):
-        self.htail = HorizontalTail()
+    def setup(
+        self,
+        N=2,
+        htail_cls=HorizontalTail,
+        vtail_cls=VerticalTail,
+        tailboom_cls=TailBoom,
+    ):
+        self.htail = htail_cls()
         self.hSparModel = self.htail.sparModel
         self.htail.substitutions.update({self.htail.mfac: 1.1})
         lh = self.lh = self.htail.lh
-        self.vtail = VerticalTail()
+        self.vtail = vtail_cls()
         self.vSparModel = self.vtail.sparModel
         self.vtail.substitutions.update({self.vtail.mfac: 1.1})
         lv = self.lv = self.vtail.lv
-        self.tailboom = TailBoom(N=N)
+        self.tailboom = tailboom_cls(N=N)
         self.tbSecWeight = self.tailboom.secondaryWeight
         self.components = [self.htail, self.vtail, self.tailboom]
         l = self.l = self.tailboom.l
