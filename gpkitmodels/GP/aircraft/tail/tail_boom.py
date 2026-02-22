@@ -200,11 +200,12 @@ class TailBoom(TubeSpar):
     flight_model = TailBoomAero
     tailLoad = TailBoomBending
     secondaryWeight = None
+    spar_model = TubeSpar  # override in subclasses to swap spar type
 
     @parse_variables(__doc__, globals())
     def setup(self, N=5):
         self.N = N
-        self.spar = super(TailBoom, self).setup(N, self)
+        self.spar = type(self).spar_model.setup(self, N, self)
 
         if self.secondaryWeight:
             self.weight.right += rhoA * g * S
