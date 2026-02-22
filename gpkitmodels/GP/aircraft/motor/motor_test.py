@@ -1,7 +1,7 @@
 from gpkit import Model, units
 
-from gpkitmodels.GP.aircraft.motor.motor import Motor, MotorPerf, Propulsor
-from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp
+from gpkitmodels.GP.aircraft.motor.motor import Motor, MotorPerf
+from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
 from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 from gpkitmodels.SP.aircraft.prop.propeller import BladeElementProp
 
@@ -11,14 +11,15 @@ class Propulsor_Test(Model):
 
     def setup(self):
         fs = FlightState()
-        p = Propulsor()
-        pp = p.flight_model(p, fs)
-        pp.substitutions[pp.prop.T] = 100
+        motor = Motor()
+        prop = Propeller()
+        mp = MotorPerf(motor, fs)
+        pp = prop.flight_model(prop, fs)
+        pp.substitutions[pp.T] = 100
         self.cost = (
-            1.0 / pp.motor.etam + p.W / (1000 * units("lbf")) + 1.0 / pp.prop.eta
+            1.0 / mp.etam + (prop.W + motor.W) / (1000 * units("lbf")) + 1.0 / pp.eta
         )
-
-        return fs, p, pp
+        return fs, motor, prop, mp, pp, [pp.Q == mp.Q, pp.omega == mp.omega]
 
 
 class Actuator_Propulsor_Test(Model):
@@ -26,12 +27,15 @@ class Actuator_Propulsor_Test(Model):
 
     def setup(self):
         fs = FlightState()
-        p = Propulsor(prop_flight_model=ActuatorProp)
-        pp = p.flight_model(p, fs)
-        pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
-
-        return fs, p, pp
+        motor = Motor()
+        prop = Propeller()
+        mp = MotorPerf(motor, fs)
+        pp = ActuatorProp(prop, fs)
+        pp.substitutions[pp.T] = 100
+        self.cost = mp.Pelec / (1000 * units("W")) + (prop.W + motor.W) / (
+            1000 * units("lbf")
+        )
+        return fs, motor, prop, mp, pp, [pp.Q == mp.Q, pp.omega == mp.omega]
 
 
 class BladeElement_Propulsor_Test(Model):
@@ -39,12 +43,15 @@ class BladeElement_Propulsor_Test(Model):
 
     def setup(self):
         fs = FlightState()
-        p = Propulsor(prop_flight_model=BladeElementProp)
-        pp = p.flight_model(p, fs)
-        pp.substitutions[pp.prop.T] = 100
-        self.cost = pp.motor.Pelec / (1000 * units("W")) + p.W / (1000 * units("lbf"))
-
-        return fs, p, pp
+        motor = Motor()
+        prop = Propeller()
+        mp = MotorPerf(motor, fs)
+        pp = BladeElementProp(prop, fs)
+        pp.substitutions[pp.T] = 100
+        self.cost = mp.Pelec / (1000 * units("W")) + (prop.W + motor.W) / (
+            1000 * units("lbf")
+        )
+        return fs, motor, prop, mp, pp, [pp.Q == mp.Q, pp.omega == mp.omega]
 
 
 def actuator_propulsor_test():

@@ -3,7 +3,6 @@
 from gpkit import Model, parse_variables
 
 from gpkitmodels import g
-from gpkitmodels.GP.aircraft.prop.propeller import ActuatorProp, Propeller
 
 
 class MotorPerf(Model):
@@ -65,44 +64,3 @@ class Motor(Model):
         constraints = [W >= Qstar * Qmax * g, Kv >= Kv_min, Kv <= Kv_max]
 
         return constraints
-
-
-class PropulsorPerf(Model):
-    "Propulsor Performance Model"
-
-    @parse_variables(__doc__, globals())
-    def setup(self, static, state):
-        self.prop = static.prop.flight_model(static.prop, state)
-        self.motor = static.motor.flight_model(static.motor, state)
-
-        self.components = [self.prop, self.motor]
-
-        constraints = [
-            self.prop.Q == self.motor.Q,
-            self.prop.omega == self.motor.omega,
-        ]
-
-        return constraints, self.components
-
-
-class Propulsor(Model):
-    """Propulsor model
-
-    Variables
-    ---------
-    W                       [lbf]              propulsor weight
-
-    """
-
-    flight_model = PropulsorPerf
-    prop_flight_model = ActuatorProp
-
-    @parse_variables(__doc__, globals())
-    def setup(self, prop_flight_model=None):
-        self.prop = Propeller()
-        self.prop.flight_model = prop_flight_model or type(self).prop_flight_model
-        self.motor = Motor()
-
-        components = [self.prop, self.motor]
-
-        return [self.W >= self.prop.W + self.motor.W], components
