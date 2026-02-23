@@ -1,6 +1,6 @@
 "tail boom model"
 
-from gpkit import Model, parse_variables, units
+from gpkit import Model, Var, Variable, VectorVariable, units
 from numpy import pi
 
 from gpkitmodels import g
@@ -8,33 +8,15 @@ from gpkitmodels.GP.beam.beam import Beam
 
 from .tube_spar import TubeSpar
 
-# pylint: disable=exec-used, undefined-variable, invalid-name
-# pylint: disable=attribute-defined-outside-init
+# pylint: disable=invalid-name
 
 
 class TailBoomAero(Model):
-    """Tail Boom Aero Model
+    "Tail Boom Aero Model"
 
-    Variables
-    ---------
-    Cf          [-]     tail boom skin friction coefficient
-    Re          [-]     tail boom reynolds number
+    Cf = Var("-", "tail boom skin friction coefficient")
+    Re = Var("-", "tail boom reynolds number")
 
-    Upper Unbounded
-    ---------------
-    Re, Cf, l, V, rho
-
-    Lower Unbounded
-    ---------------
-    l, V, rho
-
-    LaTex Strings
-    -------------
-    Cf      C_f
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, static, state):
         self.state = state
 
@@ -44,54 +26,27 @@ class TailBoomAero(Model):
         mu = self.mu = state.mu
 
         return [
-            Re == V * rho * l / mu,
-            Cf >= 0.455 / Re**0.3,
+            self.Re == V * rho * l / mu,
+            self.Cf >= 0.455 / self.Re**0.3,
         ]
 
 
 class TailBoomState(Model):
-    """Tail Boom Loading State
+    "Tail Boom Loading State"
 
-    Variables
-    ---------
-    rhosl           1.225           [kg/m^3]    air density at sea level
-    Vne             40              [m/s]       never exceed vehicle speed
+    rhosl = Var("kg/m^3", "air density at sea level", value=1.225)
+    Vne = Var("m/s", "never exceed vehicle speed", value=40)
 
-    LaTex Strings
-    -------------
-    rhosl           \\rho_{\\mathrm{sl}}
-    Vne             V_{\\mathrm{NE}}
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self):
         pass
 
 
 class VerticalBoomTorsion(Model):
-    """Tail Boom Torsion from Vertical Tail
+    "Tail Boom Torsion from Vertical Tail"
 
-    Variables
-    ---------
-    T                           [N*m]       vertical tail moment
-    taucfrp         210         [MPa]       torsional stress limit of carbon
+    T = Var("N*m", "vertical tail moment")
+    taucfrp = Var("MPa", "torsional stress limit of carbon", value=210)
 
-    Upper Unbounded
-    ---------------
-    J
-
-    Lower Unbounded
-    ---------------
-    d0, b, S
-
-    LaTex Strings
-    -------------
-    taucfrp     \\tau_{\\mathrm{CFRP}}
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, tailboom, vtail, state):
         J = self.J = tailboom.J
         d0 = self.d0 = tailboom.d
@@ -102,45 +57,19 @@ class VerticalBoomTorsion(Model):
         CLmax = vtail.planform.CLmax
 
         return [
-            T >= 0.5 * rhosl * Vne**2 * S * CLmax * b,
-            taucfrp >= T * d0 / 2 / J,
+            self.T >= 0.5 * rhosl * Vne**2 * S * CLmax * b,
+            self.taucfrp >= self.T * d0 / 2 / J,
         ]
 
 
 class TailBoomBending(Model):
-    """Tail Boom Bending
+    "Tail Boom Bending"
 
-    Variables
-    ---------
-    F                       [N]     tail force
-    th                      [-]     tail boom deflection angle
-    kappa           0.1     [-]     max tail boom deflection
-    Nsafety         1.0     [-]     safety load factor
+    F = Var("N", "tail force")
+    th = Var("-", "tail boom deflection angle")
+    kappa = Var("-", "max tail boom deflection", value=0.1)
+    Nsafety = Var("-", "safety load factor", value=1.0)
 
-    Variables of length tailboom.N-1
-    --------------------------------
-    Mr                      [N*m]   section root moment
-
-
-    Upper Unbounded
-    ---------------
-    tailboom.I0, tailboom.Sy
-    tailboom.J (if tailboomJ), tailboom.I
-
-    Lower Unbounded
-    ---------------
-    htail.planform.S, htail.planform.CLmax
-    tailboom.l, tailboom.deta
-    state.qne
-
-    LaTex Strings
-    -------------
-    th      \\theta
-    thmax   \\theta_{\\mathrm{max}}
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, tailboom, htail, state):
         N = self.N = tailboom.N
         self.state = state
@@ -150,6 +79,8 @@ class TailBoomBending(Model):
         Beam.qbarFun = [1e-10] * N
         Beam.SbarFun = [1.0] * N
         beam = self.beam = Beam(N)
+
+        Mr = VectorVariable(tailboom.N - 1, "Mr", "N*m", "section root moment")
 
         I = tailboom.I
         tailboom.I0 = I[0]
@@ -164,12 +95,12 @@ class TailBoomBending(Model):
 
         constraints = [
             beam.dx == deta,
-            F >= qne * S,
-            beam["\\bar{EI}"] <= E * I / F / l**2 / 2,
-            Mr >= beam["\\bar{M}"][:-1] * F * l,
+            self.F >= qne * S,
+            beam["\\bar{EI}"] <= E * I / self.F / l**2 / 2,
+            Mr >= beam["\\bar{M}"][:-1] * self.F * l,
             sigma >= Mr / Sy,
-            th == beam["\\theta"][-1],
-            beam["\\bar{\\delta}"][-1] * CLmax * Nsafety <= kappa,
+            self.th == beam["\\theta"][-1],
+            beam["\\bar{\\delta}"][-1] * CLmax * self.Nsafety <= self.kappa,
         ]
 
         self.tailboomJ = hasattr(tailboom, "J")
@@ -180,36 +111,29 @@ class TailBoomBending(Model):
 
 
 class TailBoom(TubeSpar):
-    """Tail Boom Model
+    "Tail Boom Model"
 
-    Variables
-    ---------
-    l                           [ft]        tail boom length
-    S                           [ft^2]      tail boom surface area
-    b                           [ft]        twice tail boom length
-    deta          1./(N-1)      [-]         normalized segment length
-    tau           1.0           [-]         thickness to width ratio
-    rhoA          0.15          [kg/m^2]    total aerial density
-
-    Variables of length N-1
-    -----------------------
-    cave                        [in]        average segment width
-
-    """
+    l = Var("ft", "tail boom length")
+    S = Var("ft^2", "tail boom surface area")
+    b = Var("ft", "twice tail boom length")
+    tau = Var("-", "thickness to width ratio", value=1.0)
+    rhoA = Var("kg/m^2", "total aerial density", value=0.15)
 
     flight_model = TailBoomAero
     tailLoad = TailBoomBending
     secondaryWeight = None
     spar_model = TubeSpar  # override in subclasses to swap spar type
 
-    @parse_variables(__doc__, globals())
     def setup(self, N=5):
         self.N = N
+        # deta and cave must exist before spar_model.setup() accesses surface.deta/cave
+        self.deta = Variable("deta", 1.0 / (N - 1), "-", "normalized segment length")
+        self.cave = VectorVariable(N - 1, "cave", "in", "average segment width")
         self.spar = type(self).spar_model.setup(self, N, self)
 
         if self.secondaryWeight:
-            self.weight.right += rhoA * g * S
+            self.weight.right += self.rhoA * g * self.S
 
         d0 = self.d0 = self.d[0]
 
-        return self.spar, [S == l * pi * d0, b == 2 * l]
+        return self.spar, [self.S == self.l * pi * d0, self.b == 2 * self.l]

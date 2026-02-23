@@ -1,43 +1,21 @@
 "wing skin"
 
-from gpkit import Model, parse_variables
+from gpkit import Model, Var
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import CFRPFabric
 
 
 class WingSkin(Model):
-    """Wing Skin model
+    "Wing Skin model"
 
-    Variables
-    ---------
-    W                           [lbf]           wing skin weight
-    t                           [in]            wing skin thickness
-    Jtbar           0.01114     [1/mm]          torsional moment of inertia
-    Cmw             0.121       [-]             negative wing moment coeff
-    rhosl           1.225       [kg/m^3]        sea level air density
-    Vne             45          [m/s]           never exceed vehicle speed
+    W = Var("lbf", "wing skin weight")
+    t = Var("in", "wing skin thickness")
+    Jtbar = Var("1/mm", "torsional moment of inertia", value=0.01114)
+    Cmw = Var("-", "negative wing moment coeff", value=0.121)
+    rhosl = Var("kg/m^3", "sea level air density", value=1.225)
+    Vne = Var("m/s", "never exceed vehicle speed", value=45)
 
-    Upper Unbounded
-    ---------------
-    W, surface.croot
-
-    Lower Unbounded
-    ---------------
-    surface.S
-
-    LaTex Strings
-    -------------
-    W       W_{\\mathrm{skin}}
-    t       t_{\\mathrm{skin}}
-    Jtbar   \\bar{J/t}
-    Cmw     C_{m_w}
-    rhosl   \\rho_{\\mathrm{SL}}
-    Vne     V_{\\mathrm{NE}}
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, surface):
         self.surface = surface
         self.material = CFRPFabric()
@@ -49,38 +27,28 @@ class WingSkin(Model):
         tmin = self.material.tmin
 
         return [
-            W >= rho * S * 2 * t * g,
-            t >= tmin,
-            tau >= 1 / Jtbar / croot**2 / t * Cmw * S * rhosl * Vne**2,
+            self.W >= rho * S * 2 * self.t * g,
+            self.t >= tmin,
+            tau
+            >= 1
+            / self.Jtbar
+            / croot**2
+            / self.t
+            * self.Cmw
+            * S
+            * self.rhosl
+            * self.Vne**2,
             self.material,
         ]
 
 
 class WingSecondStruct(Model):
-    """Wing Skin model
+    "Wing secondary structure model"
 
-    Variables
-    ---------
-    W                           [lbf]           wing skin weight
-    rhoA            0.35        [kg/m^2]        total aerial density
+    W = Var("lbf", "wing skin weight")
+    rhoA = Var("kg/m^2", "total aerial density", value=0.35)
 
-    Upper Unbounded
-    ---------------
-    W
-
-    Lower Unbounded
-    ---------------
-    S
-
-    LaTex Strings
-    -------------
-    W       W_{\\mathrm{skin}}
-    rhoA    \\rho_{A}
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, surface):
-        S = self.S = surface.S
+        self.S = surface.S
 
-        return [W >= rhoA * S * g]
+        return [self.W >= self.rhoA * self.S * g]

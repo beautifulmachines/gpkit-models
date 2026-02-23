@@ -1,49 +1,24 @@
 "tube spar"
 
-from gpkit import Model, parse_variables
+from gpkit import Model, Var, Variable, VectorVariable
 from numpy import pi
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import CFRPFabric
 
+# pylint: disable=invalid-name
+
 
 class TubeSpar(Model):
-    """Tail Boom Model
+    "Tail Boom Model"
 
-    Variables
-    ---------
-    mfac        1.0             [-]         weight margin factor
-    k           0.8             [-]         taper index
-    kfac        self.minusk2    [-]         (1-k/2)
-    W                           [lbf]       spar weight
-
-    Variables of length N-1
-    -----------------------
-    I                           [m^4]       moment of inertia
-    d                           [in]        diameter
-    t                           [in]        thickness
-    dm                          [kg]        segment mass
-    Sy                          [m^3]       section modulus
-
-    Upper Unbounded
-    ---------------
-    W
-
-    Lower Unbounded
-    ---------------
-    J, l, I0
-
-    LaTex Strings
-    -------------
-    kfac        (1-k/2)
-    mfac        m_{\\mathrm{fac}}
-
-    """
+    mfac = Var("-", "weight margin factor", value=1.0)
+    k = Var("-", "taper index", value=0.8)
+    W = Var("lbf", "spar weight")
 
     def minusk2(self, c):
         return 1 - c[self.k] / 2.0
 
-    @parse_variables(__doc__, globals())
     def setup(self, N, surface):
         self.material = CFRPFabric()
         deta = surface.deta
@@ -51,7 +26,16 @@ class TubeSpar(Model):
         rho = self.material.rho
         l = surface.l
 
-        self.weight = W / mfac >= g * dm.sum()
+        # kfac uses a linked function — must be created inside setup
+        kfac = self.kfac = Variable("kfac", self.minusk2, "-", "(1-k/2)")
+
+        I = self.I = VectorVariable(N - 1, "I", "m^4", "moment of inertia")
+        d = self.d = VectorVariable(N - 1, "d", "in", "diameter")
+        t = self.t = VectorVariable(N - 1, "t", "in", "thickness")
+        dm = self.dm = VectorVariable(N - 1, "dm", "kg", "segment mass")
+        Sy = self.Sy = VectorVariable(N - 1, "Sy", "m^3", "section modulus")
+
+        self.weight = self.W / self.mfac >= g * dm.sum()
 
         return [
             I <= pi * t * d**3 / 8.0,

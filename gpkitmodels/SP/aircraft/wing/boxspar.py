@@ -1,24 +1,19 @@
 "box spar"
 
-from gpkit import SignomialsEnabled, parse_variables
+from gpkit import SignomialsEnabled, VectorVariable
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar as BoxSparGP
 
-# pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+# pylint: disable=invalid-name
 
 
 class BoxSpar(BoxSparGP):
-    """Box Spar Model
+    "Box Spar Model"
 
-    Variables of length N-1
-    -----------------------
-    J                       [m^4]       spar x polar moment of inertia
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, N, surface):
         self.boxspar = BoxSparGP.setup(self, N=N, surface=surface)
+
+        J = self.J = VectorVariable(N - 1, "J", "m^4", "spar x polar moment of inertia")
 
         cave = self.cave
         tau = self.tau
