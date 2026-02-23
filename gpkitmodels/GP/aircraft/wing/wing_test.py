@@ -1,28 +1,21 @@
 "wing test"
 
-from gpkit import Model, Vectorize, parse_variables
+from gpkit import Model, Var, Vectorize
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing import Wing
 
-# pylint: disable=no-member, exec-used
-
 
 class FlightState(Model):
-    """Flight State
+    "Flight State"
 
-    Variables
-    ---------
-    V           50      [m/s]        airspeed
-    rho         1.255   [kg/m^3]     air density
-    mu          1.5e-5  [N*s/m**2]   air viscosity
-    qne                 [kg/s^2/m]   never exceed dynamic pressure
+    V = Var("m/s", "airspeed", value=50)
+    rho = Var("kg/m^3", "air density", value=1.255)
+    mu = Var("N*s/m**2", "air viscosity", value=1.5e-5)
+    qne = Var("kg/s^2/m", "never exceed dynamic pressure")
 
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self):
-        return [qne == V**2 * rho * 1.2]
+        return [self.qne == self.V**2 * self.rho * 1.2]
 
 
 def wing_test():

@@ -26,8 +26,7 @@ def ME_eta_test():
 
     fs = FlightState()
     p = Propeller()
-    p.flight_model = BladeElementProp
-    pp = p.flight_model(p, fs)
+    pp = BladeElementProp(p, fs)
     pp.substitutions[pp.T] = 100
     pp.cost = (
         1.0 / pp.eta + pp.Q / (1000.0 * units("N*m")) + p.T_m / (1000 * units("N"))
