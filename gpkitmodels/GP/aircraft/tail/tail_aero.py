@@ -3,37 +3,17 @@
 import os
 
 import pandas as pd
-from gpkit import Model, parse_variables
+from gpkit import Model, Var
 
 from gpkitmodels.tools.fit_constraintset import FitCS
 
-# pylint: disable=exec-used, attribute-defined-outside-init, undefined-variable
-# pylint: disable=no-member
-
 
 class TailAero(Model):
-    """Tail Aero Model
+    "Tail Aero Model"
 
-    Variables
-    ---------
-    Re          [-]     Reynolds number
-    Cd          [-]     drag coefficient
+    Re = Var("-", "Reynolds number")
+    Cd = Var("-", "drag coefficient")
 
-    Upper Unbounded
-    ---------------
-    Cd, Re, S, V, b, rho
-
-    Lower Unbounded
-    ---------------
-    S, tau, V, b, rho
-
-    LaTex Strings
-    -------------
-    Cd      C_d
-
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, static, state):
         self.state = state
 
@@ -50,10 +30,8 @@ class TailAero(Model):
         ]
 
         constraints = [
-            Re == V * rho * S / b / mu,
-            # XfoilFit(fd, Cd, [Re, static["\\tau"]],
-            #          err_margin="RMS", airfoil="naca 0008")
-            FitCS(fd, Cd, [Re, tau], err_margin="RMS"),
+            self.Re == V * rho * S / b / mu,
+            FitCS(fd, self.Cd, [self.Re, tau], err_margin="RMS"),
         ]
 
         return constraints

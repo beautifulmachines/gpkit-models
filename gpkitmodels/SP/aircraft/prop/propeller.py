@@ -8,8 +8,8 @@ from gpkit import (
     Model,
     SignomialEquality,
     SignomialsEnabled,
+    Var,
     Vectorize,
-    parse_variables,
 )
 from gpkit.constraints.tight import Tight as TCS
 from numpy import pi
@@ -18,39 +18,34 @@ from gpkitmodels.tools.fit_constraintset import FitCS
 
 
 class BladeElementPerf(Model):
-    """Single element of a propeller blade
+    "Single element of a propeller blade"
 
-    Variables
-    ---------
-    dT                      [lbf]       thrust
-    eta_i                   [-]         local induced efficiency
-    dQ                      [N*m]       torque
-    omega                   [rpm]       propeller rotation rate
-    Wa                      [m/s]       Axial total relative velocity
-    Wt                      [m/s]       Tangential total relative velocity
-    Wr                      [m/s]       Total relative velocity
-    va                      [m/s]       Axial induced velocity
-    vt                      [m/s]       Tangential induced velocity
-    G                       [m^2/s]     Circulation
-    cl                      [-]         local lift coefficient
-    cd                      [-]         local drag coefficient
-    B           2           [-]         number of blades
-    r                       [m]         local radius
-    lam_w                   [-]         advance ratio
-    eps                     [-]         blade efficiency
-    AR_b                    [-]         blade aspect ratio
-    AR_b_max    50          [-]         max blade aspect ratio
-    Re                      [-]         blade reynolds number
-    f                       [-]         intermediate tip loss variable
-    F                       [-]         Prandtl tip loss factor
-    cl_max      .6          [-]         max airfoil cl
-    dr                      [m]         length of blade element
-    M                       [-]         Mach number
-    a           295         [m/s]       Speed of sound at altitude
+    dT = Var("lbf", "thrust")
+    eta_i = Var("-", "local induced efficiency")
+    dQ = Var("N*m", "torque")
+    omega = Var("rpm", "propeller rotation rate")
+    Wa = Var("m/s", "Axial total relative velocity")
+    Wt = Var("m/s", "Tangential total relative velocity")
+    Wr = Var("m/s", "Total relative velocity")
+    va = Var("m/s", "Axial induced velocity")
+    vt = Var("m/s", "Tangential induced velocity")
+    G = Var("m^2/s", "Circulation")
+    cl = Var("-", "local lift coefficient")
+    cd = Var("-", "local drag coefficient")
+    B = Var("-", "number of blades", value=2)
+    r = Var("m", "local radius")
+    lam_w = Var("-", "advance ratio")
+    eps = Var("-", "blade efficiency")
+    AR_b = Var("-", "blade aspect ratio")
+    AR_b_max = Var("-", "max blade aspect ratio", value=50)
+    Re = Var("-", "blade reynolds number")
+    f = Var("-", "intermediate tip loss variable")
+    F = Var("-", "Prandtl tip loss factor")
+    cl_max = Var("-", "max airfoil cl", value=0.6)
+    dr = Var("m", "length of blade element")
+    M = Var("-", "Mach number")
+    a = Var("m/s", "Speed of sound at altitude", value=295)
 
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, static, state):
         V = state.V
         rho = state.rho
@@ -61,13 +56,44 @@ class BladeElementPerf(Model):
             0
         ]
         c = static.c
+
+        dT, eta_i, dQ, omega, Wa, Wt, Wr, va, vt = (
+            self.dT,
+            self.eta_i,
+            self.dQ,
+            self.omega,
+            self.Wa,
+            self.Wt,
+            self.Wr,
+            self.va,
+            self.vt,
+        )
+        G, cl, cd, B, r, lam_w, eps, AR_b, AR_b_max = (
+            self.G,
+            self.cl,
+            self.cd,
+            self.B,
+            self.r,
+            self.lam_w,
+            self.eps,
+            self.AR_b,
+            self.AR_b_max,
+        )
+        Re, f, F, cl_max, dr, M, a = (
+            self.Re,
+            self.f,
+            self.F,
+            self.cl_max,
+            self.dr,
+            self.M,
+            self.a,
+        )
+
         constraints = [
             TCS([Wa >= V + va]),
             TCS([Wt + vt <= omega * r]),
             TCS([G == (1.0 / 2.0) * Wr * c * cl]),
-            F
-            == (2.0 / pi)
-            * (1.01116 * f**0.0379556) ** (10),  # This is the GP fit of arccos(exp(-f))
+            F == (2.0 / pi) * (1.01116 * f**0.0379556) ** (10),
             M == Wr / a,
             lam_w == (r / R) * (Wa / Wt),
             va == vt * (Wt / Wa),
@@ -96,20 +122,25 @@ class BladeElementPerf(Model):
 
 
 class BladeElementProp(Model):
-    """Performance for a propeller with multiple elements
+    "Performance for a propeller with multiple elements"
 
-    Variables
-    ---------
-    Mtip        .5          [-]         Max tip mach number
-    omega_max   10000       [rpm]       maximum rotation rate
-    eta                     [-]         overall efficiency
-    omega                   [rpm]       rotation rate
-    T                       [lbf]       total thrust
-    Q                       [N*m]       total torque
-    """
+    Mtip = Var("-", "Max tip mach number", value=0.5)
+    omega_max = Var("rpm", "maximum rotation rate", value=10000)
+    eta = Var("-", "overall efficiency")
+    omega = Var("rpm", "rotation rate")
+    T = Var("lbf", "total thrust")
+    Q = Var("N*m", "total torque")
 
-    @parse_variables(__doc__, globals())
     def setup(self, static, state, N=5):
+        Mtip, omega_max, eta, omega, T, Q = (
+            self.Mtip,
+            self.omega_max,
+            self.eta,
+            self.omega,
+            self.T,
+            self.Q,
+        )
+
         with Vectorize(N):
             blade = BladeElementPerf(static, state)
 

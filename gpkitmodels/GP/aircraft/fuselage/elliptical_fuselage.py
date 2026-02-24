@@ -1,25 +1,20 @@
 "elliptical fuselage.py"
 
 import numpy as np
-from gpkit import Model, parse_variables
+from gpkit import Model, Var
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import cfrpfabric
 
 
 class FuselageAero(Model):
-    """Fuselage Aerodyanmic Model
+    "Fuselage Aerodynamic Model"
 
-    Variables
-    ---------
-    Cf              [-]         fuselage skin friction coefficient
-    Re              [-]         fuselage reynolds number
-    Cd              [-]         fuselage drag coefficient
-    mfac    1.0     [-]         fuselage drag margin
+    Cf = Var("-", "fuselage skin friction coefficient")
+    Re = Var("-", "fuselage reynolds number")
+    Cd = Var("-", "fuselage drag coefficient")
+    mfac = Var("-", "fuselage drag margin", value=1.0)
 
-    """
-
-    @parse_variables(__doc__, globals())
     def setup(self, static, state):
         V = state.V
         rho = state.rho
@@ -28,50 +23,45 @@ class FuselageAero(Model):
         k = static.k
 
         constraints = [
-            Re == V * rho * l / mu,
-            Cf >= 0.455 / Re**0.3,
-            Cd / mfac >= Cf * k,
+            self.Re == V * rho * l / mu,
+            self.Cf >= 0.455 / self.Re**0.3,
+            self.Cd / self.mfac >= self.Cf * k,
         ]
 
         return constraints
 
 
 class Fuselage(Model):
-    """Fuselage Model
+    "Fuselage Model"
 
-    Variables
-    ---------
-    R                   [ft]            fuselage radius
-    l                   [ft]            fuselage length
-    S                   [ft^2]          wetted fuselage area
-    W                   [lbf]           fuselage weight
-    mfac    2.0         [-]             fuselage weight margin factor
-    f                   [-]             fineness ratio of lenth to diameter
-    k                   [-]             fuselage form factor
-    Vol                 [ft^3]          fuselae volume
-    rhofuel 6.01        [lbf/gallon]    density of 100LL
-    rhocfrp 1.6         [g/cm^3]        density of CFRP
-    t                   [in]            fuselage skin thickness
-    nply    2           [-]             number of plys
-
-    """
+    R = Var("ft", "fuselage radius")
+    l = Var("ft", "fuselage length")
+    S = Var("ft^2", "wetted fuselage area")
+    W = Var("lbf", "fuselage weight")
+    mfac = Var("-", "fuselage weight margin factor", value=2.0)
+    f = Var("-", "fineness ratio of length to diameter")
+    k = Var("-", "fuselage form factor")
+    Vol = Var("ft^3", "fuselage volume")
+    rhofuel = Var("lbf/gallon", "density of 100LL", value=6.01)
+    rhocfrp = Var("g/cm^3", "density of CFRP", value=1.6)
+    t = Var("in", "fuselage skin thickness")
+    nply = Var("-", "number of plys", value=2)
 
     material = cfrpfabric
     flight_model = FuselageAero
 
-    @parse_variables(__doc__, globals())
     def setup(self):
         rhocfrp = self.material.rho
         tmin = self.material.tmin
 
         constraints = [
-            f == l / R / 2,
-            k >= 1 + 60 / f**3 + f / 400,
-            3 * (S / np.pi) ** 1.6075
-            >= 2 * (l * R * 2) ** 1.6075 + (2 * R) ** (2 * 1.6075),
-            Vol <= 4 * np.pi / 3 * (l / 2) * R**2,
-            W / mfac >= S * rhocfrp * t * g,
-            t >= nply * tmin,
+            self.f == self.l / self.R / 2,
+            self.k >= 1 + 60 / self.f**3 + self.f / 400,
+            3 * (self.S / np.pi) ** 1.6075
+            >= 2 * (self.l * self.R * 2) ** 1.6075 + (2 * self.R) ** (2 * 1.6075),
+            self.Vol <= 4 * np.pi / 3 * (self.l / 2) * self.R**2,
+            self.W / self.mfac >= self.S * rhocfrp * self.t * g,
+            self.t >= self.nply * tmin,
             self.material,
         ]
 

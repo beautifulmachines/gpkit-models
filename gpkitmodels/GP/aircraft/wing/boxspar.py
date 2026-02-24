@@ -1,6 +1,6 @@
 "box spar"
 
-from gpkit import Model, parse_variables
+from gpkit import Model, Var, Variable, VectorVariable
 
 from gpkitmodels import g
 from gpkitmodels.GP.materials import CFRPUD, CFRPFabric, FoamHD
@@ -8,65 +8,28 @@ from gpkitmodels.GP.materials import CFRPUD, CFRPFabric, FoamHD
 from .gustloading import GustL
 from .sparloading import SparLoading
 
-# pylint: disable=exec-used, undefined-variable, unused-argument, invalid-name
+# pylint: disable=invalid-name
 
 
 class BoxSpar(Model):
-    """Box Spar Model
+    "Box Spar Model"
 
-    Scalar Variables
-    ----------------
-    W                       [lbf]       spar weight
-    wlim            0.15    [-]         spar width to chord ratio
-    mfac            0.97    [-]         curvature knockdown factor
-    tcoret          0.02    [-]         core to thickness ratio
-
-    Variables of length N-1
-    -----------------------
-    hin                     [in]        height between caps
-    I                       [m^4]       spar x moment of inertia
-    Sy                      [m^3]       section modulus
-    dm                      [kg]        segment spar mass
-    w                       [in]        spar width
-    d                       [in]        cross sectional diameter
-    t                       [in]        spar cap thickness
-    tshear                  [in]        shear web thickness
-    tcore                   [in]        core thickness
-
-    SKIP VERIFICATION
-
-    Upper Unbounded
-    ---------------
-    W
-
-    Lower Unbounded
-    ---------------
-    Sy, b, J, surface.deta
-
-    LaTex Strings
-    -------------
-    wlim                    w_{\\mathrm{lim}}
-    mfac                    m_{\\mathrm{fac}}
-    hin                     h_{\\mathrm{in}_i}
-    I                       I_i
-    Sy                      S_{y_i}
-    dm                      \\Delta{m}
-    w                       w_i
-    t                       t_i
-    tshear                  t_{\\mathrm{shear}_i}
-    tcoret                  (t_{\\mathrm{core}}/t)
-
-    """
+    W = Var("lbf", "spar weight")
 
     loading = SparLoading
     gustloading = GustL
 
-    @parse_variables(__doc__, globals())
     def setup(self, N, surface):
         self.surface = surface
         self.material = CFRPUD()
         self.shearMaterial = CFRPFabric()
         self.coreMaterial = FoamHD()
+
+        # These must be created inside setup so they exist when BoxSpar.setup
+        # is called as an unbound method on a TailBoom (not a BoxSpar subclass).
+        wlim = self.wlim = Variable("wlim", 0.15, "-", "spar width to chord ratio")
+        mfac = self.mfac = Variable("mfac", 0.97, "-", "curvature knockdown factor")
+        tcoret = self.tcoret = Variable("tcoret", 0.02, "-", "core to thickness ratio")
 
         b = self.b = surface.b
         cave = self.cave = surface.cave
@@ -78,7 +41,17 @@ class BoxSpar(Model):
         tshearmin = self.shearMaterial.tmin
         tmin = self.material.tmin
 
-        self.weight = W >= 2 * dm.sum() * g
+        hin = VectorVariable(N - 1, "hin", "in", "height between caps")
+        I = self.I = VectorVariable(N - 1, "I", "m^4", "spar x moment of inertia")
+        Sy = self.Sy = VectorVariable(N - 1, "Sy", "m^3", "section modulus")
+        dm = VectorVariable(N - 1, "dm", "kg", "segment spar mass")
+        w = VectorVariable(N - 1, "w", "in", "spar width")
+        d = self.d = VectorVariable(N - 1, "d", "in", "cross sectional diameter")
+        t = VectorVariable(N - 1, "t", "in", "spar cap thickness")
+        tshear = VectorVariable(N - 1, "tshear", "in", "shear web thickness")
+        tcore = VectorVariable(N - 1, "tcore", "in", "core thickness")
+
+        self.weight = self.W >= 2 * dm.sum() * g
 
         constraints = [
             I / mfac <= w * t * hin**2,

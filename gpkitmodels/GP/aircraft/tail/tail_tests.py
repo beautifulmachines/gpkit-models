@@ -118,9 +118,12 @@ def test_tailboom_mod():
     bw = Variable("b_w", 20, "ft", "wing span")
     cmac = Variable("cmac", 15, "in", "wing MAC")
     cmax = Variable("cmax", 5, "in", "max width")
-    TailBoom.__bases__ = (BoxSpar,)
-    TailBoom.secondaryWeight = True
-    emp = Empennage(N=5)
+
+    class _BoxSparTailBoom(TailBoom):
+        spar_model = BoxSpar
+        secondaryWeight = True
+
+    emp = Empennage(N=5, tailboom_cls=_BoxSparTailBoom)
     fs = FlightState()
     emp.substitutions.update(
         {
