@@ -1,7 +1,7 @@
 "cylindrical fuselage.py"
 
 import numpy as np
-from gpkit import Model, Variable
+from gpkit import Model, Var
 
 from .fuel_tank import FuelTank
 from .fuselage_skin import FuselageSkin
@@ -10,42 +10,44 @@ from .fuselage_skin import FuselageSkin
 class Fuselage(Model):
     "The thing that carries the fuel, engine, and payload"
 
+    R = Var("ft", "fuselage radius")
+    l = Var("ft", "fuselage length")
+    S = Var("ft^2", "fuselage cross sectional area")
+    W = Var("lbf", "Fuselage weight")
+    mfac = Var("-", "Fuselage weight margin factor", value=2.1)
+    l_body = Var("ft", "center body length")
+    k_body = Var("-", "fuselage body length to radius ratio")
+    k_nose = Var("-", "fuselage nose length to radius ratio")
+    k_bulk = Var("-", "fuselage bulk length to radius ratio")
+    S_wet = Var("ft**2", "fuselage wetted area")
+    S_body = Var("ft**2", "wetted surface area of body")
+    S_nose = Var("ft**2", "wetted surface area of nose")
+    S_bulk = Var("ft**2", "wetted surface area of bulk")
+    Vol_body = Var("ft**3", "volume of body")
+
     def setup(self, Wfueltot):
-
-        R = Variable("R", "ft", "fuselage radius")
-        l = Variable("l", "ft", "fuselage length")
-        S = Variable("S", "ft^2", "fuselage cross sectional area")
-        W = Variable("W", "lbf", "Fuselage weight")
-        mfac = Variable("m_{fac}", 2.1, "-", "Fuselage weight margin factor")
-        lbody = Variable("l_{body}", "ft", "center body length")
-        kbody = Variable("k_{body}", "-", "fuselage body length to radius ratio")
-        knose = Variable("k_{nose}", "-", "fuselage nose length to radius ratio")
-        kbulk = Variable("k_{bulk}", "-", "fuselage bulk length to radius ratio")
-        Swet = Variable("S_{wet}", "ft**2", "fuselage wetted area")
-        Sbody = Variable("S_{body}", "ft**2", "wetted surface area of body")
-        Snose = Variable("S_{nose}", "ft**2", "wetted surface area of nose")
-        Sbulk = Variable("S_{bulk}", "ft**2", "wetted surface area of bulk")
-        Volbody = Variable("\\mathcal{V}_{body}", "ft**3", "volume of body")
-
         self.fueltank = FuelTank(Wfueltot)
-        self.skin = FuselageSkin(Swet, R, lbody)
+        self.skin = FuselageSkin(self.S_wet, self.R, self.l_body)
         self.components = [self.fueltank, self.skin]
 
         constraints = [
-            kbody == lbody / R,
-            Swet >= Sbody + Snose + Sbulk,
-            Sbody >= 2 * np.pi * R * lbody,
-            Snose ** (8.0 / 5.0)
+            self.k_body == self.l_body / self.R,
+            self.S_wet >= self.S_body + self.S_nose + self.S_bulk,
+            self.S_body >= 2 * np.pi * self.R * self.l_body,
+            self.S_nose ** (8.0 / 5.0)
             >= (
-                (2 * np.pi * R**2) ** (8.0 / 5.0)
-                * (1.0 / 3.0 + 2.0 / 3.0 * (knose) ** (8.0 / 5.0))
+                (2 * np.pi * self.R**2) ** (8.0 / 5.0)
+                * (1.0 / 3.0 + 2.0 / 3.0 * (self.k_nose) ** (8.0 / 5.0))
             ),
-            Sbulk >= R**2 * (0.012322 * kbulk**2 + 1.524925 * kbulk + 0.502498),
-            Volbody <= np.pi * R**2 * lbody,
-            l <= 3 * R * (kbody * knose * kbulk) ** (1.0 / 3),
-            S >= np.pi * R**2,
-            Volbody >= self.fueltank["\\mathcal{V}"],
-            W / mfac >= self.fueltank["W"] + self.skin["W"],
+            self.S_bulk
+            >= self.R**2
+            * (0.012322 * self.k_bulk**2 + 1.524925 * self.k_bulk + 0.502498),
+            self.Vol_body <= np.pi * self.R**2 * self.l_body,
+            self.l
+            <= 3 * self.R * (self.k_body * self.k_nose * self.k_bulk) ** (1.0 / 3),
+            self.S >= np.pi * self.R**2,
+            self.Vol_body >= self.fueltank.Vol,
+            self.W / self.mfac >= self.fueltank.W + self.skin.W,
         ]
 
         return self.components, constraints
@@ -61,48 +63,45 @@ class FuselageLoading(Model):
     "fuselage loading cases"
 
     def setup(self, fuselage, Wcent):
-
         loading = [fuselage.skin.loading(Wcent)]
         loading.append(fuselage.skin.landing(Wcent))
-
         return loading
 
 
 class FuselageAero(Model):
     "fuselage drag model"
 
+    Cf = Var("-", "fuselage skin friction coefficient")
+    Re = Var("-", "fuselage reynolds number")
+    Re_ref = Var("-", "reference Reynolds number", value=1e6)
+    Cf_ref = Var("-", "reference skin friction coefficient")
+    Cd = Var("-", "fuselage drag coefficient")
+
     def setup(self, static, state):
-
-        Cf = Variable("C_f", "-", "fuselage skin friction coefficient")
-        Re = Variable("Re", "-", "fuselage reynolds number")
-        Reref = Variable("Re_{ref}", 1e6, "-", "reference Reynolds number")
-        Cfref = Variable("C_{r_{ref}}", "-", "reference skin friction coefficient")
-        Cd = Variable("C_d", "-", "fuselage drag coefficient")
-
         constraints = [
-            Re == state["V"] * state["\\rho"] * static["l"] / state["\\mu"],
-            Cf >= 0.455 / Re**0.3,
-            Cfref == 0.455 / Reref**0.3,
-            Cd**0.996232
-            >= Cf
-            / Cfref
+            self.Re == state["V"] * state["\\rho"] * static.l / state["\\mu"],
+            self.Cf >= 0.455 / self.Re**0.3,
+            self.Cf_ref == 0.455 / self.Re_ref**0.3,
+            self.Cd**0.996232
+            >= self.Cf
+            / self.Cf_ref
             * (
                 0.00243049
-                * static["k_{body}"] ** 0.033607
-                * static["k_{nose}"] ** 1.21682
-                * static["k_{bulk}"] ** 0.306251
+                * static.k_body**0.033607
+                * static.k_nose**1.21682
+                * static.k_bulk**0.306251
                 + 0.00255095
-                * static["k_{body}"] ** -0.0316887
-                * static["k_{nose}"] ** -0.585489
-                * static["k_{bulk}"] ** 1.15394
+                * static.k_body**-0.0316887
+                * static.k_nose**-0.585489
+                * static.k_bulk**1.15394
                 + 0.0436011
-                * static["k_{body}"] ** 0.0545722
-                * static["k_{nose}"] ** 0.258228
-                * static["k_{bulk}"] ** -1.42664
+                * static.k_body**0.0545722
+                * static.k_nose**0.258228
+                * static.k_bulk**-1.42664
                 + 0.00970479
-                * static["k_{body}"] ** 0.8661
-                * static["k_{nose}"] ** -0.209136
-                * static["k_{bulk}"] ** -0.156166
+                * static.k_body**0.8661
+                * static.k_nose**-0.209136
+                * static.k_bulk**-0.156166
             ),
         ]
 

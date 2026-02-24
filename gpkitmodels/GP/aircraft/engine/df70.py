@@ -1,27 +1,20 @@
 "engine_model.py"
 
-from gpkit import Model, Variable
+from gpkit import Model, Var, Variable
 
 
 class DF70(Model):
     "engine model"
 
+    W = Var("lbf", "Installed/Total engine weight")
+    mfac = Var("-", "Engine weight margin factor", value=1.0)
+    bsfc_min = Var("kg/kW/hr", "minimum BSFC", value=0.3162)
+    W_df70 = Var("lbf", "Installed/Total DF70 engine weight", value=7.76)
+    P_sl_max = Var("hp", "Max shaft power at sea level", value=5.17)
+    h = Var("in", "engine height", value=12)
+
     def setup(self):
-
-        W = Variable("W", "lbf", "Installed/Total engine weight")
-        mfac = Variable("m_{fac}", 1.0, "-", "Engine weight margin factor")
-        bsfc_min = Variable(  # noqa: F841
-            "BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC"
-        )
-        Wdf70 = Variable("W_{DF70}", 7.76, "lbf", "Installed/Total DF70 engine weight")
-        Pslmax = Variable(  # noqa: F841
-            "P_{sl-max}", 5.17, "hp", "Max shaft power at sea level"
-        )
-        h = Variable("h", 12, "in", "engine height")  # noqa: F841
-
-        constraints = [W / mfac >= Wdf70]
-
-        return constraints
+        return [self.W / self.mfac >= self.W_df70]
 
     def flight_model(self, state):
         return DF70Perf(self, state)
@@ -57,14 +50,14 @@ class DF70Perf(Model):
         rpm_max = Variable("RPM_{max}", 7698, "rpm", "Maximum RPM")
 
         constraints = [
-            (bsfc / mfac / static["BSFC_{min}"]) ** 36.2209
+            (bsfc / mfac / static.bsfc_min) ** 36.2209
             >= (
                 2.31541 * (rpm / rpm_max) ** 8.06517
                 + 0.00103364 * (rpm / rpm_max) ** -38.8545
             ),
             (Ptotal / Pshaftmax) ** 0.1 == 0.999495 * (rpm / rpm_max) ** 0.294421,
             rpm <= rpm_max,
-            Pshaftmax / static["P_{sl-max}"] == Leng,
+            Pshaftmax / static.P_sl_max == Leng,
             Pshaftmax >= Ptotal,
             Ptotal >= Pshaft + Pavn / eta_alternator,
         ]
