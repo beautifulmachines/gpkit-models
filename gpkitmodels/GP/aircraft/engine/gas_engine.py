@@ -3,7 +3,7 @@
 import os
 
 import pandas as pd
-from gpkit import Model, Variable, units
+from gpkit import Model, Var, Variable, units
 
 from gpkitmodels.tools.fit_constraintset import FitCS
 
@@ -11,19 +11,16 @@ from gpkitmodels.tools.fit_constraintset import FitCS
 class Engine(Model):
     "engine model"
 
+    W = Var("lbf", "Installed/Total engine weight")
+    mfac = Var("-", "Engine weight margin factor", value=1.0)
+    bsfc_min = Var("kg/kW/hr", "minimum BSFC", value=0.3162)
+    P_ref = Var("hp", "Reference shaft power", value=10.0)
+    W_engref = Var("lbf", "Reference engine weight", value=10.0)
+    W_eng = Var("lbf", "engine weight")
+    P_sl_max = Var("hp", "Max shaft power at sea level")
+
     def setup(self, DF70=False):
-
         self.DF70 = DF70
-
-        W = Variable("W", "lbf", "Installed/Total engine weight")
-        mfac = Variable("m_{fac}", 1.0, "-", "Engine weight margin factor")
-        bsfc_min = Variable(  # noqa: F841
-            "BSFC_{min}", 0.3162, "kg/kW/hr", "minimum BSFC"
-        )
-        Pref = Variable("P_{ref}", 10.0, "hp", "Reference shaft power")
-        Wengref = Variable("W_{eng-ref}", 10.0, "lbf", "Reference engine weight")
-        Weng = Variable("W_{eng}", "lbf", "engine weight")
-        Pslmax = Variable("P_{sl-max}", "hp", "Max shaft power at sea level")
 
         path = os.path.dirname(__file__)
         df = pd.read_csv(path + os.sep + "power_lawfit.csv").to_dict(orient="records")[
@@ -31,8 +28,8 @@ class Engine(Model):
         ]
 
         constraints = [
-            FitCS(df, Weng / Wengref, [Pslmax / Pref]),
-            W / mfac >= 2.572 * Weng**0.922 * units("lbf") ** 0.078,
+            FitCS(df, self.W_eng / self.W_engref, [self.P_sl_max / self.P_ref]),
+            self.W / self.mfac >= 2.572 * self.W_eng**0.922 * units("lbf") ** 0.078,
         ]
 
         return constraints
@@ -73,8 +70,8 @@ class EnginePerf(Model):
         ]
 
         constraints = [
-            FitCS(df, bsfc / mfac / static["BSFC_{min}"], [Ptotal / Pshaftmax]),
-            Pshaftmax / static["P_{sl-max}"] == Leng,
+            FitCS(df, bsfc / mfac / static.bsfc_min, [Ptotal / Pshaftmax]),
+            Pshaftmax / static.P_sl_max == Leng,
             Pshaftmax >= Ptotal,
             Ptotal >= Pshaft + Pavn / eta_alternator,
         ]
