@@ -27,9 +27,9 @@ class SummingConstraintSet(ConstraintSet):
                 if var.name == varname:
                     twovars += 1
             if twovars > 1:
-                for dvar in model.variables_byname(varname):
+                for dvar in model.varkeys.by_name(varname):
                     if model.lineage == dvar.lineage:
-                        mvars = dvar
+                        mvars = model[dvar]
             else:
                 mvars = model[varname]
             if not hasattr(mvars, "__len__"):
