@@ -1,3 +1,4 @@
+import pytest
 from gpkit import Model
 
 from gpkitmodels.GP.aircraft.fuselage.elliptical_fuselage import Fuselage
@@ -12,7 +13,8 @@ def test_ellp():
     f.substitutions[f.Vol] = 1.33
 
     m = Model(f.W * faero.Cd, [f, fs, faero])
-    m.solve()
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.016480, rel=1e-2)
 
 
 def test():

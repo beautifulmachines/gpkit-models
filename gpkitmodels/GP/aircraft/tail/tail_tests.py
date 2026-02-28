@@ -1,5 +1,6 @@
 "test tail models"
 
+import pytest
 from gpkit import Model, Variable
 
 from gpkitmodels.GP.aircraft.tail.empennage import Empennage
@@ -31,7 +32,8 @@ def test_htail():
     perf = ht.flight_model(ht, fs)
 
     m = Model(perf.Cd, [ht.Vh <= ht.planform.S * ht.lh / Sw / cmac, ht, fs, perf])
-    m.solve(verbosity=0)
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.003500, rel=1e-2)
 
 
 def test_vtail():
@@ -52,7 +54,8 @@ def test_vtail():
     perf = vt.flight_model(vt, fs)
 
     m = Model(perf.Cd, [vt.Vv <= vt.planform.S * vt.lv / Sw / bw, vt, fs, perf])
-    m.solve(verbosity=0)
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.003425, rel=1e-2)
 
 
 def test_emp():
@@ -109,7 +112,8 @@ def test_emp():
             ]:
                 m.substitutions[l[v]] = 1e-3
 
-    m.solve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
+    sol = m.solve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
+    assert sol.cost == pytest.approx(0.011135, rel=1e-2)
 
 
 def test_tailboom_mod():
@@ -174,7 +178,8 @@ def test_tailboom_mod():
             ]:
                 m.substitutions[l[v]] = 1e-3
 
-    m.solve(verbosity=0)
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.011294, rel=1e-2)
 
 
 def test():

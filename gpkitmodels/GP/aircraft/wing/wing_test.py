@@ -1,5 +1,6 @@
 "wing test"
 
+import pytest
 from gpkit import Model, Var, Vectorize
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
@@ -51,7 +52,8 @@ def wing_test():
             loading,
         ],
     )
-    m.solve(verbosity=0)
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.007608, rel=1e-2)
 
 
 def box_spar():
@@ -90,7 +92,8 @@ def box_spar():
             loading,
         ],
     )
-    m.solve(verbosity=0)
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(0.007166, rel=1e-2)
 
 
 def wing_aero_vectorized():

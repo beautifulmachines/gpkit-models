@@ -1,3 +1,4 @@
+import pytest
 from gpkit import Model, units
 
 from gpkitmodels.GP.aircraft.motor.motor import Motor, MotorPerf
@@ -55,18 +56,21 @@ class BladeElement_Propulsor_Test(Model):
 
 
 def actuator_propulsor_test():
-    test = Actuator_Propulsor_Test()
-    test.solve()
+    m = Actuator_Propulsor_Test()
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(28.532, rel=1e-2)
 
 
 def ME_propulsor_test():
-    test = BladeElement_Propulsor_Test()
-    _ = test.localsolve(use_leqs=False)  # cvxopt gets singular with leqs
+    m = BladeElement_Propulsor_Test()
+    sol = m.localsolve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
+    assert sol.cost == pytest.approx(25.134, rel=1e-2)
 
 
 def propulsor_test():
-    test = Propulsor_Test()
-    _ = test.solve()
+    m = Propulsor_Test()
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(2.5481, rel=1e-2)
 
 
 class Motor_P_Test(Model):
@@ -111,8 +115,9 @@ class hacker_q150_45_motor(Model):
 
 
 def motor_test():
-    test = Motor_P_Test()
-    test.solve()
+    m = Motor_P_Test()
+    sol = m.solve(verbosity=0)
+    assert sol.cost == pytest.approx(2.8103, rel=1e-2)
 
 
 def test():
