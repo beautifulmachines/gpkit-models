@@ -1,0 +1,13 @@
+# catalog.toml — model registry for gpkit-models
+#
+# Schema:
+#   module — Python import path
+#   class  — class name within that module
+#
+# All registered models must implement default() classmethod.
+# Registration implies compliance: a model cannot appear here without a passing
+# CI test via test_catalog.py.
+#
+# Note: Most gpkit-models classes are Components or Perf models requiring
+# external pressure from a parent model and cannot be registered standalone.
+# Add entries here as top-level standalone models are developed.

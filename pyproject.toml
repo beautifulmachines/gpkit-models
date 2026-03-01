@@ -57,7 +57,7 @@ line-length=88
 profile = "black"
 
 [tool.pytest.ini_options]
-testpaths = ["gpkitmodels"]
+testpaths = ["gpkitmodels", "tests"]
 python_files = ["test_*.py", "*_test.py", "*_tests.py"]
 addopts = "-v --tb=short"
 
