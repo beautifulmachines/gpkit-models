@@ -1,6 +1,6 @@
 """GPkit Models - Library of exponential cone compatible sizing models"""
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 from gpkit import Variable
 
