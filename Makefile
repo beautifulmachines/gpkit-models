@@ -11,10 +11,10 @@ format:
 
 # Testing
 test:  # Run tests with pytest
-	uv run pytest gpkitmodels -v
+	uv run pytest -v
 
 coverage:  # Run tests with coverage reporting
-	uv run pytest gpkitmodels --cov=gpkitmodels --cov-report=term-missing
+	uv run pytest --cov=gpkitmodels --cov-report=term-missing
 
 # Cleanup
 clean:
