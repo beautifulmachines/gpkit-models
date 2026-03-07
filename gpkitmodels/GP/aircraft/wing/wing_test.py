@@ -92,7 +92,7 @@ def box_spar():
             loading,
         ],
     )
-    sol = m.solve(verbosity=0)
+    sol = m.solve(verbosity=0, options={"maxiters": 200})
     assert sol.cost == pytest.approx(0.007166, rel=1e-2)
 
 
