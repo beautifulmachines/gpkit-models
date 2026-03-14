@@ -7,7 +7,7 @@ This module provides models for analyzing rocket propulsion systems, including:
 - Performance analysis
 """
 
-from gpkit import Variable, units
+from gpkit import Var, units
 from gpkit.tools import te_exp_minus1
 
 from .. import PerformanceModel
@@ -23,13 +23,11 @@ class Burn(PerformanceModel):
         deltav: Variable for the required delta-V
     """
 
+    m_prop = Var("kg", "propellant mass")
+    m_co = Var("kg", "mass at cutoff")
+
     def setup(self, stage, deltav):
         """See class docstring for parameter documentation."""
         g = 9.81 * units("m/s^2")
 
-        m_prop = Variable("m_prop", "kg", "propellant mass")
-        m_co = Variable("m_co", "kg", "mass at cutoff")
-
-        constraints = [m_prop / m_co >= te_exp_minus1(deltav / g / stage["ISP"], 3)]
-
-        return constraints
+        return [self.m_prop / self.m_co >= te_exp_minus1(deltav / g / stage.ISP, 3)]
