@@ -110,7 +110,7 @@ def test_emp():
                 "\\bar{\\delta}_{root}",
                 "\\theta_{root}",
             ]:
-                m.substitutions[l[v]] = 1e-3
+                m.substitutions[l.beam.get_var(v)] = 1e-3
 
     sol = m.solve(verbosity=0, use_leqs=False)  # cvxopt gets singular with leqs
     assert sol.cost == pytest.approx(0.011135, rel=1e-2)
@@ -176,7 +176,7 @@ def test_tailboom_mod():
                 "\\bar{\\delta}_{root}",
                 "\\theta_{root}",
             ]:
-                m.substitutions[l[v]] = 1e-3
+                m.substitutions[l.beam.get_var(v)] = 1e-3
 
     sol = m.solve(verbosity=0)
     assert sol.cost == pytest.approx(0.011294, rel=1e-2)
