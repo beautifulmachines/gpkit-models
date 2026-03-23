@@ -23,22 +23,21 @@ class DF70(Model):
 class DF70Perf(Model):
     "engine performance model"
 
+    P_shaft = Var("hp", "Shaft power")
+    BSFC = Var("kg/kW/hr", "Brake specific fuel consumption")
+    P_avn = Var("watts", "Avionics power", value=40)
+    P_total = Var("hp", "Total power, avionics included")
+    eta_alternator = Var("-", "alternator efficiency", value=0.8)
+
     def setup(self, static, state):
 
-        Pshaft = Variable("P_{shaft}", "hp", "Shaft power")
-        bsfc = Variable("BSFC", "kg/kW/hr", "Brake specific fuel consumption")
-        Pavn = Variable("P_{avn}", 40, "watts", "Avionics power")
-        Ptotal = Variable("P_{total}", "hp", "Total power, avionics included")
-        eta_alternator = Variable(
-            "\\eta_{alternator}", 0.8, "-", "alternator efficiency"
-        )
         href_val = 1000  # shared with Variable below to stay in sync
         href = Variable("h_{ref}", href_val, "ft", "reference altitude")  # noqa: F841
         h_vals = state.substitutions["h"]
         if not hasattr(h_vals, "__len__"):
             h_vals = [h_vals]
         # L_eng = 1 - 0.035*h/h_ref (signomial, must pre-compute as constant)
-        h_units = state["h"].key.units  # pint Quantity, e.g. "1 foot"
+        h_units = state.h.key.units  # pint Quantity, e.g. "1 foot"
         lfac = [
             (-0.035 * v * h_units / (href_val * h_units)).to("").magnitude + 1.0
             for v in h_vals
@@ -50,16 +49,16 @@ class DF70Perf(Model):
         rpm_max = Variable("RPM_{max}", 7698, "rpm", "Maximum RPM")
 
         constraints = [
-            (bsfc / mfac / static.bsfc_min) ** 36.2209
+            (self.BSFC / mfac / static.bsfc_min) ** 36.2209
             >= (
                 2.31541 * (rpm / rpm_max) ** 8.06517
                 + 0.00103364 * (rpm / rpm_max) ** -38.8545
             ),
-            (Ptotal / Pshaftmax) ** 0.1 == 0.999495 * (rpm / rpm_max) ** 0.294421,
+            (self.P_total / Pshaftmax) ** 0.1 == 0.999495 * (rpm / rpm_max) ** 0.294421,
             rpm <= rpm_max,
             Pshaftmax / static.P_sl_max == Leng,
-            Pshaftmax >= Ptotal,
-            Ptotal >= Pshaft + Pavn / eta_alternator,
+            Pshaftmax >= self.P_total,
+            self.P_total >= self.P_shaft + self.P_avn / self.eta_alternator,
         ]
 
         return constraints

@@ -16,6 +16,6 @@ class Wing(WingGP):
     def setup(self, N=5):
         self.wing = WingGP.setup(self, N=N)
         with SignomialsEnabled():
-            constraints = [self.mw * (1 + 2 / self.planform["AR"]) >= 2 * np.pi]
+            constraints = [self.mw * (1 + 2 / self.planform.AR) >= 2 * np.pi]
 
         return self.wing, constraints

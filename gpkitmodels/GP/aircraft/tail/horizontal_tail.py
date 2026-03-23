@@ -31,4 +31,4 @@ class HorizontalTail(Wing):
                 {self.foam.Abar: 0.0548, self.foam.material.rho: 0.024}
             )
 
-        return self.ascs, self.mh * (1 + 2.0 / self.planform["AR"]) <= 2 * np.pi
+        return self.ascs, self.mh * (1 + 2.0 / self.planform.AR) <= 2 * np.pi

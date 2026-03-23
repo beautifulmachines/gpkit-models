@@ -96,11 +96,11 @@ class TailBoomBending(Model):
         constraints = [
             beam.dx == deta,
             self.F >= qne * S,
-            beam["\\bar{EI}"] <= E * I / self.F / l**2 / 2,
-            Mr >= beam["\\bar{M}"][:-1] * self.F * l,
+            beam.EIbar <= E * I / self.F / l**2 / 2,
+            Mr >= beam.get_var("\\bar{M}")[:-1] * self.F * l,
             sigma >= Mr / Sy,
-            self.th == beam["\\theta"][-1],
-            beam["\\bar{\\delta}"][-1] * CLmax * self.Nsafety <= self.kappa,
+            self.th == beam.get_var("\\theta")[-1],
+            beam.get_var("\\bar{\\delta}")[-1] * CLmax * self.Nsafety <= self.kappa,
         ]
 
         self.tailboomJ = hasattr(tailboom, "J")

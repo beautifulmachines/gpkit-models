@@ -21,15 +21,14 @@ class BreguetEndurance(Model):
                 [
                     self.z_bre
                     >= (
-                        perf["P_{total}"]
+                        perf.engine.P_total
                         * self.t
-                        * perf["BSFC"]
+                        * perf.engine.BSFC
                         * g
-                        / (perf["W_{end}"] * perf["W_{start}"]) ** 0.5
+                        / (perf.Wend * perf.Wstart) ** 0.5
                     )
                 ]
             ),
-            self.f_fueloil * self.W_fuel / perf["W_{end}"]
-            >= te_exp_minus1(self.z_bre, 3),
-            perf["W_{start}"] >= perf["W_{end}"] + self.W_fuel,
+            self.f_fueloil * self.W_fuel / perf.Wend >= te_exp_minus1(self.z_bre, 3),
+            perf.Wstart >= perf.Wend + self.W_fuel,
         ]

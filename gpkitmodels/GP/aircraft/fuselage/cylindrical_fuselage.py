@@ -79,7 +79,7 @@ class FuselageAero(Model):
 
     def setup(self, static, state):
         constraints = [
-            self.Re == state["V"] * state["\\rho"] * static.l / state["\\mu"],
+            self.Re == state.V * state.rho * static.l / state.mu,
             self.Cf >= 0.455 / self.Re**0.3,
             self.Cf_ref == 0.455 / self.Re_ref**0.3,
             self.Cd**0.996232

@@ -136,6 +136,9 @@ class Wing(Model):
     def setup(self, N=5):
         self.N = N
         self.planform = Planform(N)
+        # Convenience aliases for common planform variables
+        self.S = self.planform.S
+        self.b = self.planform.b
         self.components = []
 
         if self.skin_model:
@@ -149,6 +152,6 @@ class Wing(Model):
             self.foam = self.fill_model(self.planform)
             self.components.extend([self.foam])
 
-        constraints = [self.W / self.mfac >= sum(c["W"] for c in self.components)]
+        constraints = [self.W / self.mfac >= sum(c.W for c in self.components)]
 
         return constraints, self.planform, self.components
