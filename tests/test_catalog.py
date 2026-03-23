@@ -9,7 +9,7 @@ from gpkit.tests.test_catalog import catalog_ids, load_catalog, run_catalog_test
 
 try:
     from gpkit.tests.test_ir import ir_diff
-except ImportError:
+except (ImportError, FileNotFoundError):
     ir_diff = None
 
 _CATALOG = load_catalog(Path(__file__))
