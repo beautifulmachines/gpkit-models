@@ -69,3 +69,5 @@ branch = true
 [tool.coverage.report]
 show_missing = true
 
+[tool.uv.sources]
+gpkit-core = { path = "../gpkit-core", editable = true }
