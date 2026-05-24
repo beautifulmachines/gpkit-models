@@ -22,7 +22,7 @@ class Beam(Model):
     SbarFun = None
     MbarFun = None
 
-    def setup(self, N):
+    def setup(self, N=6):
 
         with Vectorize(N - 1):
             EIbar = self.EIbar = Variable(
