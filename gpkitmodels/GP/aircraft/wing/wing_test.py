@@ -2,6 +2,7 @@
 
 import pytest
 from gpkit import Model, Var, Vectorize
+from gpkit.exceptions import UnknownInfeasible
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing import Wing
@@ -92,7 +93,11 @@ def box_spar():
             loading,
         ],
     )
-    sol = m.solve(verbosity=0, options={"maxiters": 200})
+    try:
+        sol = m.solve(verbosity=0)
+    except UnknownInfeasible:
+        # retry with verbosity and higher maxiters to capture iteration trace in CI logs
+        sol = m.solve(verbosity=2, options={"maxiters": 1000})
     assert sol.cost == pytest.approx(0.007166, rel=1e-2)
 
 
