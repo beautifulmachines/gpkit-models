@@ -28,11 +28,6 @@ jobs:
     - name: Check for file changes
       run: |
         make check-clean
-
-#    - name: Lint with pylint
-#      run: |
-#        uv run pylint gpkitmodels
-#
-#    - name: Check with flake8
-#      run: |
-#        make lint
+    - name: Lint
+      run: |
+        make lint
