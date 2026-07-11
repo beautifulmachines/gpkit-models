@@ -30,7 +30,7 @@ class TubeSpar(Model):
             cave * tau >= d,
             4 * I**2 / A**2 / (d / 2) ** 2 + A / pi <= (d / 2) ** 2,
             Sy * (d / 2) <= I,
-            E == E,
+            E == E,  # noqa: PLR0124 (see gpkit-models#30)
         ]
 
         return constraints

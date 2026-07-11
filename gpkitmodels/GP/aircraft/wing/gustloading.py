@@ -11,8 +11,6 @@ from gpkitmodels.tools.fit_constraintset import FitCS
 
 from .sparloading import SparLoading
 
-# pylint: disable=invalid-name
-
 
 class GustL(SparLoading):
     "Gust Loading Model"

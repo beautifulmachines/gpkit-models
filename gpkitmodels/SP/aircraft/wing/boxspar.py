@@ -4,8 +4,6 @@ from gpkit import SignomialsEnabled, VectorVariable
 
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar as BoxSparGP
 
-# pylint: disable=invalid-name
-
 
 class BoxSpar(BoxSparGP):
     "Box Spar Model"

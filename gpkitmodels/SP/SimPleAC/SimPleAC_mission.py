@@ -115,7 +115,7 @@ class Fuselage(Model):
 
 
 class FuselageP(Model):
-    def setup(self, fuselage, state):
+    def setup(self, fuselage, state):  # noqa: ARG002
         # Constants
         Cfref = Variable(
             "C_{f_{fuse,ref}}",
@@ -191,7 +191,7 @@ class Wing(Model):
 
 
 class WingP(Model):
-    def setup(self, wing, state):
+    def setup(self, wing, state):  # noqa: ARG002
         self.wing = wing
         # Free Variables
         C_D_ind = Variable("C_{D_{ind}}", "-", "wing induced drag coefficient")

@@ -3,8 +3,6 @@
 from gpkit import Model, Var, VectorVariable
 from numpy import pi
 
-# pylint: disable=invalid-name
-
 
 class SparLoading(Model):
     "Spar Loading Model"

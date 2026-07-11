@@ -33,7 +33,7 @@ def wing_test():
     loading.append(W.spar.gustloading(W, fs))
     loading[1].substitutions["W"] = 100
 
-    from gpkit import settings
+    from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
         for l in loading:
@@ -73,7 +73,7 @@ def box_spar():
     loading.append(W.spar.gustloading(W, fs))
     loading[1].substitutions["W"] = 100
 
-    from gpkit import settings
+    from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
         for l in loading:

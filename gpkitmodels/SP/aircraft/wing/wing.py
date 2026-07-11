@@ -5,8 +5,6 @@ from gpkit import SignomialsEnabled, Var
 
 from gpkitmodels.GP.aircraft.wing.wing import Wing as WingGP
 
-# pylint: disable=invalid-name
-
 
 class Wing(WingGP):
     "SP wing model"
