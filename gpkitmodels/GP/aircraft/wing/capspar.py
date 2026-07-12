@@ -8,8 +8,6 @@ from gpkitmodels.GP.materials import CFRPUD, CFRPFabric, FoamHD
 from .gustloading import GustL
 from .sparloading import SparLoading
 
-# pylint: disable=invalid-name
-
 
 class CapSpar(Model):
     "Cap Spar Model"

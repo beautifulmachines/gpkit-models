@@ -6,8 +6,6 @@ from .horizontal_tail import HorizontalTail
 from .tail_boom import TailBoom
 from .vertical_tail import VerticalTail
 
-# pylint: disable=invalid-name
-
 
 class Empennage(Model):
     "empennage model, consisting of vertical, horizontal and tailboom"

@@ -2,8 +2,6 @@
 
 from gpkit import Model, Variable, Vectorize
 
-# pylint: disable=invalid-name
-
 
 class Beam(Model):
     """discretized beam bending model

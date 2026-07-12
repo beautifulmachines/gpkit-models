@@ -21,10 +21,7 @@ dependencies = [
 [dependency-groups]
 dev = [{include-group = "lint"}, {include-group = "test"}, "pre-commit>=4.0.0"]
 lint = [
-    "isort>=5.12.0",
-    "black>=24.1.0",
-    "pylint>=3.0.0",
-    "flake8>=7.0.0",
+    "ruff>=0.8.0",
 ]
 test = [
     "pytest>=8.0.0",
@@ -50,11 +47,31 @@ artifacts = [
     "gpkitmodels/GP/aircraft/tail/*.csv",
 ]
 
-[tool.black]
-line-length=88
+[tool.ruff]
+target-version = "py311"
+extend-exclude = ["gpkitmodels/misc"]  # unreferenced legacy/reference material, not maintained package code
 
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+extend-select = [
+    "I",      # import sorting, replaces isort
+    "PL",     # pylint-parity category (convention/error/refactor/warning), stable rules only
+    "ARG",    # unused-argument family
+    "BLE",    # blind-except (broad-exception-caught)
+    "UP032",  # f-string modernization
+    "S102",   # exec-used
+]
+ignore = [
+    "E741",     # ambiguous-variable-name: physics notation (l=length, I=moment of inertia)
+    "PLR2004",  # magic-value-comparison: noisy, no precedent, revisit later
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Variable() calls have side effects (registering in the model's namespace via
+# NamedVariables) independent of whether the local binding is referenced again;
+# carried forward from the old .flake8 per-file-ignores.
+# Code smell, tracked in https://github.com/beautifulmachines/gpkit-models/issues/29
+"gpkitmodels/SP/SimPleAC/SimPleAC_mission.py" = ["F841"]
+"gpkitmodels/GP/aircraft/fuselage/fuselage_profile_drag/fusedragfit.py" = ["F841"]
 
 [tool.pytest.ini_options]
 testpaths = ["gpkitmodels", "tests"]

@@ -73,7 +73,7 @@ class NotebookLoader(object):
                         cell.source
                     )
                     # run the code in themodule
-                    exec(code, mod.__dict__)
+                    exec(code, mod.__dict__)  # noqa: S102
         finally:
             self.shell.user_ns = save_user_ns
         return mod

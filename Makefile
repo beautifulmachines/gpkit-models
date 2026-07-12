@@ -2,12 +2,12 @@
 
 # Code quality
 lint:
-	uv run flake8 gpkitmodels
+	uv run ruff check gpkitmodels
 
 # Code formatting
 format:
-	uv run isort gpkitmodels
-	uv run black gpkitmodels
+	uv run ruff format gpkitmodels
+	uv run ruff check --select I --fix gpkitmodels
 
 # Testing
 test:  # Run tests with pytest
@@ -36,8 +36,8 @@ check-clean:
 # Help
 help:
 	@echo "Available commands:"
-	@echo "  lint              Run fast lint checks"
-	@echo "  format            Format code with isort and black"
+	@echo "  lint              Run lint checks"
+	@echo "  format            Format code with ruff"
 	@echo "  test              Run tests with pytest"
 	@echo "  coverage          Run tests with coverage reporting"
 	@echo "  clean             Clean build artifacts"

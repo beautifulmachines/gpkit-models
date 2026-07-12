@@ -6,7 +6,7 @@ from builtins import range
 import numpy as np
 
 
-def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):
+def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):  # noqa: PLR0913
 
     proc = subprocess.Popen([pathname], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     proc.stdin.write(
@@ -47,12 +47,12 @@ def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"
         return float(cd), float(cl), float(cm), stdout_val
 
 
-def single_cl(
+def single_cl(  # noqa: PLR0913
     CL,
     Re=1e7,
     M=0.0,
     airfoil=[],
-    pathname="/home/ckarcher/Xfoil/bin/./xfoil",
+    pathname="/home/ckarcher/Xfoil/bin/./xfoil",  # noqa: ARG001 (dead, see gpkit-models#30)
     number_of_samples=51,
     sampling_min=-10,
     sampling_max=20,
@@ -83,7 +83,7 @@ def single_cl(
         # x = blind_call(topline, alpha, Re, M)
         try:
             x = blind_call(topline, alpha, Re, M)
-        except Exception:
+        except Exception:  # noqa: BLE001
             x = [1, 1]
         if len(x) == 5:
             cd_calcl.append(x[0])

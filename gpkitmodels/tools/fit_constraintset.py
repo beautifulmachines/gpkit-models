@@ -10,10 +10,6 @@ from gpkit import (
 from numpy import abs as nabs
 from numpy import amax, array, hstack, where
 
-# pylint: disable=too-many-instance-attributes, too-many-locals,
-# pylint: disable=too-many-branches, no-member, import-error
-# pylint: disable=too-many-arguments
-
 
 class FitCS(ConstraintSet):
     """Constraint set for fitted functions
@@ -31,7 +27,7 @@ class FitCS(ConstraintSet):
 
     """
 
-    def __init__(self, fitdata, ivar=None, dvars=None, name="", err_margin=None):
+    def __init__(self, fitdata, ivar=None, dvars=None, name="", err_margin=None):  # noqa: PLR0912
 
         self.fitdata = fitdata
 
@@ -70,7 +66,7 @@ class FitCS(ConstraintSet):
         elif err_margin is None:
             self.mfac = Variable("m_{fac-" + name + "-fit}", 1.0, "-", "fit factor")
         else:
-            raise ValueError("Invalid name for err_margin: valid inputs Max, " "RMS")
+            raise ValueError("Invalid name for err_margin: valid inputs Max, RMS")
 
         if fitdata["ftype"] == "ISMA":
             # constraint of the form 1 >= c1*u1^exp1*u2^exp2*w^(-alpha) + ....
@@ -93,14 +89,13 @@ class FitCS(ConstraintSet):
                     self.constraint = lhs == rhs
             else:
                 self.constraint = lhs == rhs
-        else:
-            if hasattr(rhs, "shape"):
-                if rhs.ndim > 1:
-                    self.constraint = [(lh >= rh) for lh, rh in zip(lhs, rhs)]
-                else:
-                    self.constraint = lhs >= rhs
+        elif hasattr(rhs, "shape"):
+            if rhs.ndim > 1:
+                self.constraint = [(lh >= rh) for lh, rh in zip(lhs, rhs)]
             else:
                 self.constraint = lhs >= rhs
+        else:
+            self.constraint = lhs >= rhs
 
         self.bounds = {}
         for i, dvar in enumerate(self.dvars):
@@ -114,7 +109,7 @@ class FitCS(ConstraintSet):
 
     def get_dataframe(self):
         "return a pandas DataFrame of fit parameters"
-        import pandas as pd
+        import pandas as pd  # noqa: PLC0415
 
         df = pd.DataFrame(list(self.fitdata.values())).transpose()
         df.columns = list(self.fitdata.keys())
@@ -147,7 +142,8 @@ class FitCS(ConstraintSet):
             if direct:
                 msg = (
                     "Variable %.100s could cause inaccurate result"
-                    " because it is %s" % (dvar, state)
+                    " because it is %s"
+                    % (dvar, state)
                     + " %s bound. Solution is %.4f but"
                     " bound is %.4f" % (direct, amax([num]), bnd)
                 )
@@ -164,7 +160,7 @@ class XfoilFit(FitCS):
 
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         fitdata,
         ivar=None,
@@ -193,7 +189,7 @@ class XfoilFit(FitCS):
         if not self.airfoil:
             return
 
-        from .xfoilWrapper import xfoil_comparison
+        from .xfoilWrapper import xfoil_comparison  # noqa: PLC0415
 
         cl, re = 0.0, 0.0
         for dvar in self.dvars:

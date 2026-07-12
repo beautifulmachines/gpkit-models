@@ -8,8 +8,6 @@ from gpkitmodels.GP.beam.beam import Beam
 
 from .tube_spar import TubeSpar
 
-# pylint: disable=invalid-name
-
 
 class TailBoomAero(Model):
     "Tail Boom Aero Model"

@@ -10,8 +10,6 @@ from gpkitmodels.GP.aircraft.tail.vertical_tail import VerticalTail
 from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 
-# pylint: disable=no-member
-
 
 def test_htail():
 
@@ -101,7 +99,7 @@ def test_emp():
         ],
     )
 
-    from gpkit import settings
+    from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:
@@ -167,7 +165,7 @@ def test_tailboom_mod():
         ],
     )
 
-    from gpkit import settings
+    from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
         for l in [hbend, vbend]:

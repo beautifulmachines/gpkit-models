@@ -6,8 +6,6 @@ from numpy import pi
 from gpkitmodels import g
 from gpkitmodels.GP.materials import CFRPFabric
 
-# pylint: disable=invalid-name
-
 
 class TubeSpar(Model):
     "Tail Boom Model"

@@ -13,8 +13,6 @@ from .capspar import CapSpar
 from .wing_core import WingCore
 from .wing_skin import WingSkin
 
-# pylint: disable=invalid-name
-
 
 class Planform(Model):
     "Planform Area Definition"

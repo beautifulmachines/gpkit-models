@@ -21,7 +21,7 @@ class MotorPerf(Model):
     i = Var("amp", "current")
     v = Var("V", "voltage")
 
-    def setup(self, static, state):
+    def setup(self, static, state):  # noqa: ARG002
         Kv = static.Kv
         R = static.R
         i0 = static.i0
