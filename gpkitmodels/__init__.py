@@ -1,6 +1,12 @@
 """GPkit Models - Library of exponential cone compatible sizing models"""
 
-__version__ = "0.1.8"
+from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
+from importlib.metadata import version as _pkg_version
+
+try:
+    __version__ = _pkg_version("gpkit-models")
+except _PackageNotFoundError:  # pragma: no cover
+    __version__ = "0.0.0"
 
 from gpkit import Variable
 

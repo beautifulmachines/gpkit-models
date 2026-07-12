@@ -1,4 +1,4 @@
-.PHONY: clean check-clean test coverage lint format
+.PHONY: clean check-clean test coverage lint format release
 
 # Code quality
 lint:
@@ -33,6 +33,24 @@ check-clean:
 		echo "Working directory is clean."; \
 	fi
 
+# Releasing
+release: check-clean  # Cut a release: make release V=x.y.z
+	@if [ -z "$(V)" ]; then \
+		echo "Usage: make release V=x.y.z"; \
+		exit 1; \
+	fi
+	@echo "$(V)" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$$' || { \
+		echo "V must look like x.y.z (got '$(V)')"; \
+		exit 1; \
+	}
+	@git fetch origin main --quiet
+	@if [ "$$(git rev-parse HEAD)" != "$$(git rev-parse origin/main)" ]; then \
+		echo "HEAD is not up to date with origin/main. Pull or push first."; \
+		exit 1; \
+	fi
+	gh release create v$(V) --generate-notes
+
+
 # Help
 help:
 	@echo "Available commands:"
@@ -42,4 +60,5 @@ help:
 	@echo "  coverage          Run tests with coverage reporting"
 	@echo "  clean             Clean build artifacts"
 	@echo "  check-clean       Check no uncommitted changes"
+	@echo "  release           Cut a release (make release V=x.y.z)"
 	@echo "  help              Show this help message"
