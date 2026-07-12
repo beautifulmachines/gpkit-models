@@ -26,3 +26,33 @@ This repository contains those GP-/SP-compatible models that we consider well do
   * Atmosphere
     * [Tony Tao's fits as (efficient) signomial equalities](https://github.com/beautifulmachines/gpkit-models/blob/main/gpkitmodels/SP/atmosphere/atmosphere.py). Valid until 10,000m of altitude. 
 
+## Releasing
+
+Versions are derived automatically from git tags (via `hatch-vcs`) — there is no
+`__version__` to hand-edit and no version-bump PR to remember. `gpkitmodels.__version__`
+reflects whatever tag is checked out:
+
+- On a commit exactly at tag `v0.2.0`, with no local changes: `0.2.0`.
+- On any other commit: `0.2.1.devN+g<hash>`, where `N` is commits since the last tag.
+- With uncommitted local changes: the version always carries a dev/dirty suffix, even
+  if `HEAD` is itself tagged — so a clean `X.Y.Z` version only ever comes from a
+  committed, exactly-tagged commit.
+
+To cut a release:
+
+```bash
+make release V=0.2.0
+```
+
+or directly:
+
+```bash
+gh release create v0.2.0 --generate-notes
+```
+
+Publishing the release triggers `.github/workflows/publish.yml`, which builds the
+package (version read straight from the new tag) and uploads it to PyPI.
+
+Use plain `vMAJOR.MINOR.PATCH` tags. Bump PATCH for fixes, MINOR for backwards-compatible
+additions, MAJOR for breaking changes.
+
