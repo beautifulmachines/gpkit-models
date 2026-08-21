@@ -1,12 +1,8 @@
 "tool for importing ipython notebooks as modules"
 
-from __future__ import print_function
-
-import io
 import os
 import sys
 import types
-from builtins import object
 
 # Import Modules
 from IPython import get_ipython
@@ -34,7 +30,7 @@ def find_notebook(fullname, path=None):
             return nb_path
 
 
-class NotebookLoader(object):
+class NotebookLoader:
     """Module Loader for Jupyter Notebooks"""
 
     def __init__(self, path=None):
@@ -48,7 +44,7 @@ class NotebookLoader(object):
         print("importing Jupyter notebook from %s" % path)
 
         # load the notebook object
-        with io.open(path, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             nb = read(f, 4)
 
         # create the module and add it to sys.modules
@@ -79,7 +75,7 @@ class NotebookLoader(object):
         return mod
 
 
-class NotebookFinder(object):
+class NotebookFinder:
     """Module finder that locates Jupyter Notebooks"""
 
     def __init__(self):

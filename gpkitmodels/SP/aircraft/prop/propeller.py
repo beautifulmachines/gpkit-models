@@ -1,7 +1,6 @@
 "propeller model"
 
 import os
-from builtins import range
 
 import pandas as pd
 from gpkit import (

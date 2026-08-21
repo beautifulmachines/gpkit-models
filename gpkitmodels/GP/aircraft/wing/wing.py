@@ -13,6 +13,8 @@ from .capspar import CapSpar
 from .wing_core import WingCore
 from .wing_skin import WingSkin
 
+MODULE_DIR = dirname(abspath(__file__))
+
 
 class Planform(Model):
     "Planform Area Definition"
@@ -89,7 +91,7 @@ class WingAero(Model):
         self,
         static,
         state,
-        fitdata=dirname(abspath(__file__)) + sep + "jho_fitdata.csv",
+        fitdata=MODULE_DIR + sep + "jho_fitdata.csv",
     ):
         self.state = state
         self.static = static

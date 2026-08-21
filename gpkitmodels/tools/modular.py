@@ -31,7 +31,6 @@ class PhysicalComponent(Model):
     def setup(self):
         """This method should be overridden by subclasses to define the
         component's physical properties Variables and Constraints."""
-        pass
 
 
 class PerformanceModel(Model):
@@ -60,4 +59,3 @@ class PerformanceModel(Model):
         This method should be overridden by subclasses to define the
         performance analysis using gpkit Variables and constraints.
         """
-        pass
