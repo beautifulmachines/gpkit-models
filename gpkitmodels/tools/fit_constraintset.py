@@ -119,7 +119,7 @@ class FitCS(ConstraintSet):
         """
         make sure fit result is within bounds of fitted data
         """
-        super(FitCS, self).process_result(result)
+        super().process_result(result)
 
         if self.mfac not in result.sens.variables:
             return
@@ -160,7 +160,7 @@ class XfoilFit(FitCS):
 
     """
 
-    def __init__(  # noqa: PLR0913
+    def __init__(  # noqa: PLR0913, PLR0917
         self,
         fitdata,
         ivar=None,
@@ -170,7 +170,7 @@ class XfoilFit(FitCS):
         airfoil=False,
     ):
 
-        super(XfoilFit, self).__init__(
+        super().__init__(
             fitdata, ivar=ivar, dvars=dvars, name=name, err_margin=err_margin
         )
 
@@ -180,7 +180,7 @@ class XfoilFit(FitCS):
         """
         if data comes from Xfoil and airfoil is provided check against xfoil
         """
-        super(XfoilFit, self).process_result(result)
+        super().process_result(result)
 
         if self.mfac not in result.sens.variables:
             return

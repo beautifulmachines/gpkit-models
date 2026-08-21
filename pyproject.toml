@@ -66,14 +66,21 @@ extend-select = [
 ignore = [
     "E741",     # ambiguous-variable-name: physics notation (l=length, I=moment of inertia)
     "PLR2004",  # magic-value-comparison: noisy, no precedent, revisit later
+    "UP031",    # printf-string-formatting: 33 sites, mostly fit-generation
+                # scripts; not yet converted to f-strings, see #34
 ]
 
 [tool.ruff.lint.per-file-ignores]
+# Legacy non-snake_case module names predating the convention; renaming
+# touches import sites repo-wide (and possibly downstream users), see #35
+"gpkitmodels/SP/SimPleAC/SimPleAC.py" = ["N999"]
+"gpkitmodels/SP/SimPleAC/SimPleAC_multimission.py" = ["N999"]
+"gpkitmodels/tools/xfoilWrapper.py" = ["N999"]
 # Variable() calls have side effects (registering in the model's namespace via
 # NamedVariables) independent of whether the local binding is referenced again;
 # carried forward from the old .flake8 per-file-ignores.
 # Code smell, tracked in https://github.com/beautifulmachines/gpkit-models/issues/29
-"gpkitmodels/SP/SimPleAC/SimPleAC_mission.py" = ["F841"]
+"gpkitmodels/SP/SimPleAC/SimPleAC_mission.py" = ["F841", "N999"]
 "gpkitmodels/GP/aircraft/fuselage/fuselage_profile_drag/fusedragfit.py" = ["F841"]
 
 [tool.pytest.ini_options]

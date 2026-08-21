@@ -11,6 +11,18 @@ from gpkitmodels.GP.aircraft.wing.boxspar import BoxSpar
 from gpkitmodels.GP.aircraft.wing.wing_test import FlightState
 
 
+class EmpPerf(Model):
+    "Empennage performance: builds all sub-perf models as siblings"
+
+    def setup(self, emp, fs):
+        self.htperf = emp.htail.flight_model(emp.htail, fs)
+        self.vtperf = emp.vtail.flight_model(emp.vtail, fs)
+        self.tbperf = emp.tailboom.flight_model(emp.tailboom, fs)
+        self.hbend = emp.tailboom.tailLoad(emp.tailboom, emp.htail, fs)
+        self.vbend = emp.tailboom.tailLoad(emp.tailboom, emp.vtail, fs)
+        return [self.htperf, self.vtperf, self.tbperf, self.hbend, self.vbend]
+
+
 def test_htail():
 
     Sw = Variable("S_w", 50, "ft**2", "wing area")
@@ -76,14 +88,10 @@ def test_emp():
             emp.htail.mh: 0.01,
         }
     )
-    htperf = emp.htail.flight_model(emp.htail, fs)
-    vtperf = emp.vtail.flight_model(emp.vtail, fs)
-    tbperf = emp.tailboom.flight_model(emp.tailboom, fs)
-    hbend = emp.tailboom.tailLoad(emp.tailboom, emp.htail, fs)
-    vbend = emp.tailboom.tailLoad(emp.tailboom, emp.vtail, fs)
+    perf = EmpPerf(emp, fs)
 
     m = Model(
-        htperf.Cd + vtperf.Cd + tbperf.Cf,
+        perf.htperf.Cd + perf.vtperf.Cd + perf.tbperf.Cf,
         [
             emp.vtail.lv == emp.tailboom.l,
             emp.htail.lh == emp.tailboom.l,
@@ -91,18 +99,14 @@ def test_emp():
             emp.vtail.Vv <= emp.vtail.planform.S * emp.vtail.lv / Sw / bw,
             fs,
             emp,
-            htperf,
-            vtperf,
-            tbperf,
-            hbend,
-            vbend,
+            perf,
         ],
     )
 
     from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
-        for l in [hbend, vbend]:
+        for l in [perf.hbend, perf.vbend]:
             for v in [
                 "\\bar{M}_{tip}",
                 "\\bar{\\delta}_{root}",
@@ -141,14 +145,10 @@ def test_tailboom_mod():
             emp.tailboom.wlim: 1,
         }
     )
-    htperf = emp.htail.flight_model(emp.htail, fs)
-    vtperf = emp.vtail.flight_model(emp.vtail, fs)
-    tbperf = emp.tailboom.flight_model(emp.tailboom, fs)
-    hbend = emp.tailboom.tailLoad(emp.tailboom, emp.htail, fs)
-    vbend = emp.tailboom.tailLoad(emp.tailboom, emp.vtail, fs)
+    perf = EmpPerf(emp, fs)
 
     m = Model(
-        htperf.Cd + vtperf.Cd + tbperf.Cf,
+        perf.htperf.Cd + perf.vtperf.Cd + perf.tbperf.Cf,
         [
             emp.vtail.lv == emp.tailboom.l,
             emp.htail.lh == emp.tailboom.l,
@@ -157,18 +157,14 @@ def test_tailboom_mod():
             emp.tailboom.cave <= cmax,
             emp,
             fs,
-            htperf,
-            vtperf,
-            tbperf,
-            hbend,
-            vbend,
+            perf,
         ],
     )
 
     from gpkit import settings  # noqa: PLC0415
 
     if settings["default_solver"] == "cvxopt":
-        for l in [hbend, vbend]:
+        for l in [perf.hbend, perf.vbend]:
             for v in [
                 "\\bar{M}_{tip}",
                 "\\bar{\\delta}_{root}",

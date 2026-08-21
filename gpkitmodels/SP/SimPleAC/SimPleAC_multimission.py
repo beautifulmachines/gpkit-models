@@ -9,7 +9,7 @@ class Multimission(Model):
     def setup(self, aircraft, Nmissions, Nsegments):
         self.aircraft = aircraft
         self.missions = []
-        for i in range(0, Nmissions):
+        for i in range(Nmissions):
             self.missions.append(Mission(self.aircraft, Nsegments))
 
         # Multimission objective variables
@@ -30,7 +30,7 @@ class Multimission(Model):
         constraints = []
 
         # Setting up the missions
-        for i in range(0, Nmissions):
+        for i in range(Nmissions):
             constraints += [
                 self.missions[i]["h_{cruise_m}"] == hcruise[i],
                 self.missions[i]["Range_m"] == Range[i],
@@ -45,7 +45,7 @@ class Multimission(Model):
 
         # Multimission constraints
         constraints += [
-            W_f_mm >= sum(self.missions[i]["W_{f_m}"] for i in range(0, Nmissions))
+            W_f_mm >= sum(self.missions[i]["W_{f_m}"] for i in range(Nmissions))
         ]
 
         return constraints, self.aircraft, self.missions

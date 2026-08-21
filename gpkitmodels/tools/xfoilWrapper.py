@@ -1,12 +1,9 @@
-from __future__ import print_function
-
 import subprocess
-from builtins import range
 
 import numpy as np
 
 
-def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):  # noqa: PLR0913
+def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"):  # noqa: PLR0913, PLR0917
 
     proc = subprocess.Popen([pathname], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     proc.stdin.write(
@@ -32,7 +29,7 @@ def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"
     if "VISCAL:  Convergence failed\n" not in stdout_val:
         ostr = stdout_val.split()
         ctr = 0
-        for i in range(0, len(ostr)):
+        for i in range(len(ostr)):
             ix = len(ostr) - (i + 1)
             vl = ostr[ix]
             if vl in ["a", "CL", "CD", "Cm"]:
@@ -47,18 +44,18 @@ def blind_call(topline, cl, Re, M, max_iter=100, pathname="/usr/local/bin/xfoil"
         return float(cd), float(cl), float(cm), stdout_val
 
 
-def single_cl(  # noqa: PLR0913
+def single_cl(  # noqa: PLR0913, PLR0917
     CL,
     Re=1e7,
     M=0.0,
-    airfoil=[],
+    airfoil=None,
     pathname="/home/ckarcher/Xfoil/bin/./xfoil",  # noqa: ARG001 (dead, see gpkit-models#30)
     number_of_samples=51,
     sampling_min=-10,
     sampling_max=20,
     fitting_fraction=1.4,
 ):
-
+    airfoil = airfoil or []
     num_samples = number_of_samples
     sample_min = sampling_min
     sample_max = sampling_max

@@ -1,13 +1,11 @@
 "helpers.py"
 
-from builtins import zip
-
 from gpkit import ConstraintSet, Variable
 
 
 def summing_vars(models, varname):
     "returns a list of variables with shared varname in model list"
-    modelnames = set(m.lineage for m in models)
+    modelnames = {m.lineage for m in models}
     vkeys = []
     for m in models:
         for v in m.varkeys.keys(varname):
@@ -18,8 +16,10 @@ def summing_vars(models, varname):
 
 
 class SummingConstraintSet(ConstraintSet):
-    def __init__(self, lhs, varname, models=[], variables=[], **kwargs):
-        summedvars = set([v.key for v in variables])
+    def __init__(self, lhs, varname, models=None, variables=None, **kwargs):
+        models = models or []
+        variables = variables or []
+        summedvars = {v.key for v in variables}
         alreadysummed = set()
         for model in models:
             twovars = 0

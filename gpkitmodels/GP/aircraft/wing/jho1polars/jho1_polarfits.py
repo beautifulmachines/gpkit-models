@@ -1,7 +1,5 @@
 "jho1_polarfits.py"
 
-from builtins import range, zip
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -11,7 +9,8 @@ plt.rcParams.update({"font.size": 15})
 
 def text_to_df(filename):
     "parse XFOIL polars and concatente data in DataFrame"
-    lines = list(open(filename))
+    with open(filename) as f:
+        lines = list(f)
     for i, l in enumerate(lines):
         lines[i] = l.split("\n")[0]
         for j in 10 - np.arange(9):
