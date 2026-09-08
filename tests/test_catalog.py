@@ -43,4 +43,4 @@ def test_catalog_ir_roundtrip(model_entry):
     m2 = Model.from_ir(ir1)
     ir2 = m2.to_ir()
     diff = ir_diff(ir1, ir2)
-    assert diff is None, f"{cls.__name__} IR changed after round-trip:\n{diff}"
+    assert not diff, f"{cls.__name__} IR changed after round-trip:\n{diff}"
