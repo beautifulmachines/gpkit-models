@@ -29,7 +29,8 @@ class Engine(Model):
 
         constraints = [
             FitCS(df, self.W_eng / self.W_engref, [self.P_sl_max / self.P_ref]),
-            self.W / self.mfac >= 2.572 * self.W_eng**0.922 * units("lbf") ** 0.078,
+            self.W / self.mfac
+            >= 2.572 * units("lbf") * (self.W_eng / units("lbf")) ** 0.922,
         ]
 
         return constraints
