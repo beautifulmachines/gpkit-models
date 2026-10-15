@@ -77,4 +77,4 @@ if __name__ == "__main__":
     m.substitutions.update({"h": 5000 * units("m")})
     m.cost = m["\\mu"] * m["\\rho"]
     sol = m.localsolve(verbosity=3)
-    print(sol.table())
+    print(m.table(sol))

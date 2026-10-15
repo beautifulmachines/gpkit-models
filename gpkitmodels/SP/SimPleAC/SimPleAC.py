@@ -134,4 +134,4 @@ if __name__ == "__main__":
     m.cost = 3 * m["W_f"][0] + m["W_f"][1] + 0.33 * m["W_f"][2]
     sol = m.localsolve(verbosity=1)
     # print(sol1.diff(sol2))
-    print(sol.table())
+    print(m.table(sol))
