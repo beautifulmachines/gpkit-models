@@ -14,7 +14,7 @@ def test_ellp():
 
     m = Model(f.W * faero.Cd, [f, fs, faero])
     sol = m.solve(verbosity=0)
-    assert sol.cost == pytest.approx(0.016480, rel=1e-2)
+    assert sol.cost.to("lbf").magnitude == pytest.approx(0.016480, rel=1e-2)
 
 
 def test():

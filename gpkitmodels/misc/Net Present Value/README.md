@@ -88,5 +88,5 @@ if __name__ == "__main__":
     with open("model.generated.tex", "w") as f:
         f.write("$$ %s $$" % M.latex(excluded=["models"]).replace("[ll]", "{ll}"))
     with open("sol.generated.tex", "w") as f:
-        f.write(SOL.table(latex=True))
+        f.write(M.report(SOL, fmt="latex"))
 ```

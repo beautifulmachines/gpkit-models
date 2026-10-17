@@ -285,7 +285,7 @@ if __name__ == "__main__":
     m = SimPleAC()
     m.cost = m["W_f"]
     sol = m.localsolve(verbosity=4)
-    print(sol.table())
+    print(m.table(sol))
 ```
 
 

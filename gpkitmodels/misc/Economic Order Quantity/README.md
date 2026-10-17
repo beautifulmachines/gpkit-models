@@ -42,7 +42,7 @@ sol = m.solve()
 ```python
 #inPDF: replace with sol.generated.tex
 with open("sol.generated.tex", "w") as f:
-    f.write(m.solution.table(latex=True))
+    f.write(m.report(sol, fmt="latex"))
 ```
 Now sweep $Q$ to see the tradoff curve from Factory Physics
 ```python
