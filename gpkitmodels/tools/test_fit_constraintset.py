@@ -1,6 +1,8 @@
 "Tests for FitCS"
 
+import pytest
 from gpkit import Model, Variable, Vectorize
+from gpkit.nomials.constraints import ArrayConstraint
 
 from gpkitmodels.tools.fit_constraintset import FitCS
 
@@ -90,3 +92,44 @@ def test_fitcs_ma_d1_k2():
     sol = m.solve(verbosity=0)
     # w >= c0*u^1.0 = 4.0, w >= c1*u^0.5 = 4.0
     assert 3.5 < sol["w"].magnitude < 4.5
+
+
+def _fitdata(ftype, K):
+    "A one-input fit with K terms; exponents differ per term so a mix-up shows."
+    fd = {"ftype": ftype, "d": 1, "K": K, "rms_err": 0.01, "max_err": 0.02}
+    fd.update({"lb0": 0.1, "ub0": 10.0, "a1": 2.0})
+    for k in range(K):
+        fd.update({f"c{k}": 0.5 / (k + 1), f"e{k}0": 1.0 + k, f"a{k}": 1.0 + 2 * k})
+    return fd
+
+
+@pytest.mark.parametrize("ftype", ["ISMA", "SMA", "MA"])
+def test_fitcs_vector_matches_scalar_at_each_point(ftype):
+    """Each operating point of a vector fit solves as the scalar fit would.
+
+    N equals K so that pairing a term's parameters with a point instead of a
+    term broadcasts without error -- ISMA once did this, silently.
+    """
+    fd, us = _fitdata(ftype, 2), [2.0, 3.0]
+    with Vectorize(len(us)):
+        w = Variable("w")
+        u = Variable("u", us)
+    vector = Model(w.prod(), [FitCS(fd, w, [u])]).solve(verbosity=0)
+    for i, ui in enumerate(us):
+        ws, uscalar = Variable("w"), Variable("u", ui)
+        scalar = Model(ws, [FitCS(fd, ws, [uscalar])]).solve(verbosity=0)
+        assert vector["w"][i].magnitude == pytest.approx(scalar["w"].magnitude)
+
+
+@pytest.mark.parametrize(("ftype", "relations"), [("ISMA", 1), ("SMA", 1), ("MA", 3)])
+def test_fitcs_vector_is_written_over_points(ftype, relations):
+    "One written vector constraint over the points per relation the fit states."
+    with Vectorize(4):
+        w = Variable("w")
+        u = Variable("u")
+    cs = FitCS(_fitdata(ftype, 3), w, [u])
+    assert len(cs.constraint) == relations
+    for c in cs.constraint:
+        assert isinstance(c, ArrayConstraint)
+        assert c.written
+        assert c.constraints.shape == (4,)
