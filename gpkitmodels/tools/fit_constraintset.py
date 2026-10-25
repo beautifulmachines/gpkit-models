@@ -8,7 +8,7 @@ from gpkit import (
     VectorVariable,
 )
 from numpy import abs as nabs
-from numpy import amax, array, hstack, where
+from numpy import amax, hstack, where
 
 
 class FitCS(ConstraintSet):
@@ -68,40 +68,32 @@ class FitCS(ConstraintSet):
         else:
             raise ValueError("Invalid name for err_margin: valid inputs Max, RMS")
 
+        # Written as expressions in the fit's variables, so scalar and vector
+        # (one relation per operating point) inputs take the same path.
+        w = ivar / self.mfac
         if fitdata["ftype"] == "ISMA":
-            # constraint of the form 1 >= c1*u1^exp1*u2^exp2*w^(-alpha) + ....
-            alpha = array([fitdata["a%d" % k] for k in range(fitdata["K"])])
-            lhs, rhs = 1, NomialArray(monos / (ivar / self.mfac) ** alpha).sum(0)
+            # 1 >= c1*u1^exp1*u2^exp2*w^(-alpha1) + ....
+            alphas = [fitdata["a%d" % k] for k in range(fitdata["K"])]
+            sides = [(1, sum(m / w**a for m, a in zip(monos, alphas)))]
         elif fitdata["ftype"] == "SMA":
-            # constraint of the form w^alpha >= c1*u1^exp1 + c2*u2^exp2 +....
-            alpha = fitdata["a1"]
-            lhs, rhs = (ivar / self.mfac) ** alpha, NomialArray(monos).sum(0)
+            # w^alpha >= c1*u1^exp1 + c2*u2^exp2 + ....
+            sides = [(w ** fitdata["a1"], sum(monos))]
         elif fitdata["ftype"] == "MA":
-            # constraint of the form w >= c1*u1^exp1, w >= c2*u2^exp2, ....
-            lhs, rhs = (ivar / self.mfac), NomialArray(monos).T
-
-        if fitdata["K"] == 1:
-            # when possible, return an equality constraint
-            if hasattr(rhs, "shape"):
-                if rhs.ndim > 1:
-                    self.constraint = [(lh == rh) for lh, rh in zip(lhs, rhs)]
-                else:
-                    self.constraint = lhs == rhs
-            else:
-                self.constraint = lhs == rhs
-        elif hasattr(rhs, "shape"):
-            if rhs.ndim > 1:
-                self.constraint = [(lh >= rh) for lh, rh in zip(lhs, rhs)]
-            else:
-                self.constraint = lhs >= rhs
+            # w >= c1*u1^exp1, w >= c2*u2^exp2, ....: one constraint per piece
+            sides = [(w, m) for m in monos]
         else:
-            self.constraint = lhs >= rhs
+            raise ValueError(f"Invalid ftype: {fitdata['ftype']}")
+
+        if fitdata["K"] == 1:  # when possible, return an equality constraint
+            constraints = [lhs == rhs for lhs, rhs in sides]
+        else:
+            constraints = [lhs >= rhs for lhs, rhs in sides]
 
         self.bounds = {}
         for i, dvar in enumerate(self.dvars):
             self.bounds[dvar] = [fitdata["lb%d" % i], fitdata["ub%d" % i]]
 
-        ConstraintSet.__init__(self, [self.constraint])
+        ConstraintSet.__init__(self, constraints)
 
     def get_fitdata(self):
         "return fit data"
