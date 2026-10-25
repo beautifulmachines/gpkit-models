@@ -128,8 +128,8 @@ def test_fitcs_vector_is_written_over_points(ftype, relations):
         w = Variable("w")
         u = Variable("u")
     cs = FitCS(_fitdata(ftype, 3), w, [u])
-    assert len(cs.constraint) == relations
-    for c in cs.constraint:
+    assert len(cs) == relations
+    for c in cs:
         assert isinstance(c, ArrayConstraint)
         assert c.written
         assert c.constraints.shape == (4,)

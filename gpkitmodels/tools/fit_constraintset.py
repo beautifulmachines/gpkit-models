@@ -85,15 +85,15 @@ class FitCS(ConstraintSet):
             raise ValueError(f"Invalid ftype: {fitdata['ftype']}")
 
         if fitdata["K"] == 1:  # when possible, return an equality constraint
-            self.constraint = [lhs == rhs for lhs, rhs in sides]
+            constraints = [lhs == rhs for lhs, rhs in sides]
         else:
-            self.constraint = [lhs >= rhs for lhs, rhs in sides]
+            constraints = [lhs >= rhs for lhs, rhs in sides]
 
         self.bounds = {}
         for i, dvar in enumerate(self.dvars):
             self.bounds[dvar] = [fitdata["lb%d" % i], fitdata["ub%d" % i]]
 
-        ConstraintSet.__init__(self, self.constraint)
+        ConstraintSet.__init__(self, constraints)
 
     def get_fitdata(self):
         "return fit data"
