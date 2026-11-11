@@ -28,14 +28,3 @@ class CFRPUD(Model):
 
     def setup(self):
         pass
-
-
-class Kevlar(Model):
-    "Kevlar Material Properties"
-
-    rho = Var("g/cm^3", "density of Kevlar", value=0.049)
-    tmin = Var("in", "minimum gauge thickness", value=0.012)
-    tau = Var("MPa", "torsional stress limit", value=200)
-
-    def setup(self):
-        pass
