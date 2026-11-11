@@ -10,7 +10,7 @@ from .tube_spar import TubeSpar
 
 
 class TailBoomAero(Model):
-    "Tail Boom Aero Model"
+    "Skin-friction drag of the tail boom at one flight condition."
 
     Cf = Var("-", "tail boom skin friction coefficient")
     Re = Var("-", "tail boom reynolds number")
@@ -61,7 +61,10 @@ class VerticalBoomTorsion(Model):
 
 
 class TailBoomBending(Model):
-    "Tail Boom Bending"
+    """
+    A load case for the tail boom: the tail's maximum force bends the boom, limited
+    by stress and tip deflection.
+    """
 
     F = Var("N", "tail force")
     th = Var("-", "tail boom deflection angle")
@@ -109,7 +112,7 @@ class TailBoomBending(Model):
 
 
 class TailBoom(TubeSpar):
-    "Tail Boom Model"
+    "The carbon tube that carries the tails behind the wing."
 
     l = Var("ft", "tail boom length")
     S = Var("ft^2", "tail boom surface area")

@@ -10,7 +10,10 @@ from .sparloading import SparLoading
 
 
 class CapSpar(Model):
-    "Cap Spar Model"
+    """
+    The main wing spar: carbon caps joined by a fabric shear web around a foam core,
+    sized section by section along the span for stiffness and strength.
+    """
 
     E = Var("psi", "Young modulus of CFRP", value=2e7)
     W = Var("lbf", "spar weight")

@@ -5,8 +5,8 @@ from gpkit import Model, Var
 
 class FuelTank(Model):
     """
-    Returns the weight of the fuel tank.  Assumes a cylinder shape with some
-    fineness ratio
+    The fuel tank: big enough for the fuel with a volume margin, weighing a fixed
+    fraction of the fuel.
     """
 
     W = Var("lbf", "fuel tank weight")

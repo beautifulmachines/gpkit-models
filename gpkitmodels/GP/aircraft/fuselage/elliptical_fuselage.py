@@ -8,7 +8,7 @@ from gpkitmodels.GP.materials import cfrpfabric
 
 
 class FuselageAero(Model):
-    "Fuselage Aerodynamic Model"
+    "Fuselage drag at one flight condition: skin friction times a shape factor."
 
     Cf = Var("-", "fuselage skin friction coefficient")
     Re = Var("-", "fuselage reynolds number")
@@ -32,7 +32,10 @@ class FuselageAero(Model):
 
 
 class Fuselage(Model):
-    "Fuselage Model"
+    """
+    A streamlined fuselage that holds the fuel. Its skin weight comes from its
+    surface area, with a weight margin on top.
+    """
 
     R = Var("ft", "fuselage radius")
     l = Var("ft", "fuselage length")

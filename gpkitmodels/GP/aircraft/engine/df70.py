@@ -4,7 +4,7 @@ from gpkit import Model, Var, Variable
 
 
 class DF70(Model):
-    "engine model"
+    "The DF70, an off-the-shelf engine with fixed weight and power."
 
     W = Var("lbf", "Installed/Total engine weight")
     mfac = Var("-", "Engine weight margin factor", value=1.0)
@@ -21,7 +21,7 @@ class DF70(Model):
 
 
 class DF70Perf(Model):
-    "engine performance model"
+    "DF70 fuel burn at one flight condition, from a fit to its throttle curve."
 
     P_shaft = Var("hp", "Shaft power")
     BSFC = Var("kg/kW/hr", "Brake specific fuel consumption")

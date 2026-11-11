@@ -2,7 +2,7 @@ from gpkit import Model, Var
 
 
 class FoamHD(Model):
-    "Foam high density material properties"
+    "High-density foam: its density."
 
     rho = Var("g/cm^3", "foam density", value=0.036)
 

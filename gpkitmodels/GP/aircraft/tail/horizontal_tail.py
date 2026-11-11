@@ -10,7 +10,10 @@ from .tail_aero import TailAero
 
 
 class HorizontalTail(Wing):
-    "Horizontal Tail Model"
+    """
+    The horizontal tail, a small wing sized by its volume coefficient to trim and
+    stabilize the aircraft.
+    """
 
     Vh = Var("-", "horizontal tail volume coefficient")
     lh = Var("ft", "horizontal tail moment arm")

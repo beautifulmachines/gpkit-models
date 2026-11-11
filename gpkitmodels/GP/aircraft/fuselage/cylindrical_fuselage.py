@@ -8,7 +8,10 @@ from .fuselage_skin import FuselageSkin
 
 
 class Fuselage(Model):
-    "The thing that carries the fuel, engine, and payload"
+    """
+    A fuselage with a nose, cylindrical body and tail end that carries the fuel
+    tank, engine and payload. Weight is its skin and tank plus a margin.
+    """
 
     R = Var("ft", "fuselage radius")
     l = Var("ft", "fuselage length")
@@ -60,7 +63,7 @@ class Fuselage(Model):
 
 
 class FuselageLoading(Model):
-    "fuselage loading cases"
+    "The load cases the fuselage is sized for."
 
     def setup(self, fuselage, Wcent):
         loading = [fuselage.skin.loading(Wcent)]
@@ -69,7 +72,7 @@ class FuselageLoading(Model):
 
 
 class FuselageAero(Model):
-    "fuselage drag model"
+    "Fuselage drag at one flight condition."
 
     Cf = Var("-", "fuselage skin friction coefficient")
     Re = Var("-", "fuselage reynolds number")

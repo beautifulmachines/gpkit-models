@@ -9,7 +9,10 @@ from gpkitmodels.tools.fit_constraintset import FitCS
 
 
 class Engine(Model):
-    "engine model"
+    """
+    A gas engine sized by its maximum sea-level power, with weight from a fit to
+    real engines.
+    """
 
     W = Var("lbf", "Installed/Total engine weight")
     mfac = Var("-", "Engine weight margin factor", value=1.0)
@@ -40,7 +43,10 @@ class Engine(Model):
 
 
 class EnginePerf(Model):
-    "engine performance model"
+    """
+    Engine fuel burn at one flight condition. Efficiency drops at part throttle, and
+    available power falls with altitude.
+    """
 
     P_shaft = Var("hp", "Shaft power")
     BSFC = Var("kg/kW/hr", "Brake specific fuel consumption")

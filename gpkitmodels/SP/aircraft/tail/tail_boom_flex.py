@@ -5,7 +5,10 @@ from numpy import pi
 
 
 class TailBoomFlexibility(Model):
-    "Tail Boom Flexibility Model"
+    """
+    How tail boom bending reduces the horizontal tail's effectiveness, and the
+    static margin the aircraft must still have. Signomial.
+    """
 
     Fne = Var("-", "tail boom flexibility factor")
     deda = Var("-", "wing downwash derivative")

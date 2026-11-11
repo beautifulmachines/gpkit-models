@@ -5,7 +5,10 @@ from numpy import pi
 
 
 class SparLoading(Model):
-    "Spar Loading Model"
+    """
+    A load case for the spar: lift spread along the span at the maximum load factor,
+    limited by stress, tip deflection and twist.
+    """
 
     Nmax = Var("-", "max loading", value=5)
     Nsafety = Var("-", "safety load factor", value=1.0)

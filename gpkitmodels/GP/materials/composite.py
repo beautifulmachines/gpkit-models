@@ -2,7 +2,7 @@ from gpkit import Model, Var
 
 
 class CFRPFabric(Model):
-    "Carbon Fiber Reinforced Plastic Fabric Material Properties"
+    "Woven carbon-fiber fabric: density, minimum ply thickness, stiffness and strength."
 
     rho = Var("g/cm^3", "density of CFRP", value=1.6)
     tmin = Var("mm", "minimum gauge thickness", value=0.3048)
@@ -16,7 +16,10 @@ class CFRPFabric(Model):
 
 
 class CFRPUD(Model):
-    "Carbon Fiber Reinforced Plastic Unidirectional Material Properties"
+    """
+    Unidirectional carbon fiber: density, minimum ply thickness, stiffness and
+    strength.
+    """
 
     rho = Var("g/cm^3", "density of CFRP", value=1.6)
     E = Var("GPa", "Youngs Modulus of CFRP", value=137)

@@ -17,7 +17,7 @@ MODULE_DIR = dirname(abspath(__file__))
 
 
 class Planform(Model):
-    "Planform Area Definition"
+    "The wing's shape: area, span, aspect ratio and a tapered chord along the span."
 
     S = Var("ft^2", "surface area")
     AR = Var("-", "aspect ratio")
@@ -78,7 +78,10 @@ class Planform(Model):
 
 
 class WingAero(Model):
-    "Wing Aero Model"
+    """
+    Wing drag at one flight condition: profile drag from airfoil data, plus induced
+    drag from lift.
+    """
 
     Cd = Var("-", "wing drag coefficient")
     CL = Var("-", "lift coefficient")
@@ -122,7 +125,10 @@ class WingAero(Model):
 
 
 class Wing(Model):
-    "Wing Model"
+    """
+    A wing built up from skin, spar and foam core. Sizes its planform and weight,
+    with a weight margin on top of the parts.
+    """
 
     W = Var("lbf", "wing weight")
     mfac = Var("-", "wing weight margin factor", value=1.2)

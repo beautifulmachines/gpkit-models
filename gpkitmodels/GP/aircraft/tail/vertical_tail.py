@@ -9,7 +9,10 @@ from .tail_aero import TailAero
 
 
 class VerticalTail(Wing):
-    "Vertical Tail Model"
+    """
+    The vertical tail, a small wing sized by its volume coefficient for directional
+    stability.
+    """
 
     Vv = Var("-", "vertical tail volume coefficient")
     lv = Var("ft", "vertical tail moment arm")

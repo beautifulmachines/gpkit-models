@@ -8,7 +8,10 @@ from .vertical_tail import VerticalTail
 
 
 class Empennage(Model):
-    "empennage model, consisting of vertical, horizontal and tailboom"
+    """
+    The tail: horizontal and vertical tails on a tail boom, with a weight margin on
+    top of the parts.
+    """
 
     mfac = Var("-", "tail weight margin factor", value=1.0)
     W = Var("lbf", "empennage weight")
