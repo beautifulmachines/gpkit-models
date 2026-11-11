@@ -9,7 +9,7 @@ from gpkitmodels.tools.fit_constraintset import FitCS
 
 
 class TailAero(Model):
-    "Tail Aero Model"
+    "Drag of a tail surface at one flight condition."
 
     Re = Var("-", "Reynolds number")
     Cd = Var("-", "drag coefficient")

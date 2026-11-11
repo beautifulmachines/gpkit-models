@@ -8,7 +8,7 @@ from gpkitmodels import g
 
 
 class BreguetEndurance(Model):
-    "breguet endurance model"
+    "Fuel burned over one flight segment, from the Breguet endurance equation."
 
     z_bre = Var("-", "Breguet coefficient")
     t = Var("days", "Time per flight segment")

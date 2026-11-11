@@ -7,7 +7,10 @@ from gpkitmodels.GP.aircraft.wing.wing import Wing as WingGP
 
 
 class Wing(WingGP):
-    "SP wing model"
+    """
+    The wing plus its lift-curve slope, for designs where tail sizing depends on it.
+    Adds a signomial constraint.
+    """
 
     mw = Var("-", "span wise effectiveness")
 

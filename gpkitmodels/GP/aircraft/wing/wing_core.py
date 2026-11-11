@@ -7,7 +7,7 @@ from gpkitmodels.GP.materials import FoamHD
 
 
 class WingCore(Model):
-    "Wing Core Model"
+    "The foam that fills the inside of the wing."
 
     W = Var("lbf", "wing core weight")
     Abar = Var("-", "normalized cross section area", value=0.0753449)

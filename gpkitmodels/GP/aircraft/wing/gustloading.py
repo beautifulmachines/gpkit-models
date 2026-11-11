@@ -13,7 +13,10 @@ from .sparloading import SparLoading
 
 
 class GustL(SparLoading):
-    "Gust Loading Model"
+    """
+    A gust load case for the spar: the same as the maximum-load case, plus the extra
+    lift from flying through a vertical gust.
+    """
 
     vgust = Var("m/s", "gust velocity", value=10)
     Ww = Var("lbf", "wing weight")

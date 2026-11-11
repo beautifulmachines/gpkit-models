@@ -7,7 +7,7 @@ from gpkitmodels import g
 
 
 class FuselageSkin(Model):
-    "fuselage skin model"
+    "The fuselage's Kevlar skin, sized to minimum thickness and for bending stiffness."
 
     W = Var("lbf", "fuselage skin weight")
     m = Var("kg", "fuselage skin mass")
@@ -37,7 +37,7 @@ class FuselageSkin(Model):
 
 
 class FuselageSkinL(Model):
-    "fuselage skin loading"
+    "A bending load case for the fuselage skin at the maximum load factor."
 
     M_h = Var("N*m", "horizontal axis center fuselage moment")
     N_max = Var("-", "max loading", value=5)
@@ -56,7 +56,7 @@ class FuselageSkinL(Model):
 
 
 class FuselageLanding(Model):
-    "fuselage loading case"
+    "A landing load case for the fuselage."
 
     F = Var("lbf", "maximum landing force")
     N_max = Var("-", "maximum landing load factor", value=5)

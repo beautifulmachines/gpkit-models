@@ -4,16 +4,9 @@ from gpkit import Model, Variable, Vectorize
 
 
 class Beam(Model):
-    """discretized beam bending model
-
-    Upper Unbounded
-    ---------------
-    EIbar, dbar_tip
-
-    Lower Unbounded
-    ---------------
-    dx, qbar (if not qbarFun)
-
+    """
+    A beam bending under a load spread along it, split into segments to track shear,
+    moment, slope and deflection.
     """
 
     qbarFun = None

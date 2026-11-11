@@ -7,7 +7,10 @@ from gpkitmodels.GP.materials import CFRPFabric
 
 
 class WingSkin(Model):
-    "Wing Skin model"
+    """
+    The wing's carbon-fabric skin, sized to minimum thickness and to resist twisting
+    at the never-exceed speed.
+    """
 
     W = Var("lbf", "wing skin weight")
     t = Var("in", "wing skin thickness")
@@ -43,7 +46,7 @@ class WingSkin(Model):
 
 
 class WingSecondStruct(Model):
-    "Wing secondary structure model"
+    "A lightweight wing covering, weighed from its area at a fixed areal density."
 
     W = Var("lbf", "wing skin weight")
     rhoA = Var("kg/m^2", "total aerial density", value=0.35)
