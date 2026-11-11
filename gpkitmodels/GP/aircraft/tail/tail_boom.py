@@ -29,37 +29,6 @@ class TailBoomAero(Model):
         ]
 
 
-class TailBoomState(Model):
-    "Tail Boom Loading State"
-
-    rhosl = Var("kg/m^3", "air density at sea level", value=1.225)
-    Vne = Var("m/s", "never exceed vehicle speed", value=40)
-
-    def setup(self):
-        pass
-
-
-class VerticalBoomTorsion(Model):
-    "Tail Boom Torsion from Vertical Tail"
-
-    T = Var("N*m", "vertical tail moment")
-    taucfrp = Var("MPa", "torsional stress limit of carbon", value=210)
-
-    def setup(self, tailboom, vtail, state):
-        J = self.J = tailboom.J
-        d0 = self.d0 = tailboom.d
-        b = self.b = vtail.planform.b
-        S = self.S = vtail.planform.S
-        rhosl = self.rhosl = state.rhosl
-        Vne = self.Vne = state.Vne
-        CLmax = vtail.planform.CLmax
-
-        return [
-            self.T >= 0.5 * rhosl * Vne**2 * S * CLmax * b,
-            self.taucfrp >= self.T * d0 / 2 / J,
-        ]
-
-
 class TailBoomBending(Model):
     """
     A load case for the tail boom: the tail's maximum force bends the boom, limited

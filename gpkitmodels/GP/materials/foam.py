@@ -8,12 +8,3 @@ class FoamHD(Model):
 
     def setup(self):
         pass
-
-
-class FoamLD(Model):
-    "Foam low density material properties"
-
-    rho = Var("g/cm^3", "foam density", value=0.024)
-
-    def setup(self):
-        pass
