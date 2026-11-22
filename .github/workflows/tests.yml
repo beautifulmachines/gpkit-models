@@ -12,6 +12,7 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       UV_NO_SOURCES: "1"  # use published PyPI versions
     strategy:
