@@ -56,16 +56,16 @@ class Planform(Model):
         return np.diff(c[self.eta])
 
     def setup(self, N):
-        self.eta = VectorVariable(N, "eta", np.linspace(0, 1, N), "-", "(2y/b)")
+        self.eta = VectorVariable(N, "eta", "-", "(2y/b)", value=np.linspace(0, 1, N))
         cbar = self.cbar = VectorVariable(
-            N, "cbar", self.return_c, "-", "non-dim chord at nodes"
+            N, "cbar", "-", "non-dim chord at nodes", value=self.return_c
         )
         cave = self.cave = VectorVariable(N - 1, "cave", "ft", "mid section chord")
         cbave = self.cbave = VectorVariable(
-            N - 1, "cbave", self.return_avg, "-", "non-dim mid section chord"
+            N - 1, "cbave", "-", "non-dim mid section chord", value=self.return_avg
         )
         self.deta = VectorVariable(
-            N - 1, "deta", self.return_deta, "-", "\\Delta (2y/b)"
+            N - 1, "deta", "-", "\\Delta (2y/b)", value=self.return_deta
         )
 
         constraints = [

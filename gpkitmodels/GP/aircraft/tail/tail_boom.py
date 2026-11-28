@@ -97,7 +97,9 @@ class TailBoom(TubeSpar):
     def setup(self, N=5):
         self.N = N
         # deta and cave must exist before spar_model.setup() accesses surface.deta/cave
-        self.deta = Variable("deta", 1.0 / (N - 1), "-", "normalized segment length")
+        self.deta = Variable(
+            "deta", "-", "normalized segment length", value=1.0 / (N - 1)
+        )
         self.cave = VectorVariable(N - 1, "cave", "in", "average segment width")
         self.spar = type(self).spar_model.setup(self, N, self)
 

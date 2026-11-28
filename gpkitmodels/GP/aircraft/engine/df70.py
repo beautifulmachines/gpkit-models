@@ -31,8 +31,7 @@ class DF70Perf(Model):
 
     def setup(self, static, state):
 
-        href_val = 1000  # shared with Variable below to stay in sync
-        href = Variable("h_{ref}", href_val, "ft", "reference altitude")  # noqa: F841
+        href_val = 1000  # reference altitude [ft], fixed when the model is built
         h_vals = state.substitutions["h"]
         if not hasattr(h_vals, "__len__"):
             h_vals = [h_vals]
@@ -42,11 +41,11 @@ class DF70Perf(Model):
             (-0.035 * v * h_units / (href_val * h_units)).to("").magnitude + 1.0
             for v in h_vals
         ]
-        Leng = Variable("L_{eng}", lfac, "-", "shaft power loss factor")
+        Leng = Variable("L_{eng}", "-", "shaft power loss factor", value=lfac)
         Pshaftmax = Variable("P_{shaft-max}", "hp", "Max shaft power at altitude")
-        mfac = Variable("m_{fac}", 1.0, "-", "BSFC margin factor")
+        mfac = Variable("m_{fac}", "-", "BSFC margin factor", value=1.0)
         rpm = Variable("RPM", "rpm", "Engine operating RPM")
-        rpm_max = Variable("RPM_{max}", 7698, "rpm", "Maximum RPM")
+        rpm_max = Variable("RPM_{max}", "rpm", "Maximum RPM", value=7698)
 
         constraints = [
             (self.BSFC / mfac / static.bsfc_min) ** 36.2209

@@ -25,7 +25,7 @@ class TubeSpar(Model):
         l = surface.l
 
         # kfac uses a linked function — must be created inside setup
-        kfac = self.kfac = Variable("kfac", self.minusk2, "-", "(1-k/2)")
+        kfac = self.kfac = Variable("kfac", "-", "(1-k/2)", value=self.minusk2)
 
         I = self.I = VectorVariable(N - 1, "I", "m^4", "moment of inertia")
         d = self.d = VectorVariable(N - 1, "d", "in", "diameter")

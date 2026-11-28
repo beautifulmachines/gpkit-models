@@ -11,8 +11,8 @@ class TubeSpar(Model):
     def setup(self, b, cave, tau, N=5):
         self.N = N
 
-        rho_cfrp = Variable("\\rho_{CFRP}", 1.6, "g/cm^3", "density of CFRP")
-        E = Variable("E", 2e7, "psi", "Youngs modulus of CF")
+        rho_cfrp = Variable("\\rho_{CFRP}", "g/cm^3", "density of CFRP", value=1.6)
+        E = Variable("E", "psi", "Youngs modulus of CF", value=2e7)
 
         with Vectorize(self.N - 1):
             d = Variable("d", "in", "spar diameter")
@@ -22,7 +22,7 @@ class TubeSpar(Model):
             dm = Variable("dm", "kg", "segment spar mass")
 
         W = Variable("W", "lbf", "tube spar weight")
-        g = Variable("g", 9.81, "m/s**2", "gravitational constant")
+        g = Variable("g", "m/s**2", "gravitational constant", value=9.81)
 
         constraints = [
             dm >= rho_cfrp * A * b / (N - 1),

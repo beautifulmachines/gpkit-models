@@ -41,7 +41,7 @@ class GustL(SparLoading):
 
         agust = VectorVariable(wing.N, "agust", "-", "gust angle of attack")
         cosminus1 = self.cosminus1 = VectorVariable(
-            wing.N, "cosminus1", self.return_cosm1, "-", "1 minus cosine factor"
+            wing.N, "cosminus1", "-", "1 minus cosine factor", value=self.return_cosm1
         )
 
         path = os.path.dirname(os.path.abspath(__file__))

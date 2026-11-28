@@ -22,7 +22,7 @@ def test_fitcs_sma_d1_k1():
         "ub0": 10.0,
     }
     w = Variable("w")
-    u = Variable("u", 2.0)
+    u = Variable("u", value=2.0)
     cs = FitCS(fitdata, w, [u])
     m = Model(w, [cs])
     sol = m.solve(verbosity=0)
@@ -60,8 +60,8 @@ def test_fitcs_mixed_scalar_and_vectorized_dvars():
     # u1 vectorized (like Re across flight segments); u2 scalar (like tau)
     with Vectorize(3):
         w = Variable("w")
-        u1 = Variable("u_1", 2.0)
-    u2 = Variable("u_2", 3.0)
+        u1 = Variable("u_1", value=2.0)
+    u2 = Variable("u_2", value=3.0)
     cs = FitCS(fitdata, w, [u1, u2])
     m = Model(w.prod(), [cs])
     sol = m.solve(verbosity=0)
@@ -86,7 +86,7 @@ def test_fitcs_ma_d1_k2():
         "ub0": 10.0,
     }
     w = Variable("w")
-    u = Variable("u", 4.0)
+    u = Variable("u", value=4.0)
     cs = FitCS(fitdata, w, [u])
     m = Model(w, [cs])
     sol = m.solve(verbosity=0)
@@ -113,10 +113,10 @@ def test_fitcs_vector_matches_scalar_at_each_point(ftype):
     fd, us = _fitdata(ftype, 2), [2.0, 3.0]
     with Vectorize(len(us)):
         w = Variable("w")
-        u = Variable("u", us)
+        u = Variable("u", value=us)
     vector = Model(w.prod(), [FitCS(fd, w, [u])]).solve(verbosity=0)
     for i, ui in enumerate(us):
-        ws, uscalar = Variable("w"), Variable("u", ui)
+        ws, uscalar = Variable("w"), Variable("u", value=ui)
         scalar = Model(ws, [FitCS(fd, ws, [uscalar])]).solve(verbosity=0)
         assert vector["w"][i].magnitude == pytest.approx(scalar["w"].magnitude)
 

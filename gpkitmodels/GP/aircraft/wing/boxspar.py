@@ -25,9 +25,15 @@ class BoxSpar(Model):
 
         # These must be created inside setup so they exist when BoxSpar.setup
         # is called as an unbound method on a TailBoom (not a BoxSpar subclass).
-        wlim = self.wlim = Variable("wlim", 0.15, "-", "spar width to chord ratio")
-        mfac = self.mfac = Variable("mfac", 0.97, "-", "curvature knockdown factor")
-        tcoret = self.tcoret = Variable("tcoret", 0.02, "-", "core to thickness ratio")
+        wlim = self.wlim = Variable(
+            "wlim", "-", "spar width to chord ratio", value=0.15
+        )
+        mfac = self.mfac = Variable(
+            "mfac", "-", "curvature knockdown factor", value=0.97
+        )
+        tcoret = self.tcoret = Variable(
+            "tcoret", "-", "core to thickness ratio", value=0.02
+        )
 
         b = self.b = surface.b
         cave = self.cave = surface.cave
