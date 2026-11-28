@@ -25,8 +25,8 @@ class EmpPerf(Model):
 
 def test_htail():
 
-    Sw = Variable("S_w", 50, "ft**2", "wing area")
-    cmac = Variable("cmac", 15, "in", "wing MAC")
+    Sw = Variable("S_w", "ft**2", "wing area", value=50)
+    cmac = Variable("cmac", "in", "wing MAC", value=15)
     ht = HorizontalTail()
     fs = FlightState()
     ht.substitutions.update(
@@ -48,8 +48,8 @@ def test_htail():
 
 def test_vtail():
 
-    Sw = Variable("S_w", 50, "ft**2", "wing area")
-    bw = Variable("b_w", 20, "ft", "wing span")
+    Sw = Variable("S_w", "ft**2", "wing area", value=50)
+    bw = Variable("b_w", "ft", "wing span", value=20)
     vt = VerticalTail()
     fs = FlightState()
     vt.substitutions.update(
@@ -70,9 +70,9 @@ def test_vtail():
 
 def test_emp():
 
-    Sw = Variable("S_w", 50, "ft**2", "wing area")
-    bw = Variable("b_w", 20, "ft", "wing span")
-    cmac = Variable("cmac", 15, "in", "wing MAC")
+    Sw = Variable("S_w", "ft**2", "wing area", value=50)
+    bw = Variable("b_w", "ft", "wing span", value=20)
+    cmac = Variable("cmac", "in", "wing MAC", value=15)
     emp = Empennage()
     fs = FlightState()
     emp.substitutions.update(
@@ -120,10 +120,10 @@ def test_emp():
 
 def test_tailboom_mod():
 
-    Sw = Variable("S_w", 50, "ft**2", "wing area")
-    bw = Variable("b_w", 20, "ft", "wing span")
-    cmac = Variable("cmac", 15, "in", "wing MAC")
-    cmax = Variable("cmax", 5, "in", "max width")
+    Sw = Variable("S_w", "ft**2", "wing area", value=50)
+    bw = Variable("b_w", "ft", "wing span", value=20)
+    cmac = Variable("cmac", "in", "wing MAC", value=15)
+    cmax = Variable("cmax", "in", "max width", value=5)
 
     class _BoxSparTailBoom(TailBoom):
         spar_model = BoxSpar

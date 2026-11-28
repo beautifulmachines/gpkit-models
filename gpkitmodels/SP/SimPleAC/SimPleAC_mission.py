@@ -23,8 +23,8 @@ class SimPleAC(Model):
         self.components = [self.engine, self.wing, self.fuse]
 
         # Environmental constants
-        g = Variable("g", 9.81, "m/s^2", "gravitational acceleration")
-        rho_f = Variable("\\rho_f", 817, "kg/m^3", "density of fuel")
+        g = Variable("g", "m/s^2", "gravitational acceleration", value=9.81)
+        rho_f = Variable("\\rho_f", "kg/m^3", "density of fuel", value=817)
 
         # Free Variables
         W = Variable("W", "N", "maximum takeoff weight")
@@ -119,9 +119,9 @@ class FuselageP(Model):
         # Constants
         Cfref = Variable(
             "C_{f_{fuse,ref}}",
-            0.455,
             "-",
             "fuselage reference skin friction coefficient",
+            value=0.455,
             pr=10.0,
         )
         # Free Variables
@@ -139,23 +139,22 @@ class FuselageP(Model):
 class Wing(Model):
     def setup(self):
         # Non-dimensional constants
-        C_Lmax = Variable("C_{L,max}", 1.6, "-", "lift coefficient at stall", pr=5.0)
-        e = Variable("e", 0.92, "-", "Oswald efficiency factor", pr=3.0)
-        N_ult = Variable("N_{ult}", 3, "-", "ultimate load factor", pr=15.0)
+        C_Lmax = Variable(
+            "C_{L,max}", "-", "lift coefficient at stall", value=1.6, pr=5.0
+        )
+        e = Variable("e", "-", "Oswald efficiency factor", value=0.92, pr=3.0)
+        N_ult = Variable("N_{ult}", "-", "ultimate load factor", value=3, pr=15.0)
         tau = Variable("\\tau", "-", "airfoil thickness to chord ratio", fix=True)
         tau_ref = Variable(
-            "\\tau_{ref}",
-            0.12,
-            "-",
-            "reference airfoil thickness to chord ratio",
+            "\\tau_{ref}", "-", "reference airfoil thickness to chord ratio", value=0.12
         )
 
         # Dimensional constants
         W_w_coeff1 = Variable(
-            "W_{w_{coeff1}}", 2e-5, "1/m", "wing weight coefficient 1", pr=30.0
+            "W_{w_{coeff1}}", "1/m", "wing weight coefficient 1", value=2e-5, pr=30.0
         )  # orig  12e-5
         W_w_coeff2 = Variable(
-            "W_{w_{coeff2}}", 60.0, "Pa", "wing weight coefficient 2", pr=10.0
+            "W_{w_{coeff2}}", "Pa", "wing weight coefficient 2", value=60.0, pr=10.0
         )
 
         # Free Variables (fixed for performance eval.)
@@ -198,7 +197,7 @@ class WingP(Model):
         C_D_wpar = Variable("C_{D_{wpar}}", "-", "wing profile drag coefficient")
         C_L = Variable("C_L", "-", "wing lift coefficient")
         Re = Variable("Re", "-", "Reynolds number")
-        Re_ref = Variable("Re_{ref}", 1500000, "-", "reference Reynolds number")
+        Re_ref = Variable("Re_{ref}", "-", "reference Reynolds number", value=1500000)
 
         constraints = []
 
@@ -233,16 +232,18 @@ class Engine(Model):
         # Dimensional constants
         BSFC_ref = Variable(
             "BSFC_{ref}",
-            0.32,
             "lbf/(hp*hr)",
             "reference brake specific fuel consumption",
+            value=0.32,
         )
-        eta_prop = Variable("\\eta_{prop}", 0.8, "-", "propeller efficiency")
+        eta_prop = Variable("\\eta_{prop}", "-", "propeller efficiency", value=0.8)
         P_shaft_ref = Variable(
-            "P_{shaft,ref}", 10, "hp", "reference MSL maximum shaft power"
+            "P_{shaft,ref}", "hp", "reference MSL maximum shaft power", value=10
         )
-        W_e_ref = Variable("W_{e,ref}", 10, "lbf", "reference engine weight")
-        h_ref = Variable("h_{ref}", 15000, "ft", "engine lapse reference altitude")
+        W_e_ref = Variable("W_{e,ref}", "lbf", "reference engine weight", value=10)
+        h_ref = Variable(
+            "h_{ref}", "ft", "engine lapse reference altitude", value=15000
+        )
 
         # Free variables
         P_shaft_max = Variable("P_{shaft,max}", "kW", "MSL maximum shaft power")

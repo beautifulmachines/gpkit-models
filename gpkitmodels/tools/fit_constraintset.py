@@ -52,19 +52,21 @@ class FitCS(ConstraintSet):
         if err_margin == "Max":
             self.mfac = Variable(
                 "m_{fac-" + name + "-fit}",
-                1 + self.max_err,
                 "-",
                 "max error of fit",
+                value=1 + self.max_err,
             )
         elif err_margin == "RMS":
             self.mfac = Variable(
                 "m_{fac-" + name + "-fit}",
-                1 + self.rms_err,
                 "-",
                 "RMS error of fit",
+                value=1 + self.rms_err,
             )
         elif err_margin is None:
-            self.mfac = Variable("m_{fac-" + name + "-fit}", 1.0, "-", "fit factor")
+            self.mfac = Variable(
+                "m_{fac-" + name + "-fit}", "-", "fit factor", value=1.0
+            )
         else:
             raise ValueError("Invalid name for err_margin: valid inputs Max, RMS")
 

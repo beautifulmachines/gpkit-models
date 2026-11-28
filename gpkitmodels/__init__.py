@@ -12,6 +12,6 @@ from gpkit import Variable
 
 from .tools.modular import PerformanceModel, PhysicalComponent
 
-g = Variable("g", 9.81, "m/s^2", "earth surface gravitational acceleration")
+g = Variable("g", "m/s^2", "earth surface gravitational acceleration", value=9.81)
 
 __all__ = ("PerformanceModel", "PhysicalComponent")

@@ -56,8 +56,7 @@ class EnginePerf(Model):
 
     def setup(self, static, state):
 
-        href_val = 1000  # shared with Variable below to stay in sync
-        href = Variable("h_{ref}", href_val, "ft", "reference altitude")  # noqa: F841
+        href_val = 1000  # reference altitude [ft], fixed when the model is built
         h_vals = state.substitutions["h"]
         if not hasattr(h_vals, "__len__"):
             h_vals = [h_vals]
@@ -66,9 +65,9 @@ class EnginePerf(Model):
             (-0.035 * v * h_units / (href_val * h_units)).to("").magnitude + 1.0
             for v in h_vals
         ]
-        Leng = Variable("L_{eng}", lfac, "-", "shaft power loss factor")
+        Leng = Variable("L_{eng}", "-", "shaft power loss factor", value=lfac)
         Pshaftmax = Variable("P_{shaft-max}", "hp", "Max shaft power at altitude")
-        mfac = Variable("m_{fac}", 1.0, "-", "BSFC margin factor")
+        mfac = Variable("m_{fac}", "-", "BSFC margin factor", value=1.0)
 
         path = os.path.dirname(__file__)
         df = pd.read_csv(path + os.sep + "powerBSFCfit.csv").to_dict(orient="records")[

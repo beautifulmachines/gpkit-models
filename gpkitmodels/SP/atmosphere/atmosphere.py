@@ -18,19 +18,15 @@ class Atmosphere(Model):
 
     def setup(self):
         # Env. constants
-        alt_top = Variable("h_{top}", 10000, "m", "highest altitude valid")
+        alt_top = Variable("h_{top}", "m", "highest altitude valid", value=10000)
         # a_MSL   = Variable('a_{MSL}',340.20,'m/s','Speed of sound at MSL')
         mu_MSL = Variable(
-            "\\mu_{MSL}",
-            1.778e-5,
-            "kg/m/s",
-            "dynamic viscosity at MSL",
-            pr=4.0,
+            "\\mu_{MSL}", "kg/m/s", "dynamic viscosity at MSL", value=1.778e-5, pr=4.0
         )
         # nu_MSL  = Variable('\\nu_{MSL}', 1.4524e-5, 'm^2/s', 'kinematic viscosity at MSL')
         # T_MSL   = Variable('T_{MSL}', 288.19, 'K', 'temperature at MSL')
         rho_MSL = Variable(
-            "\\rho_{MSL}", 1.2256, "kg/m^3", "density of air at MSL", pr=5.0
+            "\\rho_{MSL}", "kg/m^3", "density of air at MSL", value=1.2256, pr=5.0
         )
         # p_MSL   = Variable('P_{MSL}', 101308, 'Pa', 'pressure at MSL')
 
